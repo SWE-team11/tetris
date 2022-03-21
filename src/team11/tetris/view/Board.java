@@ -1,4 +1,4 @@
-package seoultech.se.tetris.component;
+package team11.tetris.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -13,18 +13,16 @@ import javax.swing.JFrame;
 import javax.swing.JTextPane;
 import javax.swing.Timer;
 import javax.swing.border.CompoundBorder;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.*;
 
-import seoultech.se.tetris.blocks.Block;
-import seoultech.se.tetris.blocks.IBlock;
-import seoultech.se.tetris.blocks.JBlock;
-import seoultech.se.tetris.blocks.LBlock;
-import seoultech.se.tetris.blocks.OBlock;
-import seoultech.se.tetris.blocks.SBlock;
-import seoultech.se.tetris.blocks.TBlock;
-import seoultech.se.tetris.blocks.ZBlock;
+import team11.tetris.blocks.Block;
+import team11.tetris.blocks.IBlock;
+import team11.tetris.blocks.JBlock;
+import team11.tetris.blocks.LBlock;
+import team11.tetris.blocks.OBlock;
+import team11.tetris.blocks.SBlock;
+import team11.tetris.blocks.TBlock;
+import team11.tetris.blocks.ZBlock;
 
 public class Board extends JFrame {
 
@@ -64,7 +62,7 @@ public class Board extends JFrame {
 		StyleConstants.setFontSize(styleSet, 18);
 		StyleConstants.setFontFamily(styleSet, "Courier");
 		StyleConstants.setBold(styleSet, true);
-		StyleConstants.setForeground(styleSet, Color.WHITE);
+//		StyleConstants.setForeground(styleSet, Color.WHITE);
 		StyleConstants.setAlignment(styleSet, StyleConstants.ALIGN_CENTER);
 		
 		//Set timer for block drops.
@@ -161,24 +159,34 @@ public class Board extends JFrame {
 	}
 
 	public void drawBoard() {
-		StringBuffer sb = new StringBuffer();
-		for(int t=0; t<WIDTH+2; t++) sb.append(BORDER_CHAR);
-		sb.append("\n");
-		for(int i=0; i < board.length; i++) {
-			sb.append(BORDER_CHAR);
-			for(int j=0; j < board[i].length; j++) {
-				if(board[i][j] == 1) {
-					sb.append("O");
-				} else {
-					sb.append(" ");
-				}
-			}
-			sb.append(BORDER_CHAR);
-			sb.append("\n");
-		}
-		for(int t=0; t<WIDTH+2; t++) sb.append(BORDER_CHAR);
-		pane.setText(sb.toString());
+		pane.setText("");
+		Style style = pane.addStyle("textStyle", null);
+		StyleConstants.setForeground(style, Color.white);
 		StyledDocument doc = pane.getStyledDocument();
+
+		StringBuffer sb = new StringBuffer();
+		for(int t=0; t<WIDTH+2; t++)
+			try{doc.insertString(doc.getLength(), Character.toString(BORDER_CHAR),style);}
+			catch (BadLocationException e){}
+		try{doc.insertString(doc.getLength(), "\n",style);}
+		catch (BadLocationException e){}
+
+		for(int i=0; i < board.length; i++) {
+			try{doc.insertString(doc.getLength(), Character.toString(BORDER_CHAR),style);}
+			catch (BadLocationException e){}
+			for(int j=0; j < board[i].length; j++) {
+				StyleConstants.setForeground(style, curr.getColor());
+				try{doc.insertString(doc.getLength(), board[i][j] == 1 ? "0" : " ",style);}
+				catch (BadLocationException e){}
+			}
+			StyleConstants.setForeground(style, Color.white);
+
+			try{doc.insertString(doc.getLength(), Character.toString(BORDER_CHAR)+"\n",style);}
+			catch (BadLocationException e){}
+		}
+		for(int t=0; t<WIDTH+2; t++)
+			try{doc.insertString(doc.getLength(), Character.toString(BORDER_CHAR),style);}
+			catch (BadLocationException e){}
 		doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
 		pane.setStyledDocument(doc);
 	}
