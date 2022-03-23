@@ -24,7 +24,7 @@ import team11.tetris.blocks.SBlock;
 import team11.tetris.blocks.TBlock;
 import team11.tetris.blocks.ZBlock;
 
-public class Board extends JFrame {
+public class BoardView extends JFrame {
 
 	private static final long serialVersionUID = 2434035659171694595L;
 	
@@ -43,7 +43,7 @@ public class Board extends JFrame {
 	
 	private static final int initInterval = 1000;
 	
-	public Board() {
+	public BoardView() {
 		super("SeoulTech SE Tetris");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
