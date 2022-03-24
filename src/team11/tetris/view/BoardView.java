@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -29,12 +30,12 @@ public class BoardView extends JFrame {
 	public ConfigModel configModel;
 
 	private static final int initInterval = 1000;
-	
+
 	public BoardView() {
 		super("SeoulTech SE 11team Tetris");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		//Board display setting.
+
+		// Board display setting.
 		pane = new JTextPane();
 		pane.setEditable(false);
 		pane.setBackground(Color.BLACK);
@@ -43,16 +44,16 @@ public class BoardView extends JFrame {
 				BorderFactory.createLineBorder(Color.DARK_GRAY, 5));
 		pane.setBorder(border);
 		this.getContentPane().add(pane, BorderLayout.CENTER);
-		
-		//Document default style.
+
+		// Document default style.
 		styleSet = new SimpleAttributeSet();
 		StyleConstants.setFontSize(styleSet, 18);
 		StyleConstants.setFontFamily(styleSet, "Courier");
 		StyleConstants.setBold(styleSet, true);
-//		StyleConstants.setForeground(styleSet, Color.WHITE);
+		// StyleConstants.setForeground(styleSet, Color.WHITE);
 		StyleConstants.setAlignment(styleSet, StyleConstants.ALIGN_CENTER);
-		
-		//Initialize board for the game.
+
+		// Initialize board for the game.
 		setFocusable(true);
 		requestFocus();
 	}
@@ -61,7 +62,7 @@ public class BoardView extends JFrame {
 		addKeyListener(playerKeyListener);
 	}
 
-	//Set timer for block drops.
+	// Set timer for block drops.
 	public void setTimerActionListener(ActionListener timerActionListener) {
 		timer = new Timer(initInterval, timerActionListener);
 	}
@@ -71,13 +72,14 @@ public class BoardView extends JFrame {
 		this.configModel = configModel;
 	}
 
-	//Create the first block and draw.
+	// Create the first block and draw.
 	public void initView() {
 		placeBlock();
 		drawBoard();
 		timer.start();
 	}
 
+	// @TODO 모델로 분리
 	public void placeBlock() {
 		Block currentBlock = boardModel.currentBlock;
 		int x = boardModel.x;
@@ -86,12 +88,12 @@ public class BoardView extends JFrame {
 		StyledDocument doc = pane.getStyledDocument();
 		SimpleAttributeSet styles = new SimpleAttributeSet();
 		StyleConstants.setForeground(styles, currentBlock.getColor());
-		for(int j=0; j<currentBlock.height(); j++) {
-			int rows = y+j == 0 ? 0 : y+j-1;
-			int offset = rows * (configModel.WIDTH+3) + x + 1;
+		for (int j = 0; j < currentBlock.height(); j++) {
+			int rows = y + j == 0 ? 0 : y + j - 1;
+			int offset = rows * (configModel.WIDTH + 3) + x + 1;
 			doc.setCharacterAttributes(offset, currentBlock.width(), styles, true);
-			for(int i=0; i<currentBlock.width(); i++) {
-				boardModel.board.get(y + j)[x+i] = currentBlock.getShape(i, j);
+			for (int i = 0; i < currentBlock.width(); i++) {
+				boardModel.board.get(y + j)[x + i] = currentBlock.getShape(i, j);
 			}
 		}
 	}
@@ -103,28 +105,27 @@ public class BoardView extends JFrame {
 		StyledDocument doc = pane.getStyledDocument();
 
 		StringBuffer sb = new StringBuffer();
-		for(int t=0; t<configModel.WIDTH+2; t++)
-			try{doc.insertString(doc.getLength(), Character.toString(configModel.BORDER_CHAR),style);}
-			catch (BadLocationException e){}
-		try{doc.insertString(doc.getLength(), "\n",style);}
-		catch (BadLocationException e){}
 
-		for(int i=0; i < boardModel.board.size(); i++) {
-			try{doc.insertString(doc.getLength(), Character.toString(configModel.BORDER_CHAR),style);}
-			catch (BadLocationException e){}
-			for(int j = 0; j < boardModel.board.get(i).length; j++) {
-				StyleConstants.setForeground(style, boardModel.currentBlock.getColor());
-				try{doc.insertString(doc.getLength(), boardModel.board.get(i)[j] == 1 ? "0" : " ",style);}
-				catch (BadLocationException e){}
+		try {
+			for (int t = 0; t < configModel.WIDTH + 2; t++)
+				doc.insertString(doc.getLength(), Character.toString(configModel.BORDER_CHAR), style);
+			doc.insertString(doc.getLength(), "\n", style);
+
+			for (int i = 0; i < boardModel.board.size(); i++) {
+				doc.insertString(doc.getLength(), Character.toString(configModel.BORDER_CHAR), style);
+				for (int j = 0; j < boardModel.board.get(i).length; j++) {
+					StyleConstants.setForeground(style, boardModel.currentBlock.getColor());
+					doc.insertString(doc.getLength(), boardModel.board.get(i)[j] == 1 ? "0" : " ", style);
+				}
+				StyleConstants.setForeground(style, Color.white);
+				doc.insertString(doc.getLength(), Character.toString(configModel.BORDER_CHAR) + "\n", style);
 			}
-			StyleConstants.setForeground(style, Color.white);
 
-			try{doc.insertString(doc.getLength(), Character.toString(configModel.BORDER_CHAR)+"\n",style);}
-			catch (BadLocationException e){}
+			for (int t = 0; t < configModel.WIDTH + 2; t++)
+				doc.insertString(doc.getLength(), Character.toString(configModel.BORDER_CHAR), style);
+		} catch (BadLocationException e) {
 		}
-		for(int t=0; t<configModel.WIDTH+2; t++)
-			try{doc.insertString(doc.getLength(), Character.toString(configModel.BORDER_CHAR),style);}
-			catch (BadLocationException e){}
+
 		doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
 		pane.setStyledDocument(doc);
 	}

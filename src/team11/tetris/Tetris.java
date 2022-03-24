@@ -8,11 +8,12 @@ import team11.tetris.view.BoardView;
 public class Tetris {
 
 	public static void main(String[] args) {
-		BoardView boardView = new BoardView();
-		BoardModel boardModel = new BoardModel();
 		ConfigModel configModel = new ConfigModel();
-		BoardPresenter boardKeyListener = new BoardPresenter(boardModel, configModel, boardView);
-		boardView.setSize(400, 600);
-		boardView.setVisible(true);
+		BoardModel boardModel = new BoardModel(configModel);
+		BoardPresenter boardPresenter = new BoardPresenter(boardModel, configModel);
+		boardPresenter.setVisible(true);
 	}
+
+
+
 }
