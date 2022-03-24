@@ -14,10 +14,10 @@ public class BoardPresenter {
     private BoardModel boardModel;
     private BoardView boardView;
 
-    public BoardPresenter(BoardModel boardModel, ConfigModel configModel, BoardView boardView) {
+    public BoardPresenter(BoardModel boardModel, ConfigModel configModel) {
         this.boardModel = boardModel;
         this.configModel = configModel;
-        this.boardView = boardView;
+        this.boardView = new BoardView();
 
         this.boardModel.initBoard(configModel.WIDTH, configModel.HEIGHT);
         this.boardModel.setRandomBlock();
@@ -25,33 +25,6 @@ public class BoardPresenter {
         this.boardView.setKeyListner(new PlayerKeyListener());
         this.boardView.setTimerActionListener(new TimerActionListener());
         this.boardView.initView();
-    }
-
-    public void moveDown() {
-        boardModel.eraseCurr();
-        if(boardModel.y < configModel.HEIGHT - boardModel.currentBlock.height()) boardModel.y++;
-        else {
-            boardView.placeBlock();
-            boardModel.setRandomBlock();
-            boardModel.x = 3;
-            boardModel.y = 0;
-        }
-        boardView.placeBlock();
-    }
-
-    public void moveRight() {
-        boardModel.eraseCurr();
-        if(boardModel.x < configModel.WIDTH - boardModel.currentBlock.width()) {
-            boardModel.x++;
-        }
-        boardView.placeBlock();
-    }
-    public void moveLeft() {
-        boardModel.eraseCurr();
-        if(boardModel.x > 0) {
-            boardModel.x--;
-        }
-        boardView.placeBlock();
     }
 
     public class PlayerKeyListener implements KeyListener {
@@ -64,15 +37,22 @@ public class BoardPresenter {
         public void keyPressed(KeyEvent e) {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_DOWN:
-                    moveDown();
+                    if (boardModel.moveDownAndSuccess()) {
+                        boardView.placeBlock();
+                    } else {
+                        boardView.placeBlock();
+                        boardModel.setRandomBlock();
+                    }
                     boardView.drawBoard();
                     break;
                 case KeyEvent.VK_RIGHT:
-                    moveRight();
+                    boardModel.moveRight();
+                    boardView.placeBlock();
                     boardView.drawBoard();
                     break;
                 case KeyEvent.VK_LEFT:
-                    moveLeft();
+                    boardModel.moveLeft();
+                    boardView.placeBlock();
                     boardView.drawBoard();
                     break;
                 case KeyEvent.VK_UP:
@@ -92,8 +72,22 @@ public class BoardPresenter {
     public class TimerActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            moveDown();
+            if (boardModel.moveDownAndSuccess()) {
+                boardView.placeBlock();
+            } else {
+                boardView.placeBlock();
+                boardModel.setRandomBlock();
+            }
             boardView.drawBoard();
+        }
+    }
+
+    public void setVisible(boolean visible) {
+        if (visible) {
+            boardView.setSize(400, 600);
+            boardView.setVisible(true);
+        } else {
+            boardView.setVisible(false);
         }
     }
 }
