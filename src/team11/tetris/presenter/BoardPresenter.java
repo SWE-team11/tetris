@@ -6,79 +6,34 @@ import team11.tetris.view.BoardView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+
+import javax.swing.Timer;
 
 public class BoardPresenter {
-    private ConfigModel configModel;
     private BoardModel boardModel;
     private BoardView boardView;
+    private Timer timer;
+    
+    private static final int initInterval = 1000;
 
-    public BoardPresenter(BoardModel boardModel, ConfigModel configModel) {
+    public BoardPresenter(BoardModel boardModel) {
         this.boardModel = boardModel;
-        this.configModel = configModel;
-        this.boardView = new BoardView();
+        this.boardView = new BoardView(this);
 
-        this.boardModel.initBoard(configModel.WIDTH, configModel.HEIGHT);
         this.boardModel.setRandomBlock();
-        this.boardView.injectModel(boardModel, configModel);
-        this.boardView.setKeyListner(new PlayerKeyListener());
-        this.boardView.setTimerActionListener(new TimerActionListener());
-        this.boardView.initView();
-    }
+        this.boardView.drawBoard(this.boardModel.getBoard(), this.boardModel.getColor());
 
-    public class PlayerKeyListener implements KeyListener {
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_DOWN:
-                    if (boardModel.moveDownAndSuccess()) {
-                        boardView.placeBlock();
-                    } else {
-                        boardView.placeBlock();
-                        boardModel.setRandomBlock();
-                    }
-                    boardView.drawBoard();
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    boardModel.moveRight();
-                    boardView.placeBlock();
-                    boardView.drawBoard();
-                    break;
-                case KeyEvent.VK_LEFT:
-                    boardModel.moveLeft();
-                    boardView.placeBlock();
-                    boardView.drawBoard();
-                    break;
-                case KeyEvent.VK_UP:
-                    boardModel.eraseCurr();
-                    boardModel.currentBlock.rotate();
-                    boardView.drawBoard();
-                    break;
-            }
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-
-        }
+        timer = new Timer(initInterval, new TimerActionListener());
+        timer.start();
     }
 
     public class TimerActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (boardModel.moveDownAndSuccess()) {
-                boardView.placeBlock();
-            } else {
-                boardView.placeBlock();
+            if (!boardModel.moveDown()) {
                 boardModel.setRandomBlock();
             }
-            boardView.drawBoard();
+            boardView.drawBoard(boardModel.getBoard(), boardModel.getColor());
         }
     }
 
@@ -90,4 +45,21 @@ public class BoardPresenter {
             boardView.setVisible(false);
         }
     }
+
+    public void moveDown() {
+        boardModel.moveDown();
+        boardView.drawBoard(boardModel.getBoard(), boardModel.getColor());
+    }
+
+    public void moveLeft() {
+        boardModel.moveLeft();
+        boardView.drawBoard(boardModel.getBoard(), boardModel.getColor());
+    }
+
+    public void moveRight() {
+        boardModel.moveRight();
+        boardView.drawBoard(boardModel.getBoard(), boardModel.getColor());
+    }
+
+
 }

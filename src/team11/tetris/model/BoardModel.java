@@ -4,6 +4,7 @@ import team11.tetris.blocks.*;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.awt.Color;
 
 public class BoardModel {
     public ArrayList<Integer[]> board;
@@ -17,6 +18,15 @@ public class BoardModel {
 
     public BoardModel(ConfigModel configModel) {
         this.configModel = configModel;
+        initBoard(configModel.WIDTH, configModel.HEIGHT);
+    }
+
+    public ArrayList<Integer[]> getBoard() {
+        return board;
+    }
+
+    public Color getColor() {
+        return currentBlock.getColor();
     }
 
     public void eraseCurr() {
@@ -66,29 +76,40 @@ public class BoardModel {
         }
         x = 3;
         y = 0;
+        placeBlock();
     }
 
-    public boolean moveDownAndSuccess() {
-        eraseCurr();
+    public boolean moveDown() {
         if (y < configModel.HEIGHT - currentBlock.height()) {
+            eraseCurr();
             y++;
+            placeBlock();
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public void moveLeft() {
-        eraseCurr();
         if (x > 0) {
+            eraseCurr();
             x--;
+            placeBlock();
         }
     }
 
     public void moveRight() {
-        eraseCurr();
         if (x < configModel.WIDTH - currentBlock.width()) {
+            eraseCurr();
             x++;
+            placeBlock();
+        }
+    }
+
+    public void placeBlock() {
+        for (int i = 0; i < currentBlock.height(); i++) {
+            for (int j = 0; j < currentBlock.width(); j++) {
+                board.get(y + i)[x + j] = currentBlock.getShape(j, i);
+            }
         }
     }
 }

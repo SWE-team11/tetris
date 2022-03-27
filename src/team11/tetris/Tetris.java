@@ -10,10 +10,7 @@ public class Tetris {
 	public static void main(String[] args) {
 		ConfigModel configModel = new ConfigModel();
 		BoardModel boardModel = new BoardModel(configModel);
-		BoardPresenter boardPresenter = new BoardPresenter(boardModel, configModel);
+		BoardPresenter boardPresenter = new BoardPresenter(boardModel);
 		boardPresenter.setVisible(true);
 	}
-
-
-
 }
