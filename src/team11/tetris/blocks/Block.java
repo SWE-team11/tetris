@@ -1,4 +1,4 @@
-package seoultech.se.tetris.blocks;
+package team11.tetris.blocks;
 
 import java.awt.Color;
 
@@ -24,7 +24,7 @@ public abstract class Block {
 	}
 	
 	public void rotate() {
-		//Rotate the block 90 deg. clockwise.
+		// @TODO Rotate the block 90 deg. clockwise.
 	}
 	
 	public int height() {
