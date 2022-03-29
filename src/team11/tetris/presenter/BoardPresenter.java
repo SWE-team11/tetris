@@ -30,10 +30,7 @@ public class BoardPresenter {
     public class TimerActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!boardModel.moveDown()) {
-                boardModel.setRandomBlock();
-            }
-            boardView.drawBoard(boardModel.getBoard(), boardModel.getColor());
+            moveDown();
         }
     }
 

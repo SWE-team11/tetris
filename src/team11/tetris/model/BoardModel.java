@@ -4,7 +4,11 @@ import team11.tetris.blocks.*;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+
 import java.awt.Color;
+import java.lang.reflect.Method;
 
 public class BoardModel {
     public ArrayList<Integer[]> board;
@@ -13,12 +17,9 @@ public class BoardModel {
     public int x = 3; // Default Position.
     public int y = 0;
 
-    // Config Model Inject
-    private ConfigModel configModel;
-
     public BoardModel(ConfigModel configModel) {
-        this.configModel = configModel;
-        initBoard(configModel.WIDTH, configModel.HEIGHT);
+        initBoard(ConfigModel.WIDTH, ConfigModel.HEIGHT);
+
     }
 
     public ArrayList<Integer[]> getBoard() {
@@ -30,15 +31,16 @@ public class BoardModel {
     }
 
     public void eraseCurr() {
-        for (int i = x; i < x + currentBlock.width(); i++) {
-            for (int j = y; j < y + currentBlock.height(); j++) {
-                board.get(j)[i] = 0;
+        for (int i = 0; i < currentBlock.width(); i++) {
+            for (int j = 0; j < currentBlock.height(); j++) {
+                if(currentBlock.getShape(i, j) != 0)
+                    board.get(y + j)[x + i] = 0;
             }
         }
     }
 
     public void initBoard(int width, int height) {
-        this.board = new ArrayList<Integer[]>(height);
+        board = new ArrayList<Integer[]>(height);
         for (int i = 0; i < height; i++) {
             Integer[] row = new Integer[width];
             for (int j = 0; j < width; j++)
@@ -79,37 +81,121 @@ public class BoardModel {
         placeBlock();
     }
 
-    public boolean moveDown() {
-        if (y < configModel.HEIGHT - currentBlock.height()) {
+    abstract class Move {
+        protected int compareAxisRange;
+        protected int fixedAxisOffset;
+
+        public void run() {
             eraseCurr();
-            y++;
+            move();
             placeBlock();
-            return true;
         }
-        return false;
+
+        abstract public boolean canMove();
+
+        abstract public void move();
     }
 
-    public void moveLeft() {
-        if (x > 0) {
-            eraseCurr();
+    class Down extends Move {
+
+        @Override
+        public void move() {
+            y++;
+        }
+
+        @Override
+        public boolean canMove() {
+            if (y + currentBlock.height() >= ConfigModel.HEIGHT)
+                return false;
+            int[] bottomProjection = currentBlock.getBottomProjection();
+            for (int i = 0; i < bottomProjection.length; i++) {
+                if (board.get(bottomProjection[i] + y + 1)[i + x] != 0)
+                    return false;
+            }
+            return true;
+        }
+    }
+
+    class Right extends Move {
+
+        @Override
+        public void move() {
+            x++;
+        }
+
+        @Override
+        public boolean canMove() {
+            if (x + currentBlock.width() >= ConfigModel.WIDTH)
+                return false;
+            int[] rightProjection = currentBlock.getRightProjection();
+            for (int i = 0; i < rightProjection.length; i++) {
+                if (board.get(i + y)[rightProjection[i] + x + 1] != 0)
+                    return false;
+            }
+            return true;
+        }
+    }
+
+    class Left extends Move {
+
+        @Override
+        public void move() {
             x--;
+        }
+
+        @Override
+        public boolean canMove() {
+            if (x < 1)
+                return false;
+            int[] leftProjection = currentBlock.getLeftProjection();
+            for (int i = 0; i < leftProjection.length; i++) {
+                if (board.get(i + y)[leftProjection[i] + x - 1] != 0)
+                    return false;
+            }
+            return true;
+        }
+    }
+
+    public void placeBlock() {
+        for (int i = 0; i < currentBlock.width(); i++) {
+            for (int j = 0; j < currentBlock.height(); j++) {
+                if (currentBlock.getShape(i, j) != 0) {
+                    board.get(y + j)[x + i] = currentBlock.getShape(i, j);
+                }
+            }
+        }
+    }
+
+
+    public void moveDown() {
+        Down down = new Down();
+        if (down.canMove()) {
+            down.run();
+        }
+        else {
+            setRandomBlock();
             placeBlock();
         }
     }
 
     public void moveRight() {
-        if (x < configModel.WIDTH - currentBlock.width()) {
-            eraseCurr();
-            x++;
-            placeBlock();
+        Right right = new Right();
+        if (right.canMove()) {
+            right.run();
         }
     }
 
-    public void placeBlock() {
-        for (int i = 0; i < currentBlock.height(); i++) {
-            for (int j = 0; j < currentBlock.width(); j++) {
-                board.get(y + i)[x + j] = currentBlock.getShape(j, i);
-            }
+    public void moveLeft() {
+        Left left = new Left();
+        if(left.canMove()) {
+            left.run();
+        }
+    }
+
+    public void moveStraightDown() {
+        Down down = new Down();
+        while (down.canMove()) {
+            down.run();
         }
     }
 }
