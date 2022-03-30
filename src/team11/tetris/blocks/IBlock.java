@@ -1,13 +1,15 @@
 package team11.tetris.blocks;
 
+import team11.tetris.utills.BoardElement;
+
 import java.awt.Color;
 
 public class IBlock extends Block {
 	
 	public IBlock() {
-		shape = new int[][] { 
-			{1, 1, 1, 1}
+		shape = new BoardElement[][] {
+			{BoardElement.I_BLOCK, BoardElement.I_BLOCK, BoardElement.I_BLOCK, BoardElement.I_BLOCK}
 		};
-		color = Color.CYAN;
+		color = BoardElement.getElementColor(BoardElement.I_BLOCK);
 	}
 }

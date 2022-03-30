@@ -1,21 +1,23 @@
 package team11.tetris.blocks;
 
+import team11.tetris.utills.BoardElement;
+
 import java.awt.Color;
 
 public abstract class Block {
 		
-	protected int[][] shape;
+	protected BoardElement[][] shape;
 	protected Color color;
 	
 	public Block() {
-		shape = new int[][]{ 
-				{1, 1}, 
-				{1, 1}
+		shape = new BoardElement[][]{
+				{BoardElement.O_BLOCK, BoardElement.O_BLOCK},
+				{BoardElement.O_BLOCK, BoardElement.O_BLOCK}
 		};
 		color = Color.YELLOW;
 	}
 	
-	public int getShape(int x, int y) {
+	public BoardElement getShape(int x, int y) {
 		return shape[y][x];
 	}
 	

@@ -1,23 +1,17 @@
 package team11.tetris.view;
 
-import team11.tetris.blocks.Block;
-import team11.tetris.model.BoardModel;
-import team11.tetris.model.ConfigModel;
 import team11.tetris.presenter.BoardPresenter;
+import team11.tetris.utills.BoardElement;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JTextPane;
-import javax.swing.Timer;
 import javax.swing.border.CompoundBorder;
 import javax.swing.text.*;
 
@@ -94,31 +88,28 @@ public class BoardView extends JFrame {
 		}
 	}
 
-	public void drawBoard(ArrayList<Integer[]> board, Color color) {
+	public void drawBoard(ArrayList<BoardElement[]> board) {
+		// Set Config
 		pane.setText("");
 		Style style = pane.addStyle("textStyle", null);
-		StyleConstants.setForeground(style, Color.white);
 		StyledDocument doc = pane.getStyledDocument();
 
+		// Build Styled Document
 		try {
-			for (int t = 0; t < board.get(0).length + 2; t++)
-				doc.insertString(doc.getLength(), Character.toString('X'), style);
-			doc.insertString(doc.getLength(), "\n", style);
-
-			for (int i = 0; i < board.size(); i++) {
-				doc.insertString(doc.getLength(), Character.toString('X'), style);
-				for (int j = 0; j < board.get(i).length; j++) {
-					StyleConstants.setForeground(style, color);
-					doc.insertString(doc.getLength(), board.get(i)[j] > 0 ? "0" : " ", style);
+			for(int i=0; i<board.size() + 2; i++) {
+				for(int j=0; j<board.get(0).length + 2; j++) {
+					boolean isBorder = i == 0 || i == board.size() + 1 || j == 0 || j == board.get(0).length + 1;
+					if(isBorder) {
+						StyleConstants.setForeground(style, BoardElement.getElementColor(BoardElement.BORDER));
+						doc.insertString(doc.getLength(), BoardElement.getElementText(BoardElement.BORDER), style);
+					} else {
+						StyleConstants.setForeground(style, BoardElement.getElementColor(board.get(i-1)[j-1]));
+						doc.insertString(doc.getLength(), BoardElement.getElementText(board.get(i-1)[j-1]), style);
+					}
 				}
-				StyleConstants.setForeground(style, Color.white);
-				doc.insertString(doc.getLength(), Character.toString('X') + "\n", style);
+				doc.insertString(doc.getLength(), "\n", style);
 			}
-
-			for (int t = 0; t < board.get(0).length + 2; t++)
-				doc.insertString(doc.getLength(), Character.toString('X'), style);
-		} catch (BadLocationException e) {
-		}
+		} catch (BadLocationException e) {}
 
 		doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
 		pane.setStyledDocument(doc);

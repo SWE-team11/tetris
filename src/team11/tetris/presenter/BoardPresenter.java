@@ -21,7 +21,7 @@ public class BoardPresenter {
         this.boardView = new BoardView(this);
 
         this.boardModel.setRandomBlock();
-        this.boardView.drawBoard(this.boardModel.getBoard(), this.boardModel.getColor());
+        this.boardView.drawBoard(this.boardModel.getBoard());
 
         timer = new Timer(initInterval, new TimerActionListener());
         timer.start();
@@ -33,7 +33,7 @@ public class BoardPresenter {
             if (!boardModel.moveDown()) {
                 boardModel.setRandomBlock();
             }
-            boardView.drawBoard(boardModel.getBoard(), boardModel.getColor());
+            boardView.drawBoard(boardModel.getBoard());
         }
     }
 
@@ -48,17 +48,17 @@ public class BoardPresenter {
 
     public void moveDown() {
         boardModel.moveDown();
-        boardView.drawBoard(boardModel.getBoard(), boardModel.getColor());
+        boardView.drawBoard(boardModel.getBoard());
     }
 
     public void moveLeft() {
         boardModel.moveLeft();
-        boardView.drawBoard(boardModel.getBoard(), boardModel.getColor());
+        boardView.drawBoard(boardModel.getBoard());
     }
 
     public void moveRight() {
         boardModel.moveRight();
-        boardView.drawBoard(boardModel.getBoard(), boardModel.getColor());
+        boardView.drawBoard(boardModel.getBoard());
     }
 
 
