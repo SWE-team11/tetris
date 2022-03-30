@@ -1,13 +1,14 @@
 package team11.tetris.model;
 
 import team11.tetris.blocks.*;
+import team11.tetris.utills.BoardElement;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.awt.Color;
 
 public class BoardModel {
-    public ArrayList<Integer[]> board;
+    public ArrayList<BoardElement[]> board;
     public Block currentBlock;
     public Block nextBlock;
     public int x = 3; // Default Position.
@@ -21,7 +22,7 @@ public class BoardModel {
         initBoard(configModel.WIDTH, configModel.HEIGHT);
     }
 
-    public ArrayList<Integer[]> getBoard() {
+    public ArrayList<BoardElement[]> getBoard() {
         return board;
     }
 
@@ -32,17 +33,17 @@ public class BoardModel {
     public void eraseCurr() {
         for (int i = x; i < x + currentBlock.width(); i++) {
             for (int j = y; j < y + currentBlock.height(); j++) {
-                board.get(j)[i] = 0;
+                board.get(j)[i] = BoardElement.EMPTY;
             }
         }
     }
 
     public void initBoard(int width, int height) {
-        this.board = new ArrayList<Integer[]>(height);
+        this.board = new ArrayList<BoardElement[]>(height);
         for (int i = 0; i < height; i++) {
-            Integer[] row = new Integer[width];
+            BoardElement[] row = new BoardElement[width];
             for (int j = 0; j < width; j++)
-                row[j] = 0;
+                row[j] = BoardElement.EMPTY;
             board.add(row);
         }
     }
@@ -50,7 +51,6 @@ public class BoardModel {
     public void setRandomBlock() {
         Random rnd = new Random(System.currentTimeMillis());
         int block = rnd.nextInt(6);
-        System.out.println(block);
         switch (block) {
             case 0:
                 currentBlock = new IBlock();

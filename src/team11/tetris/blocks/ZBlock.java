@@ -1,14 +1,16 @@
 package team11.tetris.blocks;
 
+import team11.tetris.utills.BoardElement;
+
 import java.awt.Color;
 
 public class ZBlock extends Block {
 	
 	public ZBlock() {
-		shape = new int[][] { 
-			{1, 1, 0},
-			{0, 1, 1}
+		shape = new BoardElement[][] {
+			{BoardElement.Z_BLOCK, BoardElement.Z_BLOCK, BoardElement.EMPTY},
+			{BoardElement.EMPTY, BoardElement.Z_BLOCK, BoardElement.Z_BLOCK}
 		};
-		color = Color.RED;
+		color = BoardElement.getElementColor(BoardElement.Z_BLOCK);
 	}
 }
