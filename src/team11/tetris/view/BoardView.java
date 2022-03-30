@@ -88,7 +88,7 @@ public class BoardView extends JFrame {
 		}
 	}
 
-	public void drawBoard(ArrayList<BoardElement[]> board, Color color) {
+	public void drawBoard(ArrayList<BoardElement[]> board) {
 		// Set Config
 		pane.setText("");
 		Style style = pane.addStyle("textStyle", null);
