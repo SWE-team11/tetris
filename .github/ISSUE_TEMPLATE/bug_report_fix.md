@@ -1,7 +1,7 @@
 ---
 name: Bug report/fix
 about: 버그리포트를 작성해주세요.
-title: 'fix: '
+title: 'Fix: '
 labels: "🐛 Fix"
 assignees: ''
 
