@@ -1,17 +1,16 @@
 package team11.tetris.model;
 
 import team11.tetris.blocks.*;
+import team11.tetris.utills.BoardElement;
+import team11.tetris.model.ConfigModel;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.rmi.ssl.SslRMIClientSocketFactory;
-
 import java.awt.Color;
-import java.lang.reflect.Method;
 
 public class BoardModel {
-    public ArrayList<Integer[]> board;
+    public ArrayList<BoardElement[]> board;
     public Block currentBlock;
     public Block nextBlock;
     public int x = 3; // Default Position.
@@ -22,7 +21,7 @@ public class BoardModel {
 
     }
 
-    public ArrayList<Integer[]> getBoard() {
+    public ArrayList<BoardElement[]> getBoard() {
         return board;
     }
 
@@ -33,18 +32,18 @@ public class BoardModel {
     public void eraseCurr() {
         for (int i = 0; i < currentBlock.width(); i++) {
             for (int j = 0; j < currentBlock.height(); j++) {
-                if(currentBlock.getShape(i, j) != 0)
-                    board.get(y + j)[x + i] = 0;
+                if (currentBlock.getShape(i, j) != BoardElement.EMPTY)
+                    board.get(y + j)[x + i] = BoardElement.EMPTY;
             }
         }
     }
 
     public void initBoard(int width, int height) {
-        board = new ArrayList<Integer[]>(height);
+        board = new ArrayList<BoardElement[]>(height);
         for (int i = 0; i < height; i++) {
-            Integer[] row = new Integer[width];
+            BoardElement[] row = new BoardElement[width];
             for (int j = 0; j < width; j++)
-                row[j] = 0;
+                row[j] = BoardElement.EMPTY;
             board.add(row);
         }
     }
@@ -52,7 +51,6 @@ public class BoardModel {
     public void setRandomBlock() {
         Random rnd = new Random(System.currentTimeMillis());
         int block = rnd.nextInt(6);
-        System.out.println(block);
         switch (block) {
             case 0:
                 currentBlock = new IBlock();
@@ -109,7 +107,7 @@ public class BoardModel {
                 return false;
             int[] bottomProjection = currentBlock.getBottomProjection();
             for (int i = 0; i < bottomProjection.length; i++) {
-                if (board.get(bottomProjection[i] + y + 1)[i + x] != 0)
+                if (board.get(bottomProjection[i] + y + 1)[i + x] != BoardElement.EMPTY)
                     return false;
             }
             return true;
@@ -129,7 +127,7 @@ public class BoardModel {
                 return false;
             int[] rightProjection = currentBlock.getRightProjection();
             for (int i = 0; i < rightProjection.length; i++) {
-                if (board.get(i + y)[rightProjection[i] + x + 1] != 0)
+                if (board.get(i + y)[rightProjection[i] + x + 1] != BoardElement.EMPTY)
                     return false;
             }
             return true;
@@ -149,7 +147,7 @@ public class BoardModel {
                 return false;
             int[] leftProjection = currentBlock.getLeftProjection();
             for (int i = 0; i < leftProjection.length; i++) {
-                if (board.get(i + y)[leftProjection[i] + x - 1] != 0)
+                if (board.get(i + y)[leftProjection[i] + x - 1] != BoardElement.EMPTY)
                     return false;
             }
             return true;
@@ -159,7 +157,7 @@ public class BoardModel {
     public void placeBlock() {
         for (int i = 0; i < currentBlock.width(); i++) {
             for (int j = 0; j < currentBlock.height(); j++) {
-                if (currentBlock.getShape(i, j) != 0) {
+                if (currentBlock.getShape(i, j) != BoardElement.EMPTY) {
                     board.get(y + j)[x + i] = currentBlock.getShape(i, j);
                 }
             }

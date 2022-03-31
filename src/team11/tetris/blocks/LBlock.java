@@ -1,14 +1,14 @@
 package team11.tetris.blocks;
 
-import java.awt.Color;
+import team11.tetris.utills.BoardElement;
 
 public class LBlock extends Block {
 	
 	public LBlock() {
-		shape = new int[][] { 
-			{1, 1, 1},
-			{1, 0, 0}
+		shape = new BoardElement[][] {
+			{BoardElement.L_BLOCK, BoardElement.L_BLOCK, BoardElement.L_BLOCK},
+			{BoardElement.L_BLOCK, BoardElement.EMPTY, BoardElement.EMPTY}
 		};
-		color = Color.ORANGE;
+		color = BoardElement.getElementColor(BoardElement.L_BLOCK);
 	}
 }

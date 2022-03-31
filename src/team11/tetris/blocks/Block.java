@@ -1,24 +1,26 @@
 package team11.tetris.blocks;
 
+import team11.tetris.utills.BoardElement;
+
 import java.awt.Color;
 
 public abstract class Block {
 		
-	protected int[][] shape;
+	protected BoardElement[][] shape;
 	protected Color color;
 	protected int[] bottomProjection;
 	protected int[] rightProjection;
 	protected int[] leftProjection;
 
 	public Block() {
-		shape = new int[][]{ 
-				{1, 1}, 
-				{1, 1}
+		shape = new BoardElement[][]{
+				{BoardElement.O_BLOCK, BoardElement.O_BLOCK},
+				{BoardElement.O_BLOCK, BoardElement.O_BLOCK}
 		};
 		color = Color.YELLOW;
 	}
 	
-	public int getShape(int x, int y) {
+	public BoardElement getShape(int x, int y) {
 		return shape[y][x];
 	}
 
@@ -26,7 +28,7 @@ public abstract class Block {
 		int[] bottom = new int[shape[0].length];
 		for (int i = 0; i < width(); i++) {
 			for (int j = height() - 1; j >= 0; j--) {
-				if (shape[j][i] == 1) {
+				if (shape[j][i] != BoardElement.EMPTY) {
 					bottom[i] = j;
 					break;
 				}
@@ -39,7 +41,7 @@ public abstract class Block {
 		int[] right = new int[shape.length];
 		for (int i = 0; i < height(); i++) {
 			for (int j = width() - 1; j >= 0; j--) {
-				if (shape[i][j] == 1) {
+				if (shape[i][j] != BoardElement.EMPTY) {
 					right[i] = j;
 					break;
 				}
@@ -52,7 +54,7 @@ public abstract class Block {
 		int[] left = new int[shape.length];
 		for (int i = 0; i < height(); i++) {
 			for (int j = 0; j < width(); j++) {
-				if (shape[i][j] == 1) {
+				if (shape[i][j] != BoardElement.EMPTY) {
 					left[i] = j;
 					break;
 				}
