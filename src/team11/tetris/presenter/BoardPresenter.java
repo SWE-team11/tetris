@@ -30,10 +30,7 @@ public class BoardPresenter {
     public class TimerActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!boardModel.moveDown()) {
-                boardModel.setRandomBlock();
-            }
-            boardView.drawBoard(boardModel.getBoard());
+            moveDown();
         }
     }
 
@@ -60,6 +57,9 @@ public class BoardPresenter {
         boardModel.moveRight();
         boardView.drawBoard(boardModel.getBoard());
     }
-
-
+    
+    public void moveStraightDown() {
+        boardModel.moveStraightDown();
+        boardView.drawBoard(boardModel.getBoard());
+    }
 }

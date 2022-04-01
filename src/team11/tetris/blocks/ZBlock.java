@@ -2,8 +2,6 @@ package team11.tetris.blocks;
 
 import team11.tetris.utills.BoardElement;
 
-import java.awt.Color;
-
 public class ZBlock extends Block {
 	
 	public ZBlock() {

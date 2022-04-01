@@ -79,6 +79,9 @@ public class BoardView extends JFrame {
 					break;
 				case KeyEvent.VK_UP:
 					break;
+				case KeyEvent.VK_SPACE:
+					boardPresenter.moveStraightDown();
+					break;
 			}
 		}
 
