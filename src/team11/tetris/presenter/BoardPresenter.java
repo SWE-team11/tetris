@@ -12,7 +12,7 @@ public class BoardPresenter {
     private BoardModel boardModel;
     private BoardView boardView;
     private Timer timer;
-    
+
     private static final int initInterval = 1000;
 
     public BoardPresenter(BoardModel boardModel) {
@@ -42,6 +42,11 @@ public class BoardPresenter {
         }
     }
 
+    public void moveRotate() {
+        boardModel.moveRotate();
+        boardView.drawBoard(boardModel.getBoard());
+    }
+
     public void moveDown() {
         boardModel.moveDownAndCheck();
         boardView.drawBoard(boardModel.getBoard());
@@ -56,7 +61,7 @@ public class BoardPresenter {
         boardModel.moveRight();
         boardView.drawBoard(boardModel.getBoard());
     }
-    
+
     public void moveStraightDown() {
         boardModel.moveStraightDown();
         boardView.drawBoard(boardModel.getBoard());
