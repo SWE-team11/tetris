@@ -6,8 +6,6 @@ import team11.tetris.utills.BoardElement;
 import java.util.ArrayList;
 import java.util.Random;
 
-import java.awt.Color;
-
 public class BoardModel {
     public ConfigModel configModel;
     public ArrayList<BoardElement[]> board;
@@ -23,19 +21,6 @@ public class BoardModel {
 
     public ArrayList<BoardElement[]> getBoard() {
         return board;
-    }
-
-    public Color getColor() {
-        return currentBlock.getColor();
-    }
-
-    public void eraseCurr() {
-        for (int i = 0; i < currentBlock.width(); i++) {
-            for (int j = 0; j < currentBlock.height(); j++) {
-                if (currentBlock.getShape(i, j) != BoardElement.EMPTY)
-                    board.get(y + j)[x + i] = BoardElement.EMPTY;
-            }
-        }
     }
 
     public void initBoard(int width, int height) {
@@ -78,120 +63,154 @@ public class BoardModel {
         y = 0;
         placeBlock();
     }
+    
+    private enum Result {
+        OK, ERR;
+    }
 
     abstract class Move {
-        protected int compareAxisRange;
-        protected int fixedAxisOffset;
-
-        public void run() {
+        public Result run() {
             eraseCurr();
             move();
-            placeBlock();
+            if (canPlaceBlock()) {
+                Result ret = placeBlock();
+                if (ret == Result.ERR) {
+                    throw new IllegalStateException();
+                }
+                return Result.OK;
+            } else {
+                fallBack();
+                return Result.ERR;
+            }
         }
 
-        abstract public boolean canMove();
+        public void fallBack() {
+            moveBack();
+            Result ret = placeBlock();
+            if (ret == Result.ERR)
+                throw new IllegalStateException();
+            hook();
+        }
+
+        public boolean canPlaceBlock() {
+            if (ifBoundaryGoOver())
+                return false;
+            for (int i = 0; i < currentBlock.width(); i++) {
+                for (int j = 0; j < currentBlock.height(); j++) {
+                    if (board.get(y + j)[x + i] != BoardElement.EMPTY
+                            && currentBlock.getShape(i, j) != BoardElement.EMPTY) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        
+        abstract boolean ifBoundaryGoOver();
 
         abstract public void move();
+
+        abstract public void moveBack();
+
+        abstract public void hook();
     }
 
     class Down extends Move {
+        public boolean ifBoundaryGoOver() {
+            return y + currentBlock.height() > ConfigModel.HEIGHT;
+        }
 
-        @Override
         public void move() {
             y++;
         }
 
-        @Override
-        public boolean canMove() {
-            if (y + currentBlock.height() >= ConfigModel.HEIGHT)
-                return false;
-            int[] bottomProjection = currentBlock.getBottomProjection();
-            for (int i = 0; i < bottomProjection.length; i++) {
-                if (board.get(bottomProjection[i] + y + 1)[i + x] != BoardElement.EMPTY)
-                    return false;
-            }
-            return true;
+        public void moveBack() {
+            y--;
+        }
+
+        public void hook() {
+            checkBoard();
+            setRandomBlock();
+            placeBlock();
         }
     }
 
     class Right extends Move {
+        public boolean ifBoundaryGoOver() {
+            return x + currentBlock.width() > ConfigModel.WIDTH;
+        }
 
-        @Override
         public void move() {
             x++;
         }
 
-        @Override
-        public boolean canMove() {
-            if (x + currentBlock.width() >= ConfigModel.WIDTH)
-                return false;
-            int[] rightProjection = currentBlock.getRightProjection();
-            for (int i = 0; i < rightProjection.length; i++) {
-                if (board.get(i + y)[rightProjection[i] + x + 1] != BoardElement.EMPTY)
-                    return false;
-            }
-            return true;
+        public void moveBack() {
+            x--;
+        }
+
+        public void hook() {
         }
     }
 
     class Left extends Move {
+        public boolean ifBoundaryGoOver() {
+            return x < 0;
+        }
 
-        @Override
         public void move() {
             x--;
         }
 
-        @Override
-        public boolean canMove() {
-            if (x < 1)
-                return false;
-            int[] leftProjection = currentBlock.getLeftProjection();
-            for (int i = 0; i < leftProjection.length; i++) {
-                if (board.get(i + y)[leftProjection[i] + x - 1] != BoardElement.EMPTY)
-                    return false;
-            }
-            return true;
+        public void moveBack() {
+            x++;
+        }
+
+        public void hook() {
         }
     }
 
-    public void placeBlock() {
+
+    public Result placeBlock() {
         for (int i = 0; i < currentBlock.width(); i++) {
             for (int j = 0; j < currentBlock.height(); j++) {
+                if (board.get(y + j)[x + i] != BoardElement.EMPTY
+                        && currentBlock.getShape(i, j) != BoardElement.EMPTY)
+                    return Result.ERR;
                 if (currentBlock.getShape(i, j) != BoardElement.EMPTY) {
                     board.get(y + j)[x + i] = currentBlock.getShape(i, j);
                 }
             }
         }
+        return Result.OK;
     }
 
+    public void eraseCurr() {
+        for (int i = 0; i < currentBlock.width(); i++) {
+            for (int j = 0; j < currentBlock.height(); j++) {
+                if (currentBlock.getShape(i, j) != BoardElement.EMPTY)
+                    board.get(y + j)[x + i] = BoardElement.EMPTY;
+            }
+        }
+    }
 
     public void moveDownAndCheck() {
         Down down = new Down();
-        if (down.canMove()) {
-            down.run();
-        } else {
-            checkBoard();
-        }
+        down.run();
     }
 
     public void moveRight() {
         Right right = new Right();
-        if (right.canMove()) {
-            right.run();
-        }
+        right.run();
     }
 
     public void moveLeft() {
         Left left = new Left();
-        if(left.canMove()) {
-            left.run();
-        }
+        left.run();
     }
 
     public void moveStraightDown() {
         Down down = new Down();
-        while (down.canMove()) {
-            down.run();
+        while (down.run() == Result.OK) {
         }
     }
 
@@ -204,16 +223,15 @@ public class BoardModel {
                     break;
                 }
             }
-            if(isRaw) shiftDown(i-1);
+            if (isRaw)
+                shiftDown(i - 1);
         }
-        setRandomBlock();
-        placeBlock();
     }
 
     public void shiftDown(int startHeight) {
-        for(int i=startHeight; i>=0; i--) {
-            for(int j=0; j<configModel.WIDTH; j++) {
-                board.get(i+1)[j] = board.get(i)[j];
+        for (int i = startHeight; i >= 0; i--) {
+            for (int j = 0; j < configModel.WIDTH; j++) {
+                board.get(i + 1)[j] = board.get(i)[j];
             }
         }
     }
