@@ -63,7 +63,7 @@ public class BoardModel {
         y = 0;
         placeBlock();
     }
-    
+
     private enum Result {
         OK, ERR;
     }
@@ -105,7 +105,7 @@ public class BoardModel {
             }
             return true;
         }
-        
+
         abstract boolean ifBoundaryGoOver();
 
         abstract public void move();
@@ -113,6 +113,26 @@ public class BoardModel {
         abstract public void moveBack();
 
         abstract public void hook();
+    }
+
+    class Rotate extends Move {
+        public boolean ifBoundaryGoOver() {
+            return (y + currentBlock.height() > ConfigModel.HEIGHT) ||
+                    (x + currentBlock.width() > ConfigModel.WIDTH);
+        }
+
+        public void move() {
+            currentBlock.rotate();
+        }
+
+        public void moveBack() {
+            currentBlock.rotate();
+            currentBlock.rotate();
+            currentBlock.rotate();
+        }
+
+        public void hook() {
+        }
     }
 
     class Down extends Move {
@@ -212,6 +232,11 @@ public class BoardModel {
         Down down = new Down();
         while (down.run() == Result.OK) {
         }
+    }
+
+    public void moveRotate() {
+        Rotate rotate = new Rotate();
+        rotate.run();
     }
 
     public void checkBoard() {
