@@ -2,7 +2,6 @@ package team11.tetris.model;
 
 import team11.tetris.blocks.*;
 import team11.tetris.utills.BoardElement;
-import team11.tetris.model.ConfigModel;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,6 +9,7 @@ import java.util.Random;
 import java.awt.Color;
 
 public class BoardModel {
+    public ConfigModel configModel;
     public ArrayList<BoardElement[]> board;
     public Block currentBlock;
     public Block nextBlock;
@@ -17,8 +17,8 @@ public class BoardModel {
     public int y = 0;
 
     public BoardModel(ConfigModel configModel) {
-        initBoard(ConfigModel.WIDTH, ConfigModel.HEIGHT);
-
+        this.configModel = configModel;
+        initBoard(configModel.WIDTH, configModel.HEIGHT);
     }
 
     public ArrayList<BoardElement[]> getBoard() {
@@ -50,7 +50,7 @@ public class BoardModel {
 
     public void setRandomBlock() {
         Random rnd = new Random(System.currentTimeMillis());
-        int block = rnd.nextInt(6);
+        int block = rnd.nextInt(7);
         switch (block) {
             case 0:
                 currentBlock = new IBlock();
@@ -165,14 +165,12 @@ public class BoardModel {
     }
 
 
-    public void moveDown() {
+    public void moveDownAndCheck() {
         Down down = new Down();
         if (down.canMove()) {
             down.run();
-        }
-        else {
-            setRandomBlock();
-            placeBlock();
+        } else {
+            checkBoard();
         }
     }
 
@@ -194,6 +192,29 @@ public class BoardModel {
         Down down = new Down();
         while (down.canMove()) {
             down.run();
+        }
+    }
+
+    public void checkBoard() {
+        for (int i = 0; i < configModel.HEIGHT; i++) {
+            boolean isRaw = true;
+            for (int j = 0; j < configModel.WIDTH; j++) {
+                if (board.get(i)[j] == BoardElement.EMPTY) {
+                    isRaw = false;
+                    break;
+                }
+            }
+            if(isRaw) shiftDown(i-1);
+        }
+        setRandomBlock();
+        placeBlock();
+    }
+
+    public void shiftDown(int startHeight) {
+        for(int i=startHeight; i>=0; i--) {
+            for(int j=0; j<configModel.WIDTH; j++) {
+                board.get(i+1)[j] = board.get(i)[j];
+            }
         }
     }
 }

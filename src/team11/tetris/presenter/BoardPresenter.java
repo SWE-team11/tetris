@@ -1,7 +1,6 @@
 package team11.tetris.presenter;
 
 import team11.tetris.model.BoardModel;
-import team11.tetris.model.ConfigModel;
 import team11.tetris.view.BoardView;
 
 import java.awt.event.ActionEvent;
@@ -44,7 +43,7 @@ public class BoardPresenter {
     }
 
     public void moveDown() {
-        boardModel.moveDown();
+        boardModel.moveDownAndCheck();
         boardView.drawBoard(boardModel.getBoard());
     }
 
