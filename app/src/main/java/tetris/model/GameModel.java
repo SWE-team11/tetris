@@ -6,7 +6,7 @@ import tetris.utills.BoardElement;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class BoardModel {
+public class GameModel {
     private ConfigModel configModel;
     private ArrayList<BoardElement[]> board;
     private Block currentBlock;
@@ -28,7 +28,7 @@ public class BoardModel {
     private int posX;
     private int posY;
 
-    public BoardModel(final ConfigModel config) {
+    public GameModel(final ConfigModel config) {
         this.configModel = config;
         initBoard(configModel.WIDTH, configModel.HEIGHT);
         posX = DEFAULT_X_POS;
