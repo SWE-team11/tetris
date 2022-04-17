@@ -1,6 +1,6 @@
 package tetris.view;
 
-import tetris.presenter.BoardPresenter;
+import tetris.presenter.GamePresenter;
 import tetris.utills.BoardElement;
 
 import java.awt.BorderLayout;
@@ -15,7 +15,7 @@ import javax.swing.JTextPane;
 import javax.swing.border.CompoundBorder;
 import javax.swing.text.*;
 
-public class BoardView extends JFrame {
+public class GameView extends JFrame {
 
     static final int LINE_BORDER_OUTER_WEIGHT = 10;
     static final int LINE_BORDER_INNER_WEIGHT = 5;
@@ -26,15 +26,15 @@ public class BoardView extends JFrame {
     private JTextPane pane;
     private SimpleAttributeSet styleSet;
 
-    private BoardPresenter boardPresenter;
+    private GamePresenter gamePresenter;
     private PlayerKeyListener playerKeyListener;
 
-    public BoardView(final BoardPresenter presenter) {
+    public GameView(final GamePresenter presenter) {
         super("SeoulTech SE 11team Tetris");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // boardPresenter inject
-        this.boardPresenter = presenter;
+        this.gamePresenter = presenter;
 
         // Board display setting.
         pane = new JTextPane();
@@ -74,19 +74,19 @@ public class BoardView extends JFrame {
         public void keyPressed(final KeyEvent e) {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_DOWN:
-                    boardPresenter.moveDown();
+                    gamePresenter.moveDown();
                     break;
                 case KeyEvent.VK_RIGHT:
-                    boardPresenter.moveRight();
+                    gamePresenter.moveRight();
                     break;
                 case KeyEvent.VK_LEFT:
-                    boardPresenter.moveLeft();
+                    gamePresenter.moveLeft();
                     break;
                 case KeyEvent.VK_UP:
-                    boardPresenter.moveRotate();
+                    gamePresenter.moveRotate();
                     break;
                 case KeyEvent.VK_SPACE:
-                    boardPresenter.moveStraightDown();
+                    gamePresenter.moveStraightDown();
                     break;
                 default:
                     break;

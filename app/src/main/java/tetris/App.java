@@ -1,8 +1,8 @@
 package tetris;
 
 import tetris.model.ConfigModel;
-import tetris.presenter.BoardPresenter;
-import tetris.model.BoardModel;
+import tetris.presenter.GamePresenter;
+import tetris.model.GameModel;
 
 public class App {
     protected App() {
@@ -10,8 +10,8 @@ public class App {
     }
     public static void main(final String[] args) {
         ConfigModel configModel = ConfigModel.getInstance();
-        BoardModel boardModel = new BoardModel(configModel);
-        BoardPresenter boardPresenter = new BoardPresenter(boardModel);
-        boardPresenter.setVisible(true);
+        GameModel gameModel = new GameModel(configModel);
+        GamePresenter gamePresenter = new GamePresenter(gameModel);
+        gamePresenter.setVisible(true);
     }
 }
