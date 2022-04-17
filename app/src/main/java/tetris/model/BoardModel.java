@@ -16,6 +16,15 @@ public class BoardModel {
 
     static final int DEFAULT_X_POS = 3;
     static final int DEFAULT_Y_POS = 0;
+
+    static final int IBLOCK_NUM = 0;
+    static final int JBLOCK_NUM = 1;
+    static final int LBLOCK_NUM = 2;
+    static final int ZBLOCK_NUM = 3;
+    static final int SBLOCK_NUM = 4;
+    static final int TBLOCK_NUM = 5;
+    static final int OBLOCK_NUM = 6;
+
     private int posX;
     private int posY;
 
@@ -45,25 +54,25 @@ public class BoardModel {
         Random rnd = new Random(System.currentTimeMillis());
         int block = rnd.nextInt(BLOCK_KINDS);
         switch (block) {
-            case 0:
+            case IBLOCK_NUM:
                 currentBlock = new IBlock();
                 break;
-            case 1:
+            case JBLOCK_NUM:
                 currentBlock = new JBlock();
                 break;
-            case 2:
+            case LBLOCK_NUM:
                 currentBlock = new LBlock();
                 break;
-            case 3:
+            case ZBLOCK_NUM:
                 currentBlock = new ZBlock();
                 break;
-            case 4:
+            case SBLOCK_NUM:
                 currentBlock = new SBlock();
                 break;
-            case 5:
+            case TBLOCK_NUM:
                 currentBlock = new TBlock();
                 break;
-            case 6:
+            case OBLOCK_NUM:
                 currentBlock = new OBlock();
                 break;
             default:
