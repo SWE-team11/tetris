@@ -68,4 +68,5 @@ public class GamePresenter {
         gameModel.moveStraightDown();
         gameView.drawBoard(gameModel.getBoard());
     }
+
 }

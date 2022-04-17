@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class GameModel {
-    private ConfigModel configModel;
     private ArrayList<BoardElement[]> board;
     private Block currentBlock;
     private Block nextBlock;
@@ -28,9 +27,8 @@ public class GameModel {
     private int posX;
     private int posY;
 
-    public GameModel(final ConfigModel config) {
-        this.configModel = config;
-        initBoard(configModel.WIDTH, configModel.HEIGHT);
+    public GameModel() {
+        initBoard(ConfigModel.boardWidth, ConfigModel.boardHeight);
         posX = DEFAULT_X_POS;
         posY = DEFAULT_Y_POS;
     }
@@ -138,8 +136,8 @@ public class GameModel {
 
     class Rotate extends Move {
         public boolean ifBoundaryGoOver() {
-            return (posY + currentBlock.height() > ConfigModel.HEIGHT)
-                    || (posX + currentBlock.width() > ConfigModel.WIDTH);
+            return (posY + currentBlock.height() > ConfigModel.boardHeight)
+                    || (posX + currentBlock.width() > ConfigModel.boardWidth);
         }
 
         public void move() {
@@ -158,7 +156,7 @@ public class GameModel {
 
     class Down extends Move {
         public boolean ifBoundaryGoOver() {
-            return posY + currentBlock.height() > ConfigModel.HEIGHT;
+            return posY + currentBlock.height() > ConfigModel.boardHeight;
         }
 
         public void move() {
@@ -178,7 +176,7 @@ public class GameModel {
 
     class Right extends Move {
         public boolean ifBoundaryGoOver() {
-            return posX + currentBlock.width() > ConfigModel.WIDTH;
+            return posX + currentBlock.width() > ConfigModel.boardWidth;
         }
 
         public void move() {
@@ -265,9 +263,9 @@ public class GameModel {
     }
 
     public final void checkBoard() {
-        for (int i = 0; i < configModel.HEIGHT; i++) {
+        for (int i = 0; i < ConfigModel.boardHeight; i++) {
             boolean isRaw = true;
-            for (int j = 0; j < configModel.WIDTH; j++) {
+            for (int j = 0; j < ConfigModel.boardWidth; j++) {
                 if (board.get(i)[j] == BoardElement.EMPTY) {
                     isRaw = false;
                     break;
@@ -281,7 +279,7 @@ public class GameModel {
 
     public final void shiftDown(final int startHeight) {
         for (int i = startHeight; i >= 0; i--) {
-            for (int j = 0; j < configModel.WIDTH; j++) {
+            for (int j = 0; j < ConfigModel.boardWidth; j++) {
                 board.get(i + 1)[j] = board.get(i)[j];
             }
         }

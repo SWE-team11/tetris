@@ -1,5 +1,6 @@
 package tetris.view;
 
+import tetris.model.ConfigModel;
 import tetris.presenter.GamePresenter;
 import tetris.utills.BoardElement;
 
@@ -72,24 +73,12 @@ public class GameView extends JFrame {
 
         @Override
         public void keyPressed(final KeyEvent e) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_DOWN:
-                    gamePresenter.moveDown();
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    gamePresenter.moveRight();
-                    break;
-                case KeyEvent.VK_LEFT:
-                    gamePresenter.moveLeft();
-                    break;
-                case KeyEvent.VK_UP:
-                    gamePresenter.moveRotate();
-                    break;
-                case KeyEvent.VK_SPACE:
-                    gamePresenter.moveStraightDown();
-                    break;
-                default:
-                    break;
+            switch (ConfigModel.getPlayerKey(e)) {
+                case DOWN -> gamePresenter.moveDown();
+                case RIGHT -> gamePresenter.moveRight();
+                case LEFT -> gamePresenter.moveLeft();
+                case ROTATE -> gamePresenter.moveRotate();
+                case DROP -> gamePresenter.moveStraightDown();
             }
         }
 

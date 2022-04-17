@@ -9,8 +9,8 @@ public class App {
         throw new UnsupportedOperationException();
     }
     public static void main(final String[] args) {
-        ConfigModel configModel = ConfigModel.getInstance();
-        GameModel gameModel = new GameModel(configModel);
+        ConfigModel.initConfig();
+        GameModel gameModel = new GameModel();
         GamePresenter gamePresenter = new GamePresenter(gameModel);
         gamePresenter.setVisible(true);
     }
