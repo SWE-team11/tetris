@@ -16,7 +16,7 @@ public class ConfigModel {
     public static int boardWidth = 10;
     public static int boardHeight = 20;
     public static int gameSpeed = 1;
-    public static boolean colorBindMode = true;
+    public static boolean colorBlindMode = true;
     public static int[] keyBinding;
 
     public static PlayerKey getPlayerKey(final KeyEvent e) {
