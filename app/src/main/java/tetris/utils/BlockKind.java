@@ -5,7 +5,7 @@ import tetris.blocks.*;
 public enum BlockKind {
     I_BLOCK, J_BLOCK, L_BLOCK, Z_BLOCK, S_BLOCK, T_BLOCK, O_BLOCK;
 
-    public static Block getBlockInstance(BlockKind blockKind) {
+    public static Block getBlockInstance(final BlockKind blockKind) {
         return switch (blockKind) {
             case I_BLOCK -> new IBlock();
             case J_BLOCK -> new JBlock();

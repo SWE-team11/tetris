@@ -13,8 +13,8 @@ public class GameModel {
     private Block currentBlock;
     private Block nextBlock;
 
-    final int DEFAULT_X_POS = 3;
-    final int DEFAULT_Y_POS = 0;
+    private final int DEFAULT_POS_X = 3;
+    private final int DEFAULT_POS_Y = 0;
 
     private int posX;
     private int posY;
@@ -22,8 +22,8 @@ public class GameModel {
     public GameModel(final ConfigModel config) {
         this.configModel = config;
         initBoard(configModel.WIDTH, configModel.HEIGHT);
-        posX = DEFAULT_X_POS;
-        posY = DEFAULT_Y_POS;
+        posX = DEFAULT_POS_X;
+        posY = DEFAULT_POS_Y;
     }
 
     public final ArrayList<BoardElement[]> getBoard() {
@@ -46,8 +46,8 @@ public class GameModel {
         int rndNum = rnd.nextInt(BlockKind.values().length);
         BlockKind blockKind = BlockKind.values()[rndNum];
         currentBlock = BlockKind.getBlockInstance(blockKind);
-        posX = DEFAULT_X_POS;
-        posY = DEFAULT_Y_POS;
+        posX = DEFAULT_POS_X;
+        posY = DEFAULT_POS_Y;
         placeBlock();
     }
 
