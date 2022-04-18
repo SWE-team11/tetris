@@ -1,7 +1,8 @@
 package tetris.model;
 
 import tetris.blocks.*;
-import tetris.utills.BoardElement;
+import tetris.utils.BlockKind;
+import tetris.utils.BoardElement;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,18 +13,8 @@ public class GameModel {
     private Block currentBlock;
     private Block nextBlock;
 
-    static final int BLOCK_KINDS = 7;
-
-    static final int DEFAULT_X_POS = 3;
-    static final int DEFAULT_Y_POS = 0;
-
-    static final int IBLOCK_NUM = 0;
-    static final int JBLOCK_NUM = 1;
-    static final int LBLOCK_NUM = 2;
-    static final int ZBLOCK_NUM = 3;
-    static final int SBLOCK_NUM = 4;
-    static final int TBLOCK_NUM = 5;
-    static final int OBLOCK_NUM = 6;
+    private final int DEFAULT_POS_X = 3;
+    private final int DEFAULT_POS_Y = 0;
 
     private int posX;
     private int posY;
@@ -31,8 +22,8 @@ public class GameModel {
     public GameModel(final ConfigModel config) {
         this.configModel = config;
         initBoard(configModel.WIDTH, configModel.HEIGHT);
-        posX = DEFAULT_X_POS;
-        posY = DEFAULT_Y_POS;
+        posX = DEFAULT_POS_X;
+        posY = DEFAULT_POS_Y;
     }
 
     public final ArrayList<BoardElement[]> getBoard() {
@@ -52,34 +43,11 @@ public class GameModel {
 
     public final void setRandomBlock() {
         Random rnd = new Random(System.currentTimeMillis());
-        int block = rnd.nextInt(BLOCK_KINDS);
-        switch (block) {
-            case IBLOCK_NUM:
-                currentBlock = new IBlock();
-                break;
-            case JBLOCK_NUM:
-                currentBlock = new JBlock();
-                break;
-            case LBLOCK_NUM:
-                currentBlock = new LBlock();
-                break;
-            case ZBLOCK_NUM:
-                currentBlock = new ZBlock();
-                break;
-            case SBLOCK_NUM:
-                currentBlock = new SBlock();
-                break;
-            case TBLOCK_NUM:
-                currentBlock = new TBlock();
-                break;
-            case OBLOCK_NUM:
-                currentBlock = new OBlock();
-                break;
-            default:
-                break;
-        }
-        posX = DEFAULT_X_POS;
-        posY = DEFAULT_Y_POS;
+        int rndNum = rnd.nextInt(BlockKind.values().length);
+        BlockKind blockKind = BlockKind.values()[rndNum];
+        currentBlock = BlockKind.getBlockInstance(blockKind);
+        posX = DEFAULT_POS_X;
+        posY = DEFAULT_POS_Y;
         placeBlock();
     }
 

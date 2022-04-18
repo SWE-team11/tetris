@@ -1,28 +1,20 @@
 package tetris.blocks;
 
-import tetris.utills.BoardElement;
-
-import java.awt.Color;
+import tetris.utils.BoardElement;
 
 public abstract class Block {
 
     protected BoardElement[][] shape;
-    protected Color color;
 
     public Block() {
         shape = new BoardElement[][]{
                 {BoardElement.O_BLOCK, BoardElement.O_BLOCK},
                 {BoardElement.O_BLOCK, BoardElement.O_BLOCK}
         };
-        color = Color.YELLOW;
     }
 
     public final BoardElement getShape(final int x, final int y) {
         return shape[y][x];
-    }
-
-    public final Color getColor() {
-        return color;
     }
 
     public final void rotate() {
@@ -33,7 +25,6 @@ public abstract class Block {
             }
         }
         shape = temp;
-        // @TODO Rotate the block 90 deg. clockwise.
     }
 
     public final int height() {

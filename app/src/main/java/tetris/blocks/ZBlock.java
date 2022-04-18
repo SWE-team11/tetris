@@ -1,6 +1,6 @@
 package tetris.blocks;
 
-import tetris.utills.BoardElement;
+import tetris.utils.BoardElement;
 
 public class ZBlock extends Block {
     public ZBlock() {
@@ -8,6 +8,5 @@ public class ZBlock extends Block {
             {BoardElement.Z_BLOCK, BoardElement.Z_BLOCK, BoardElement.EMPTY},
             {BoardElement.EMPTY, BoardElement.Z_BLOCK, BoardElement.Z_BLOCK}
         };
-        color = BoardElement.getElementColor(BoardElement.Z_BLOCK);
     }
 }
