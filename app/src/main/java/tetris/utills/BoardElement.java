@@ -9,7 +9,7 @@ public enum BoardElement {
     // @TODO 추후 아이템 Enum값 추가
 
     public static Color getElementColor(final BoardElement element) {
-        if(ConfigModel.colorBindMode) {
+        if (ConfigModel.colorBindMode) {
             return switch (element) {
                 case EMPTY -> Color.BLACK;
                 case BORDER -> Color.WHITE;

@@ -21,8 +21,8 @@ public class ConfigModel {
 
     public static PlayerKey getPlayerKey(final KeyEvent e) {
         PlayerKey[] values = PlayerKey.values();
-        for(int i=0; i<values.length; i++) {
-            if(keyBinding[i] == e.getKeyCode()) {
+        for (int i = 0; i < values.length; i++) {
+            if (keyBinding[i] == e.getKeyCode()) {
                 return values[i];
             }
         }
@@ -31,11 +31,15 @@ public class ConfigModel {
 
     public static void initConfig() {
         keyBinding = new int[PlayerKey.values().length];
-        keyBinding[PlayerKey.ROTATE.ordinal()] = KeyEvent.VK_UP;        keyBinding[PlayerKey.ROTATE.ordinal()] = KeyEvent.VK_UP;
+        keyBinding[PlayerKey.ROTATE.ordinal()] = KeyEvent.VK_UP;
         keyBinding[PlayerKey.LEFT.ordinal()] = KeyEvent.VK_LEFT;
         keyBinding[PlayerKey.RIGHT.ordinal()] = KeyEvent.VK_RIGHT;
         keyBinding[PlayerKey.DOWN.ordinal()] = KeyEvent.VK_DOWN;
         keyBinding[PlayerKey.DROP.ordinal()] = KeyEvent.VK_SPACE;
         keyBinding[PlayerKey.UNDEFINED.ordinal()] = 0;
+    }
+
+    private ConfigModel() {
+
     }
 }
