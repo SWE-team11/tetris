@@ -1,6 +1,6 @@
 package tetris.blocks;
 
-import tetris.utills.BoardElement;
+import tetris.utils.BoardElement;
 
 public class OBlock extends Block {
     public OBlock() {
@@ -8,6 +8,5 @@ public class OBlock extends Block {
             {BoardElement.O_BLOCK, BoardElement.O_BLOCK},
             {BoardElement.O_BLOCK, BoardElement.O_BLOCK}
         };
-        color = BoardElement.getElementColor(BoardElement.O_BLOCK);
     }
 }

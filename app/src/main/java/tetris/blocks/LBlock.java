@@ -1,6 +1,6 @@
 package tetris.blocks;
 
-import tetris.utills.BoardElement;
+import tetris.utils.BoardElement;
 
 public class LBlock extends Block {
 
@@ -9,6 +9,5 @@ public class LBlock extends Block {
             {BoardElement.L_BLOCK, BoardElement.L_BLOCK, BoardElement.L_BLOCK},
             {BoardElement.L_BLOCK, BoardElement.EMPTY, BoardElement.EMPTY}
         };
-        color = BoardElement.getElementColor(BoardElement.L_BLOCK);
     }
 }
