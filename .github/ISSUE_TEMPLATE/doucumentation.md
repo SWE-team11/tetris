@@ -1,7 +1,7 @@
 ---
 name: Documentation
 about: 문서화에 대해 작성해주세요.
-title: 'docs: '
+title: 'Docs: '
 labels: "📄 docs"
 assignees: ''
 

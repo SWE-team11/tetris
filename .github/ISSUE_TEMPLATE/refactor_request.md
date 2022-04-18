@@ -1,7 +1,7 @@
 ---
 name: Refactor request
 about: 리팩토링 예정을 작성해주세요.
-title: 'refactor: '
+title: 'Refactor: '
 labels: "🛠 Refactor"
 assignees: ''
 
