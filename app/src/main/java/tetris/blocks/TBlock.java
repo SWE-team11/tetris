@@ -8,6 +8,5 @@ public class TBlock extends Block {
                 {BoardElement.EMPTY, BoardElement.T_BLOCK, BoardElement.EMPTY},
                 {BoardElement.T_BLOCK, BoardElement.T_BLOCK, BoardElement.T_BLOCK}
         };
-        color = BoardElement.getElementColor(BoardElement.T_BLOCK);
     }
 }

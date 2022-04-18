@@ -8,6 +8,5 @@ public class ZBlock extends Block {
             {BoardElement.Z_BLOCK, BoardElement.Z_BLOCK, BoardElement.EMPTY},
             {BoardElement.EMPTY, BoardElement.Z_BLOCK, BoardElement.Z_BLOCK}
         };
-        color = BoardElement.getElementColor(BoardElement.Z_BLOCK);
     }
 }

@@ -8,6 +8,5 @@ public class SBlock extends Block {
             {BoardElement.EMPTY, BoardElement.S_BLOCK, BoardElement.S_BLOCK},
             {BoardElement.S_BLOCK, BoardElement.S_BLOCK, BoardElement.EMPTY}
         };
-        color = BoardElement.getElementColor(BoardElement.S_BLOCK);
     }
 }

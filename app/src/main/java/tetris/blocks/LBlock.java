@@ -9,6 +9,5 @@ public class LBlock extends Block {
             {BoardElement.L_BLOCK, BoardElement.L_BLOCK, BoardElement.L_BLOCK},
             {BoardElement.L_BLOCK, BoardElement.EMPTY, BoardElement.EMPTY}
         };
-        color = BoardElement.getElementColor(BoardElement.L_BLOCK);
     }
 }

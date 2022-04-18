@@ -8,6 +8,5 @@ public class OBlock extends Block {
             {BoardElement.O_BLOCK, BoardElement.O_BLOCK},
             {BoardElement.O_BLOCK, BoardElement.O_BLOCK}
         };
-        color = BoardElement.getElementColor(BoardElement.O_BLOCK);
     }
 }
