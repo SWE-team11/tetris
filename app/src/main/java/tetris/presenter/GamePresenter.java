@@ -69,4 +69,5 @@ public class GamePresenter implements Presenter {
         gameModel.moveStraightDown();
         gameView.drawBoard(gameModel.getBoard());
     }
+
 }

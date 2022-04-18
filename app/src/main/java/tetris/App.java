@@ -22,12 +22,10 @@ public class App {
     }
 
     public static void main(final String[] args) {
-        configModel = ConfigModel.getInstance();
-        gameModel = new GameModel(configModel);
-        gamePresenter = new GamePresenter(gameModel);
-        mainPresenter = new MainPresenter();
-        currentPresenter = mainPresenter;
-        currentPresenter.setVisible(true);
+        ConfigModel.initConfig();
+        GameModel gameModel = new GameModel();
+        GamePresenter gamePresenter = new GamePresenter(gameModel);
+        gamePresenter.setVisible(true);
     }
 
     public static void navigate(final View view) {
