@@ -1,6 +1,7 @@
 package tetris.presenter;
 
 import tetris.model.GameModel;
+import tetris.utills.Presenter;
 import tetris.view.GameView;
 
 import java.awt.event.ActionEvent;
@@ -8,10 +9,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-public class GamePresenter {
-    private GameModel gameModel;
-    private GameView gameView;
-    private Timer timer;
+public class GamePresenter implements Presenter {
+    private final GameModel gameModel;
+    private final GameView gameView;
+    private final Timer timer;
     static final int VIEW_WIDTH = 400;
     static final int VIEW_HEIGHT = 600;
 
