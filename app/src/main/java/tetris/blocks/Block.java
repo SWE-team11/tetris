@@ -1,8 +1,6 @@
 package tetris.blocks;
 
-import tetris.utills.BoardElement;
-
-import java.awt.Color;
+import tetris.utils.BoardElement;
 
 public abstract class Block {
 

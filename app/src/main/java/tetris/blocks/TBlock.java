@@ -1,6 +1,6 @@
 package tetris.blocks;
 
-import tetris.utills.BoardElement;
+import tetris.utils.BoardElement;
 
 public class TBlock extends Block {
     public TBlock() {

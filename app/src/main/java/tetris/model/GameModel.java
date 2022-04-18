@@ -1,8 +1,8 @@
 package tetris.model;
 
 import tetris.blocks.*;
-import tetris.utills.BlockKind;
-import tetris.utills.BoardElement;
+import tetris.utils.BlockKind;
+import tetris.utils.BoardElement;
 
 import java.util.ArrayList;
 import java.util.Random;

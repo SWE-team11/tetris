@@ -1,4 +1,4 @@
-package tetris.utills;
+package tetris.utils;
 
 import tetris.blocks.*;
 

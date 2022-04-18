@@ -1,7 +1,7 @@
 package tetris.view;
 
 import tetris.presenter.GamePresenter;
-import tetris.utills.BoardElement;
+import tetris.utils.BoardElement;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
