@@ -62,7 +62,6 @@ public class GameView extends JFrame {
         pane.requestFocusInWindow();
 
         this.playerKeyListener = new PlayerKeyListener();
-        pane.addKeyListener(this.playerKeyListener);
     }
 
     class PlayerKeyListener implements KeyListener {
@@ -86,6 +85,14 @@ public class GameView extends JFrame {
         public void keyReleased(final KeyEvent e) {
 
         }
+    }
+
+    public void startPlayerKeyListen() {
+        pane.addKeyListener(this.playerKeyListener);
+    }
+
+    public void stopPlayerKeyListen() {
+        pane.removeKeyListener(this.playerKeyListener);
     }
 
     public final void drawBoard(final ArrayList<BoardElement[]> board) {
