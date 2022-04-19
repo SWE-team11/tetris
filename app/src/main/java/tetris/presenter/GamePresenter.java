@@ -6,6 +6,7 @@ import tetris.view.GameView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Time;
 
 import javax.swing.Timer;
 
@@ -13,13 +14,13 @@ public class GamePresenter implements Presenter {
     private final GameModel gameModel;
     private final GameView gameView;
     private final Timer timer;
-    static final int VIEW_WIDTH = 400;
-    static final int VIEW_HEIGHT = 600;
+    private static final int VIEW_WIDTH = 400;
+    private static final int VIEW_HEIGHT = 600;
 
     private static final int INIT_INTERVAL = 1000;
 
-    public GamePresenter(final GameModel board) {
-        this.gameModel = board;
+    public GamePresenter() {
+        this.gameModel = new GameModel(this);
         this.gameView = new GameView(this);
 
         this.gameModel.setRandomBlock();
@@ -27,7 +28,7 @@ public class GamePresenter implements Presenter {
 
         timer = new Timer(INIT_INTERVAL, new TimerActionListener());
         timer.start();
-    }
+        }
 
     public class TimerActionListener implements ActionListener {
         @Override
@@ -36,6 +37,8 @@ public class GamePresenter implements Presenter {
         }
     }
 
+
+
     public final void setVisible(final boolean visible) {
         if (visible) {
             gameView.setSize(VIEW_WIDTH, VIEW_HEIGHT);
@@ -43,6 +46,14 @@ public class GamePresenter implements Presenter {
         } else {
             gameView.setVisible(false);
         }
+    }
+
+    public final void timerStart() {
+        timer.start();
+    }
+
+    public final void timerStop() {
+       timer.stop();
     }
 
     public final void moveRotate() {
