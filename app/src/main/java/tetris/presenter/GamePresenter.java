@@ -6,7 +6,6 @@ import tetris.view.GameView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Time;
 
 import javax.swing.Timer;
 
@@ -27,8 +26,7 @@ public class GamePresenter implements Presenter {
         this.gameView.drawBoard(this.gameModel.getBoard());
 
         timer = new Timer(INIT_INTERVAL, new TimerActionListener());
-        timer.start();
-        }
+    }
 
     public class TimerActionListener implements ActionListener {
         @Override
@@ -37,23 +35,25 @@ public class GamePresenter implements Presenter {
         }
     }
 
-
-
     public final void setVisible(final boolean visible) {
         if (visible) {
             gameView.setSize(VIEW_WIDTH, VIEW_HEIGHT);
             gameView.setVisible(true);
+            gameStart();
         } else {
             gameView.setVisible(false);
+            gameStop();
         }
     }
 
-    public final void timerStart() {
+    public final void gameStart() {
+        gameView.startPlayerKeyListen();
         timer.start();
     }
 
-    public final void timerStop() {
-       timer.stop();
+    public final void gameStop() {
+        gameView.stopPlayerKeyListen();
+        timer.stop();
     }
 
     public final void moveRotate() {

@@ -5,7 +5,6 @@ import tetris.utils.BlockKind;
 import tetris.utils.BoardElement;
 import tetris.presenter.GamePresenter;
 
-import javax.swing.border.EmptyBorder;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -55,7 +54,7 @@ public class GameModel {
         if (gameOver.canPlaceBlock()) {
             placeBlock();
         } else {
-            gamePresenter.timerStop();
+            gamePresenter.gameStop();
             // TODO
             // signal to presenter(KeyBinding 해제)
         }
