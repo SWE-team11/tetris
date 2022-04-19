@@ -1,6 +1,7 @@
 package tetris;
 
 import tetris.model.ConfigModel;
+import tetris.model.RecordModel;
 import tetris.presenter.GamePresenter;
 import tetris.model.GameModel;
 import tetris.presenter.MainPresenter;
@@ -9,7 +10,6 @@ import tetris.utils.Presenter;
 import java.io.IOException;
 
 public class App {
-    private static GameModel gameModel;
     private static GamePresenter gamePresenter;
     private static MainPresenter mainPresenter;
     private static Presenter currentPresenter;
@@ -23,7 +23,8 @@ public class App {
     }
 
     public static void main(final String[] args) {
-        ConfigModel.initConfig();
+        RecordModel.loadRecord();
+        ConfigModel.loadConfig();
         gamePresenter = new GamePresenter();
         mainPresenter = new MainPresenter();
         currentPresenter = mainPresenter;

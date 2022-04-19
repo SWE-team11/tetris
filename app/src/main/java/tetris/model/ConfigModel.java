@@ -25,7 +25,7 @@ public class ConfigModel {
             KeyEvent.VK_UP, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT,
             KeyEvent.VK_DOWN, KeyEvent.VK_SPACE, 0
     };
-    private static String path = "data/config.txt";
+    private final static String path = "data/config.txt";
 
     private ConfigModel() {
 
@@ -48,23 +48,18 @@ public class ConfigModel {
             strList.add(String.valueOf(integer));
         }
 
-        try {
-            File f = new File(path);
-            f.getParentFile().mkdir();
-            f.createNewFile();
-            FileWriter fStream = new FileWriter(f, false);
-            out = new BufferedWriter(fStream);
-            out.write(Integer.toString(boardWidth) + ",");
-            out.write(Integer.toString(boardHeight) + ",");
-            out.write(Integer.toString(gameSpeed) + ",");
-            out.write(Boolean.toString(colorBlindMode) + ",");
-            out.write(Integer.toString(keyBinding.length) + ",");
-            out.write(String.join(",", strList));
-        } finally {
-            if (out != null) {
-                out.close();
-            }
-        }
+        File f = new File(path);
+        f.getParentFile().mkdir();
+        f.createNewFile();
+        FileWriter fStream = new FileWriter(f, false);
+        out = new BufferedWriter(fStream);
+        out.write(Integer.toString(boardWidth) + ",");
+        out.write(Integer.toString(boardHeight) + ",");
+        out.write(Integer.toString(gameSpeed) + ",");
+        out.write(Boolean.toString(colorBlindMode) + ",");
+        out.write(Integer.toString(keyBinding.length) + ",");
+        out.write(String.join(",", strList));
+        out.close();
     }
 
     public static void loadConfig() {
