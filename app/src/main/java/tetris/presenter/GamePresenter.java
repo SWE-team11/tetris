@@ -1,7 +1,7 @@
 package tetris.presenter;
 
 import tetris.model.GameModel;
-import tetris.utills.Presenter;
+import tetris.utils.Presenter;
 import tetris.view.GameView;
 
 import java.awt.event.ActionEvent;

@@ -4,7 +4,7 @@ import tetris.model.ConfigModel;
 import tetris.presenter.GamePresenter;
 import tetris.model.GameModel;
 import tetris.presenter.MainPresenter;
-import tetris.utills.Presenter;
+import tetris.utils.Presenter;
 
 public class App {
     private static ConfigModel configModel;
@@ -22,6 +22,7 @@ public class App {
     }
 
     public static void main(final String[] args) {
+        ConfigModel.initConfig();
         gamePresenter = new GamePresenter();
         mainPresenter = new MainPresenter();
         currentPresenter = mainPresenter;
