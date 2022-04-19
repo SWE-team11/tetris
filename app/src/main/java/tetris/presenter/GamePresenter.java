@@ -14,13 +14,13 @@ public class GamePresenter implements Presenter {
     private final GameModel gameModel;
     private final GameView gameView;
     private final Timer timer;
-    static final int VIEW_WIDTH = 400;
-    static final int VIEW_HEIGHT = 600;
+    private static final int VIEW_WIDTH = 400;
+    private static final int VIEW_HEIGHT = 600;
 
     private static final int INIT_INTERVAL = 1000 / ConfigModel.gameSpeed;
 
-    public GamePresenter(final GameModel board) {
-        this.gameModel = board;
+    public GamePresenter() {
+        this.gameModel = new GameModel(this);
         this.gameView = new GameView(this);
 
         this.gameModel.setRandomBlock();
@@ -39,13 +39,23 @@ public class GamePresenter implements Presenter {
     public final void setVisible(final boolean visible) {
         if (visible) {
             gameView.setSize(VIEW_WIDTH, VIEW_HEIGHT);
-            gameView.setVisible(true);
             gameView.setLocationRelativeTo(null);
-            timer.start();
+            gameView.setVisible(true);
+            gameStart();
         } else {
             gameView.setVisible(false);
-            timer.stop();
+            gameStop();
         }
+    }
+
+    public final void gameStart() {
+        gameView.startPlayerKeyListen();
+        timer.start();
+    }
+
+    public final void gameStop() {
+        gameView.stopPlayerKeyListen();
+        timer.stop();
     }
 
     public final void moveRotate() {

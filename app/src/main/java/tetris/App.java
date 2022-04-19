@@ -22,10 +22,8 @@ public class App {
         throw new UnsupportedOperationException();
     }
 
-    public static void main(final String[] args) throws IOException {
-        ConfigModel.loadConfig();
-        gameModel = new GameModel();
-        gamePresenter = new GamePresenter(gameModel);
+    public static void main(final String[] args) {
+        gamePresenter = new GamePresenter();
         mainPresenter = new MainPresenter();
         currentPresenter = mainPresenter;
         currentPresenter.setVisible(true);

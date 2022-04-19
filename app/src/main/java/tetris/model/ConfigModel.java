@@ -11,7 +11,7 @@ public class ConfigModel {
         BASIC, ITEM
     }
     public enum GameDifficulty {
-        EASY, NOMAL, DIFFICULT
+        EASY, NORMAL, DIFFICULT
     }
     public enum PlayerKey {
         ROTATE, LEFT, RIGHT, DOWN, DROP, UNDEFINED
