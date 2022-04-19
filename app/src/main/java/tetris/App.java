@@ -22,9 +22,7 @@ public class App {
     }
 
     public static void main(final String[] args) {
-        ConfigModel.initConfig();
-        gameModel = new GameModel();
-        gamePresenter = new GamePresenter(gameModel);
+        gamePresenter = new GamePresenter();
         mainPresenter = new MainPresenter();
         currentPresenter = mainPresenter;
         currentPresenter.setVisible(true);

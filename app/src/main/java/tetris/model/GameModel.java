@@ -3,11 +3,13 @@ package tetris.model;
 import tetris.blocks.*;
 import tetris.utils.BlockKind;
 import tetris.utils.BoardElement;
+import tetris.presenter.GamePresenter;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class GameModel {
+    private GamePresenter gamePresenter;
     private ArrayList<BoardElement[]> board;
     private Block currentBlock;
     private Block nextBlock;
@@ -18,7 +20,8 @@ public class GameModel {
     private int posX;
     private int posY;
 
-    public GameModel() {
+    public GameModel(final GamePresenter presenter) {
+        this.gamePresenter = presenter;
         initBoard(ConfigModel.boardWidth, ConfigModel.boardHeight);
         posX = DEFAULT_POS_X;
         posY = DEFAULT_POS_Y;
@@ -39,6 +42,7 @@ public class GameModel {
         }
     }
 
+
     public final void setRandomBlock() {
         Random rnd = new Random(System.currentTimeMillis());
         int rndNum = rnd.nextInt(BlockKind.values().length);
@@ -46,8 +50,16 @@ public class GameModel {
         currentBlock = BlockKind.getBlockInstance(blockKind);
         posX = DEFAULT_POS_X;
         posY = DEFAULT_POS_Y;
-        placeBlock();
+        GameOver gameOver = new GameOver();
+        if (gameOver.canPlaceBlock()) {
+            placeBlock();
+        } else {
+            gamePresenter.gameStop();
+            // TODO
+            // signal to presenter(KeyBinding 해제)
+        }
     }
+
 
     private enum Result {
         OK, ERR;
@@ -93,6 +105,7 @@ public class GameModel {
             return true;
         }
 
+
         abstract boolean ifBoundaryGoOver();
 
         public abstract void move();
@@ -100,6 +113,24 @@ public class GameModel {
         public abstract void moveBack();
 
         public abstract void hook();
+    }
+
+    class GameOver extends Move {
+        public boolean ifBoundaryGoOver() {
+            return false;
+        }
+
+        public void move() {
+
+        }
+
+        public void moveBack() {
+
+        }
+
+        public void hook() {
+
+        }
     }
 
     class Rotate extends Move {
@@ -205,6 +236,7 @@ public class GameModel {
         Down down = new Down();
         down.run();
     }
+
 
     public final void moveRight() {
         Right right = new Right();
