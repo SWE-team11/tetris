@@ -1,5 +1,6 @@
 package tetris.presenter;
 
+import tetris.model.ConfigModel;
 import tetris.model.GameModel;
 import tetris.utills.Presenter;
 import tetris.view.GameView;
@@ -16,7 +17,7 @@ public class GamePresenter implements Presenter {
     static final int VIEW_WIDTH = 400;
     static final int VIEW_HEIGHT = 600;
 
-    private static final int INIT_INTERVAL = 1000;
+    private static final int INIT_INTERVAL = 1000 / ConfigModel.gameSpeed;
 
     public GamePresenter(final GameModel board) {
         this.gameModel = board;
@@ -26,7 +27,6 @@ public class GamePresenter implements Presenter {
         this.gameView.drawBoard(this.gameModel.getBoard());
 
         timer = new Timer(INIT_INTERVAL, new TimerActionListener());
-        timer.start();
     }
 
     public class TimerActionListener implements ActionListener {
@@ -40,8 +40,11 @@ public class GamePresenter implements Presenter {
         if (visible) {
             gameView.setSize(VIEW_WIDTH, VIEW_HEIGHT);
             gameView.setVisible(true);
+            gameView.setLocationRelativeTo(null);
+            timer.start();
         } else {
             gameView.setVisible(false);
+            timer.stop();
         }
     }
 

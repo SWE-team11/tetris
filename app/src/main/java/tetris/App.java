@@ -6,8 +6,9 @@ import tetris.model.GameModel;
 import tetris.presenter.MainPresenter;
 import tetris.utills.Presenter;
 
+import java.io.IOException;
+
 public class App {
-    private static ConfigModel configModel;
     private static GameModel gameModel;
     private static GamePresenter gamePresenter;
     private static MainPresenter mainPresenter;
@@ -21,11 +22,13 @@ public class App {
         throw new UnsupportedOperationException();
     }
 
-    public static void main(final String[] args) {
-        ConfigModel.initConfig();
-        GameModel gameModel = new GameModel();
-        GamePresenter gamePresenter = new GamePresenter(gameModel);
-        gamePresenter.setVisible(true);
+    public static void main(final String[] args) throws IOException {
+        ConfigModel.loadConfig();
+        gameModel = new GameModel();
+        gamePresenter = new GamePresenter(gameModel);
+        mainPresenter = new MainPresenter();
+        currentPresenter = mainPresenter;
+        currentPresenter.setVisible(true);
     }
 
     public static void navigate(final View view) {
