@@ -1,6 +1,6 @@
 package tetris.presenter;
 
-import tetris.utills.Presenter;
+import tetris.utils.Presenter;
 import tetris.view.MainView;
 
 public class MainPresenter implements Presenter {

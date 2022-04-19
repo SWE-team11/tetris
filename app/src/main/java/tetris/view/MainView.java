@@ -14,11 +14,12 @@ public class MainView extends JFrame {
 
     private MainPresenter mainPresenter;
 
-    private Image background = new ImageIcon(getClass().getClassLoader().getResource("image/background.png")).getImage();
+    private Image background =
+            new ImageIcon(getClass().getClassLoader().getResource("image/background.png")).getImage();
 
     public MainView(final MainPresenter presenter) {
         this.mainPresenter = presenter;
-        
+
         setTitle("TETRIS");
         setSize(400, 600);
         setResizable(false);
@@ -30,10 +31,10 @@ public class MainView extends JFrame {
         JPanel btnPanel = new JPanel();
         JButton playBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("image/play.png")));
         JButton normalBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("image/normal.png")));
-        JButton normal_clickedBtn = new JButton(
+        JButton normalClickedBtn = new JButton(
                 new ImageIcon(getClass().getClassLoader().getResource("image/normal_clicked.png")));
         JButton itemBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("image/item.png")));
-        JButton item_clickedBtn = new JButton(
+        JButton itemClickedBtn = new JButton(
                 new ImageIcon(getClass().getClassLoader().getResource("image/item_clicked.png")));
         JButton settingBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("image/setting.png")));
         JButton exitBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("image/exit.png")));
@@ -48,9 +49,9 @@ public class MainView extends JFrame {
             }
         });
 
-        normal_clickedBtn.setBounds(30, 215, 150, 60);
-        normal_clickedBtn.setBorderPainted(false);
-        normal_clickedBtn.setContentAreaFilled(false);
+        normalClickedBtn.setBounds(30, 215, 150, 60);
+        normalClickedBtn.setBorderPainted(false);
+        normalClickedBtn.setContentAreaFilled(false);
 
         itemBtn.setBounds(200, 215, 150, 60);
         itemBtn.setBorderPainted(false);
@@ -68,14 +69,14 @@ public class MainView extends JFrame {
         btnPanel.setBackground(new Color(0, 0, 0, 255));
 
         add(btnPanel);
-        btnPanel.add(normal_clickedBtn);
+        btnPanel.add(normalClickedBtn);
         btnPanel.add(itemBtn);
         btnPanel.add(playBtn);
         btnPanel.add(settingBtn);
         btnPanel.add(exitBtn);
     }
 
-    public void paint(Graphics g) {
+    public void paint(final Graphics g) {
         g.drawImage(background, 0, 0, null);
     }
 }
