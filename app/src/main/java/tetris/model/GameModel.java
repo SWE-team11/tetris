@@ -52,14 +52,10 @@ public class GameModel {
     public final void setRandomBlock() {
         Random rnd = new Random(System.currentTimeMillis());
         int rndNum;
+        if (deletedRowCount != 0 && deletedRowCount % 10 == 0) rndNum = rnd.nextInt(1) + 7;
+        else rndNum = rnd.nextInt(7);
+
         BlockKind blockKind;
-        if (true) {
-            deletedRowCount = 1 - deletedRowCount;
-            rndNum = rnd.nextInt(1) + 7;
-        }
-        else {
-            rndNum = rnd.nextInt(7);
-        }
         blockKind = BlockKind.values()[rndNum];
         currentBlock = BlockKind.getBlockInstance(blockKind);
 
@@ -305,9 +301,9 @@ public class GameModel {
             if (isRaw) {
                 for (int j = 0; j < ConfigModel.boardWidth; j++) {
                     board.get(i)[j] = BoardElement.DELETE;
-                    score += 100 * ConfigModel.getScoreRate();
-                    deletedRowCount++;
                 }
+                score += 100 * ConfigModel.getScoreRate();
+                deletedRowCount++;
             }
         }
         gamePresenter.drawBoard();
