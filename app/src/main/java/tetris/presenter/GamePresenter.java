@@ -13,7 +13,8 @@ import javax.swing.Timer;
 public class GamePresenter implements Presenter {
     private final GameModel gameModel;
     private final GameView gameView;
-    private final Timer timer;
+    private final Timer mainTimer;
+    private final Timer deleteTimer;
     private static final int VIEW_WIDTH = 400;
     private static final int VIEW_HEIGHT = 600;
 
@@ -26,15 +27,22 @@ public class GamePresenter implements Presenter {
         this.gameModel.setRandomBlock();
         this.gameView.drawBoard(this.gameModel.getBoard());
 
-        timer = new Timer(INIT_INTERVAL, new TimerActionListener());
+        mainTimer = new Timer(INIT_INTERVAL, new MainTimerActionListener());
+        deleteTimer = new Timer(200, new DeleteTimerActionListener());
     }
 
-    public class TimerActionListener implements ActionListener {
+    public class MainTimerActionListener implements ActionListener {
+        @Override
+        public final void actionPerformed(final ActionEvent e) {
+            moveDown();
+        }
+    }
+
+    public class DeleteTimerActionListener implements ActionListener {
         @Override
         public final void actionPerformed(final ActionEvent e) {
             gameModel.runDelete();
-            moveDown();
-            System.out.println(gameModel.getScore());
+            drawBoard();
         }
     }
 
@@ -49,15 +57,21 @@ public class GamePresenter implements Presenter {
         }
     }
 
+    public final void deleteTimerStart(){
+        deleteTimer.start();
+    }
+    public final void deleteTimerStop(){
+        deleteTimer.stop();
+    }
 
     public final void gameStart() {
         gameView.startPlayerKeyListen();
-        timer.start();
+        mainTimer.start();
     }
 
     public final void gameStop() {
         gameView.stopPlayerKeyListen();
-        timer.stop();
+        mainTimer.stop();
     }
 
     public void drawBoard() {

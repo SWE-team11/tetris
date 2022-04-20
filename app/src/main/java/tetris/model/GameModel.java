@@ -51,7 +51,6 @@ public class GameModel {
         Random rnd = new Random(System.currentTimeMillis());
         int rndNum = rnd.nextInt(BlockKind.values().length);
         BlockKind blockKind = BlockKind.values()[rndNum];
-//        currentBlock = BlockKind.getBlockInstance(blockKind);
         currentBlock = new IBlock();
         posX = DEFAULT_POS_X;
         posY = DEFAULT_POS_Y;
@@ -85,8 +84,6 @@ public class GameModel {
         }
 
         public void fallBack() {
-            System.out.println("fallback");
-
             moveBack();
             Result ret = placeBlock();
             if (ret == Result.ERR) {
@@ -212,7 +209,6 @@ public class GameModel {
     }
 
     public final Result placeBlock() {
-        System.out.println("place block");
 
         for (int i = 0; i < currentBlock.width(); i++) {
             for (int j = 0; j < currentBlock.height(); j++) {
@@ -260,7 +256,6 @@ public class GameModel {
         while (true) {
             cnt++;
             if (down.run() == Result.ERR) {
-                System.out.println("탈출");
                 break;
             }
         }
@@ -285,6 +280,7 @@ public class GameModel {
                 for (int j = 0; j < ConfigModel.boardWidth; j++) {
                     board.get(i)[j] = BoardElement.DELETE;
                 }
+                gamePresenter.deleteTimerStart();
             }
         }
         gamePresenter.drawBoard();
@@ -301,6 +297,7 @@ public class GameModel {
             }
             if (isDeleteRaw) {
                 shiftDown(i-1);
+                gamePresenter.deleteTimerStop();
                 score += 100 * ConfigModel.getScoreRate();
             }
         }
