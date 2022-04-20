@@ -1,4 +1,4 @@
-package tetris.blocks;
+package tetris.utils;
 
 import tetris.utils.BlockKind;
 import tetris.utils.BoardElement;

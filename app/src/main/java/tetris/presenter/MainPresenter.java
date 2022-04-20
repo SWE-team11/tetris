@@ -12,9 +12,15 @@ public class MainPresenter implements Presenter {
         this.mainView = new MainView(this);
     }
 
+    @Override
+    public void initPresent() {
+
+    }
+    @Override
     public final void setVisible(final boolean visible) {
         if (visible) {
             mainView.setSize(VIEW_WIDTH, VIEW_HEIGHT);
+            mainView.setLocationRelativeTo(null);
             mainView.setVisible(true);
         } else {
             mainView.setVisible(false);

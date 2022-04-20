@@ -1,6 +1,6 @@
 package tetris.model;
 
-import tetris.blocks.*;
+import tetris.utils.Block;
 import tetris.utils.BlockKind;
 import tetris.utils.BoardElement;
 import tetris.presenter.GamePresenter;
@@ -13,6 +13,7 @@ public class GameModel {
     private ArrayList<BoardElement[]> board;
     private Block currentBlock;
     private Block nextBlock;
+    private double score = 0;
     private int deletedRowCount = 0;
 
     private final int DEFAULT_POS_X = 3;
@@ -24,12 +25,17 @@ public class GameModel {
     public GameModel(final GamePresenter presenter) {
         this.gamePresenter = presenter;
         initBoard(ConfigModel.boardWidth, ConfigModel.boardHeight);
+        this.setRandomBlock();
         posX = DEFAULT_POS_X;
         posY = DEFAULT_POS_Y;
     }
 
     public final ArrayList<BoardElement[]> getBoard() {
         return board;
+    }
+
+    public double getScore() {
+        return this.score;
     }
 
     public final void initBoard(final int width, final int height) {
@@ -47,17 +53,15 @@ public class GameModel {
         Random rnd = new Random(System.currentTimeMillis());
         int rndNum;
         BlockKind blockKind;
-        if (deletedRowCount > 9) {
-            deletedRowCount = 10 - deletedRowCount;
+        if (true) {
+            deletedRowCount = 1 - deletedRowCount;
             rndNum = rnd.nextInt(1) + 7;
-            blockKind = BlockKind.values()[rndNum];
-            currentBlock = BlockKind.getBlockInstance(blockKind);
         }
         else {
             rndNum = rnd.nextInt(7);
-            blockKind = BlockKind.values()[rndNum];
-            currentBlock = BlockKind.getBlockInstance(blockKind);
         }
+        blockKind = BlockKind.values()[rndNum];
+        currentBlock = BlockKind.getBlockInstance(blockKind);
 
         posX = DEFAULT_POS_X;
         posY = DEFAULT_POS_Y;
@@ -66,8 +70,7 @@ public class GameModel {
             placeBlock();
         } else {
             gamePresenter.gameStop();
-            // TODO
-            // signal to presenter(KeyBinding 해제)
+            gamePresenter.gameOver();
         }
     }
 
@@ -177,7 +180,11 @@ public class GameModel {
         }
 
         public void hook() {
-            checkBoard();
+            if(currentBlock.isItemBlock()) {
+                triggerItem();
+            } else {
+                checkRaw();
+            }
             setRandomBlock();
         }
     }
@@ -217,6 +224,7 @@ public class GameModel {
     }
 
     public final Result placeBlock() {
+
         for (int i = 0; i < currentBlock.width(); i++) {
             for (int j = 0; j < currentBlock.height(); j++) {
                 if (board.get(posY + j)[posX + i] != BoardElement.EMPTY
@@ -258,11 +266,14 @@ public class GameModel {
 
     public final void moveStraightDown() {
         Down down = new Down();
+        int cnt = 0;
         while (true) {
+            cnt++;
             if (down.run() == Result.ERR) {
                 break;
             }
         }
+        score += cnt * ConfigModel.getScoreRate();
     }
 
     public final void moveRotate() {
@@ -270,32 +281,53 @@ public class GameModel {
         rotate.run();
     }
 
-    public final void checkBoard() {
-        if (currentBlock.isItemBlock()) {
-            shiftDown(posY + currentBlock.getItemPosY() - 1);
-        }
-        else {
-            for (int i = 0; i < ConfigModel.boardHeight; i++) {
-                boolean isRaw = true;
+    public final void triggerItem() {
+        switch (currentBlock.getKind()) {
+            case LINE_CLEAR_ITEM -> {
                 for (int j = 0; j < ConfigModel.boardWidth; j++) {
-                    if (board.get(i)[j] == BoardElement.EMPTY) {
-                        isRaw = false;
-                        break;
-                    }
+                    board.get(posY + currentBlock.getItemPosY())[j] = BoardElement.DELETE;
                 }
-                if (isRaw) {
-                    shiftDown(i - 1);
+                score += 100 * ConfigModel.getScoreRate();
+                deletedRowCount++;
+            }
+        }
+    }
+
+    public final void checkRaw() {
+        for (int i = 0; i < ConfigModel.boardHeight; i++) {
+            boolean isRaw = true;
+            for (int j = 0; j < ConfigModel.boardWidth; j++) {
+                if (board.get(i)[j] == BoardElement.EMPTY) {
+                    isRaw = false;
+                    break;
+                }
+            }
+            if (isRaw) {
+                for (int j = 0; j < ConfigModel.boardWidth; j++) {
+                    board.get(i)[j] = BoardElement.DELETE;
+                    score += 100 * ConfigModel.getScoreRate();
                     deletedRowCount++;
+                }
+            }
+        }
+        gamePresenter.drawBoard();
+    }
+
+    public final void runDelete() {
+        for (int i = 0; i < ConfigModel.boardHeight; i++) {
+            for (int j = 0; j < ConfigModel.boardWidth; j++) {
+                if (board.get(i)[j] == BoardElement.DELETE) {
+                    shiftDown(i-1, j);
                 }
             }
         }
     }
 
-    public final void shiftDown(final int startHeight) {
+    public final void shiftDown(final int startHeight, final int posX) {
+        eraseCurr();
         for (int i = startHeight; i >= 0; i--) {
-            for (int j = 0; j < ConfigModel.boardWidth; j++) {
-                board.get(i + 1)[j] = board.get(i)[j];
-            }
+            board.get(i + 1)[posX] = board.get(i)[posX];
         }
+        placeBlock();
     }
 }

@@ -1,14 +1,15 @@
-package tetris.blocks;
+package tetris.items;
 
 import java.util.Random;
 
+import tetris.utils.Block;
 import tetris.utils.BlockKind;
 import tetris.utils.BoardElement;
 
-public class LineClearBlock extends Block {
+public class LineClearItem extends Block {
     private int itemPosY;
 
-    public LineClearBlock() {
+    public LineClearItem() {
         Random rnd = new Random(System.currentTimeMillis());
         int rndNum = rnd.nextInt(7);
         BlockKind blockKind = BlockKind.values()[rndNum];
@@ -28,7 +29,7 @@ public class LineClearBlock extends Block {
             }
         }
 
-        kind = BlockKind.LINE_CLEAR;
+        kind = BlockKind.LINE_CLEAR_ITEM;
     }
 
     @Override

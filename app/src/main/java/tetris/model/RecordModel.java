@@ -1,17 +1,85 @@
 package tetris.model;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class RecordModel {
-    class Record {
-        public int score;
-        public Date createdAt;
+    public static class Record implements Comparable<Record>{
+        private int score;
+        private int deletedLine;
+        private ConfigModel.GameMode gameMode;
+        private ConfigModel.GameDifficulty gameDifficulty;
+        private String createdAt;
+
+        public Record(int score, int deletedLine, ConfigModel.GameMode gameMode, ConfigModel.GameDifficulty gameDifficulty, String createdAt) {
+            this.score = score;
+            this.deletedLine = deletedLine;
+            this.gameMode = gameMode;
+            this.gameDifficulty = gameDifficulty;
+            this.createdAt = createdAt;
+        }
+
+        @Override
+        public int compareTo(Record o) {
+            if (o.score < score) {
+                return 1;
+            } else if (o.score > score) {
+                return -1;
+            }
+            return 0;
+        }
     }
 
-    private Record[] rankedRecords;
-    //@TODO 저장 시 score 기준으로 정렬한 뒤 로컬에 덮어씌웁니다.
+    public static ArrayList<Record> rankedRecords = new ArrayList<Record>();
+    private final static String path = "data/record.txt";
 
-    public RecordModel() {
-        //@TODO 생성 시 로컬의 데이터를 로드합니다.
+    public static void addRecord(int score, int deletedLine, ConfigModel.GameMode gameMode, ConfigModel.GameDifficulty gameDifficulty, String createdAt) {
+        rankedRecords.add(new Record(score, deletedLine, gameMode, gameDifficulty, createdAt));
+        Collections.sort(rankedRecords);
+        saveRecord();
+    }
+
+    public static void saveRecord() {
+        BufferedWriter out = null;
+        try {
+            File f = new File(path);
+            f.getParentFile().mkdir();
+            f.createNewFile();
+            FileWriter fStream = new FileWriter(f, false);
+            out = new BufferedWriter(fStream);
+            for (int i = 0; i < rankedRecords.size(); i++) {
+                out.write(Integer.toString(rankedRecords.get(i).score) + ",");
+                out.write(Integer.toString(rankedRecords.get(i).deletedLine) + ",");
+                out.write(rankedRecords.get(i).gameMode.name() + ",");
+                out.write(rankedRecords.get(i).gameDifficulty.name() + ",");
+                out.write(rankedRecords.get(i).createdAt + "\n");
+            }
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadRecord() {
+        try {
+            File f = new File(path);
+            FileReader fStream = new FileReader(f);
+            BufferedReader bufReader = new BufferedReader(fStream);
+            String line = "";
+            while((line = bufReader.readLine()) != null){
+                String[] record = line.split(",");
+                rankedRecords.add(new Record(
+                        Integer.parseInt(record[0]),
+                        Integer.parseInt(record[1]),
+                        Enum.valueOf(ConfigModel.GameMode.class, record[2]),
+                        Enum.valueOf(ConfigModel.GameDifficulty.class, record[3]),
+                        record[4]
+                ));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
