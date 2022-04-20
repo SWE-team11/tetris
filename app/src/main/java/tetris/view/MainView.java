@@ -33,7 +33,7 @@ public class MainView extends JFrame {
                 g.drawImage(background, 0, 0, null);
             }
         };
-        btnPanel.setLayout(fl);
+        btnPanel.setLayout(null);
         btnPanel.setBorder(BorderFactory.createEmptyBorder(200 , 0 , 0 , 25));
 
         JButton playBtn = new JButton(getResource("image/play.png"));
@@ -52,19 +52,23 @@ public class MainView extends JFrame {
                 App.navigate(App.View.Game);
             }
         });
-        playBtn.setMargin(new Insets(0, 0, 100, 0));
+        playBtn.setBounds(30, 300, 320, 90);
 
         normalClickedBtn.setBorderPainted(false);
         normalClickedBtn.setContentAreaFilled(false);
+        normalClickedBtn.setBounds(30, 215, 150, 60);
 
         itemBtn.setBorderPainted(false);
         itemBtn.setContentAreaFilled(false);
+        itemBtn.setBounds(200, 215, 150, 60);
 
         settingBtn.setBorderPainted(false);
         settingBtn.setContentAreaFilled(false);
+        settingBtn.setBounds(250, 485, 46, 46);
 
         exitBtn.setBorderPainted(false);
         exitBtn.setContentAreaFilled(false);
+        exitBtn.setBounds(305, 485, 46, 46);
 
         this.setContentPane(btnPanel);
         btnPanel.add(normalClickedBtn);
