@@ -20,6 +20,7 @@ public class MainPresenter implements Presenter {
     public final void setVisible(final boolean visible) {
         if (visible) {
             mainView.setSize(VIEW_WIDTH, VIEW_HEIGHT);
+            mainView.setLocationRelativeTo(null);
             mainView.setVisible(true);
         } else {
             mainView.setVisible(false);

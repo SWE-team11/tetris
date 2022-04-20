@@ -1,5 +1,6 @@
 package tetris.presenter;
 
+import tetris.model.ConfigModel;
 import tetris.model.GameModel;
 import tetris.utils.Presenter;
 import tetris.view.GameView;
@@ -16,7 +17,7 @@ public class GamePresenter implements Presenter {
     private static final int VIEW_WIDTH = 400;
     private static final int VIEW_HEIGHT = 600;
 
-    private static final int INIT_INTERVAL = 1000;
+    private static final int INIT_INTERVAL = 1000 / ConfigModel.gameSpeed;
 
     public GamePresenter() {
         this.gameModel = new GameModel(this);
@@ -28,7 +29,6 @@ public class GamePresenter implements Presenter {
         @Override
         public final void actionPerformed(final ActionEvent e) {
             moveDown();
-            System.out.println(gameModel.getScore());
         }
     }
 
@@ -42,6 +42,7 @@ public class GamePresenter implements Presenter {
     public final void setVisible(final boolean visible) {
         if (visible) {
             gameView.setSize(VIEW_WIDTH, VIEW_HEIGHT);
+            gameView.setLocationRelativeTo(null);
             gameView.setVisible(true);
             gameStart();
         } else {
