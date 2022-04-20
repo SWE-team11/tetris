@@ -8,15 +8,28 @@ import java.util.List;
 
 public class ConfigModel {
     public enum GameMode {
-        BASIC, ITEM
+        BASIC(1), ITEM(0.5);
+
+        double rate;
+        GameMode(double rate) {
+            this.rate = rate;
+        }
     }
+
     public enum GameDifficulty {
-        EASY, NORMAL, DIFFICULT
+        EASY(0.5), NORMAL(1.0), HARD(1.5);
+
+        double rate;
+        GameDifficulty(double rate) {
+            this.rate = rate;
+        }
     }
     public enum PlayerKey {
         ROTATE, LEFT, RIGHT, DOWN, DROP, UNDEFINED
     }
 
+    public static GameMode gameMode = GameMode.BASIC;
+    public static GameDifficulty gameDifficulty = GameDifficulty.NORMAL;
     public static int boardWidth = 10;
     public static int boardHeight = 20;
     public static int gameSpeed = 2;
@@ -53,6 +66,8 @@ public class ConfigModel {
         f.createNewFile();
         FileWriter fStream = new FileWriter(f, false);
         out = new BufferedWriter(fStream);
+        out.write(gameMode.name() + ",");
+        out.write(gameDifficulty.name() + ",");
         out.write(Integer.toString(boardWidth) + ",");
         out.write(Integer.toString(boardHeight) + ",");
         out.write(Integer.toString(gameSpeed) + ",");
@@ -69,17 +84,24 @@ public class ConfigModel {
             BufferedReader bufReader = new BufferedReader(fStream);
             String line = bufReader.readLine();
             String[] configs = line.split(",");
-            boardWidth = Integer.parseInt(configs[0]);
-            boardHeight = Integer.parseInt(configs[1]);
-            gameSpeed = Integer.parseInt(configs[2]);
-            colorBlindMode = Boolean.parseBoolean(configs[3]);
-            int keyBingdingLength = Integer.parseInt(configs[4]);
+            gameMode = Enum.valueOf(GameMode.class, configs[0]);
+            gameDifficulty = Enum.valueOf(GameDifficulty.class, configs[1]);
+            boardWidth = Integer.parseInt(configs[2]);
+            boardHeight = Integer.parseInt(configs[3]);
+            gameSpeed = Integer.parseInt(configs[4]);
+            colorBlindMode = Boolean.parseBoolean(configs[5]);
+            int keyBingdingLength = Integer.parseInt(configs[6]);
             for(int i=0; i<keyBingdingLength; i++) {
-                keyBinding[i] = Integer.parseInt(configs[5+i]);
+                keyBinding[i] = Integer.parseInt(configs[7+i]);
             }
             bufReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
+    public static double getScoreRate() {
+        return gameSpeed * gameMode.rate * gameDifficulty.rate;
+    }
+
 }
