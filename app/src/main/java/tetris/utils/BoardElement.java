@@ -5,7 +5,7 @@ import tetris.model.ConfigModel;
 import java.awt.*;
 
 public enum BoardElement {
-    EMPTY, BORDER, I_BLOCK, J_BLOCK, L_BLOCK, O_BLOCK, S_BLOCK, T_BLOCK, Z_BLOCK;
+    EMPTY, BORDER, I_BLOCK, J_BLOCK, L_BLOCK, O_BLOCK, S_BLOCK, T_BLOCK, Z_BLOCK, DELETE;
     // @TODO 추후 아이템 Enum값 추가
 
     public static Color getElementColor(final BoardElement element) {
@@ -20,6 +20,7 @@ public enum BoardElement {
                 case S_BLOCK -> Color.decode("#00A270"); //Bluish Green
                 case T_BLOCK -> Color.decode("#D974A9"); //Reddish Purple
                 case Z_BLOCK -> Color.decode("#E65400"); //Vermilion
+                case DELETE -> Color.white;
             };
         } else {
             return switch (element) {
@@ -32,6 +33,7 @@ public enum BoardElement {
                 case S_BLOCK -> Color.GREEN;
                 case T_BLOCK -> Color.MAGENTA;
                 case Z_BLOCK -> Color.RED;
+                case DELETE -> Color.white;
             };
         }
 
@@ -41,7 +43,7 @@ public enum BoardElement {
         return switch (element) {
             case EMPTY -> " ";
             case BORDER -> "X";
-            case I_BLOCK, J_BLOCK, L_BLOCK, O_BLOCK, S_BLOCK, T_BLOCK, Z_BLOCK -> "O";
+            case I_BLOCK, J_BLOCK, L_BLOCK, O_BLOCK, S_BLOCK, T_BLOCK, Z_BLOCK, DELETE -> "O";
         };
     }
 }

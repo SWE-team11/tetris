@@ -4,18 +4,31 @@ import java.awt.event.KeyEvent;
 
 public class ConfigModel {
     public enum GameMode {
-        BASIC, ITEM
+        BASIC(1), ITEM(0.5);
+
+        double rate;
+        GameMode(double rate) {
+            this.rate = rate;
+        }
     }
+
     public enum GameDifficulty {
-        EASY, NORMAL, DIFFICULT
+        EASY(0.5), NORMAL(1.0), HARD(1.5);
+
+        double rate;
+        GameDifficulty(double rate) {
+            this.rate = rate;
+        }
     }
     public enum PlayerKey {
         ROTATE, LEFT, RIGHT, DOWN, DROP, UNDEFINED
     }
 
+    public static GameMode gameMode = GameMode.BASIC;
+    public static GameDifficulty gameDifficulty = GameDifficulty.HARD;
     public static int boardWidth = 10;
     public static int boardHeight = 20;
-    public static int gameSpeed = 1;
+    public static int gameSpeed = 9;
     public static boolean colorBlindMode = true;
     public static int[] keyBinding;
 
@@ -37,6 +50,10 @@ public class ConfigModel {
         keyBinding[PlayerKey.DOWN.ordinal()] = KeyEvent.VK_DOWN;
         keyBinding[PlayerKey.DROP.ordinal()] = KeyEvent.VK_SPACE;
         keyBinding[PlayerKey.UNDEFINED.ordinal()] = 0;
+    }
+
+    public static double getScoreRate() {
+        return gameSpeed * gameMode.rate * gameDifficulty.rate;
     }
 
     private ConfigModel() {
