@@ -14,32 +14,36 @@ public class MainView extends JFrame {
 
     private MainPresenter mainPresenter;
 
-    private Image background =
-            new ImageIcon(getClass().getClassLoader().getResource("image/background.png")).getImage();
+    private ImageIcon getResource(String path) {
+        return new ImageIcon(getClass().getClassLoader().getResource(path));
+    }
+
+    private Image background = getResource("image/background.png").getImage();
 
     public MainView(final MainPresenter presenter) {
         this.mainPresenter = presenter;
-
-        setTitle("TETRIS");
-        setSize(400, 600);
-        setResizable(false);
-        setLocationRelativeTo(null);
-        setLayout(null);
-        setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel btnPanel = new JPanel();
-        JButton playBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("image/play.png")));
-        JButton normalBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("image/normal.png")));
-        JButton normalClickedBtn = new JButton(
-                new ImageIcon(getClass().getClassLoader().getResource("image/normal_clicked.png")));
-        JButton itemBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("image/item.png")));
-        JButton itemClickedBtn = new JButton(
-                new ImageIcon(getClass().getClassLoader().getResource("image/item_clicked.png")));
-        JButton settingBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("image/setting.png")));
-        JButton exitBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("image/exit.png")));
+        setTitle("TETRIS");
 
-        playBtn.setBounds(30, 300, 320, 90);
+        FlowLayout fl = new FlowLayout();
+        fl.setAlignment(FlowLayout.RIGHT);
+        JPanel btnPanel = new JPanel() {
+            public void paintComponent(Graphics g) {
+                g.drawImage(background, 0, 0, null);
+            }
+        };
+        btnPanel.setLayout(null);
+        btnPanel.setBorder(BorderFactory.createEmptyBorder(200 , 0 , 0 , 25));
+
+        JButton playBtn = new JButton(getResource("image/play.png"));
+        JButton normalBtn = new JButton(getResource("image/normal.png"));
+        JButton normalClickedBtn = new JButton(getResource("image/normal_clicked.png"));
+        JButton itemBtn = new JButton(getResource("image/item.png"));
+        JButton itemClickedBtn = new JButton(getResource("image/item_clicked.png"));
+        JButton settingBtn = new JButton(getResource("image/setting.png"));
+        JButton exitBtn = new JButton(getResource("image/exit.png"));
+
         playBtn.setBorderPainted(false);
         playBtn.setContentAreaFilled(false);
         playBtn.addActionListener(new ActionListener() {
@@ -48,35 +52,29 @@ public class MainView extends JFrame {
                 App.navigate(App.View.Game);
             }
         });
+        playBtn.setBounds(30, 300, 320, 90);
 
-        normalClickedBtn.setBounds(30, 215, 150, 60);
         normalClickedBtn.setBorderPainted(false);
         normalClickedBtn.setContentAreaFilled(false);
+        normalClickedBtn.setBounds(30, 215, 150, 60);
 
-        itemBtn.setBounds(200, 215, 150, 60);
         itemBtn.setBorderPainted(false);
         itemBtn.setContentAreaFilled(false);
+        itemBtn.setBounds(200, 215, 150, 60);
 
-        settingBtn.setBounds(250, 485, 46, 46);
         settingBtn.setBorderPainted(false);
         settingBtn.setContentAreaFilled(false);
+        settingBtn.setBounds(250, 485, 46, 46);
 
-        exitBtn.setBounds(305, 485, 46, 46);
         exitBtn.setBorderPainted(false);
         exitBtn.setContentAreaFilled(false);
+        exitBtn.setBounds(305, 485, 46, 46);
 
-        btnPanel.setBounds(0, 200, 400, 600);
-        btnPanel.setBackground(new Color(0, 0, 0, 255));
-
-        add(btnPanel);
+        this.setContentPane(btnPanel);
         btnPanel.add(normalClickedBtn);
         btnPanel.add(itemBtn);
         btnPanel.add(playBtn);
         btnPanel.add(settingBtn);
         btnPanel.add(exitBtn);
-    }
-
-    public void paint(final Graphics g) {
-        g.drawImage(background, 0, 0, null);
     }
 }
