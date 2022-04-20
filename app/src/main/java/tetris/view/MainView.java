@@ -54,6 +54,7 @@ public class MainView extends JFrame {
         });
         playBtn.setBounds(30, 300, 320, 90);
 
+
         normalClickedBtn.setBorderPainted(false);
         normalClickedBtn.setContentAreaFilled(false);
         normalClickedBtn.setBounds(30, 215, 150, 60);

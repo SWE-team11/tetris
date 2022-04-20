@@ -4,24 +4,27 @@ import tetris.model.ConfigModel;
 import tetris.presenter.GamePresenter;
 import tetris.utils.BoardElement;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JTextPane;
+import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.text.*;
 
 public class GameView extends JFrame {
 
+    private ImageIcon getResource(String path) {
+        return new ImageIcon(getClass().getClassLoader().getResource(path));
+    }
+
+    private Image background = getResource("image/GameViewBackground.png").getImage();
+
     static final int LINE_BORDER_OUTER_WEIGHT = 10;
     static final int LINE_BORDER_INNER_WEIGHT = 5;
-    static final int FONT_SIZE = 25;
-    static final float LINE_SPACING = -0.3f;
+    static final int FONT_SIZE = 28;
+    static final float LINE_SPACING = -0.45f;
     private static final long serialVersionUID = 2434035659171694595L;
 
     private JTextPane pane;
@@ -38,14 +41,21 @@ public class GameView extends JFrame {
         this.gamePresenter = presenter;
 
         // Board display setting.
+        JPanel backgroundPanel = new JPanel() {
+            public void paintComponent(Graphics g) {
+                g.drawImage(background, 0, 0, this.getWidth(),this.getHeight(),null);
+            }
+        };
+        backgroundPanel.setLayout(null);
+        backgroundPanel.setBorder(BorderFactory.createEmptyBorder(200 , 0 , 0 , 25));
+
         pane = new JTextPane();
         pane.setEditable(false);
-        pane.setBackground(Color.BLACK);
-        CompoundBorder border = BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY, LINE_BORDER_OUTER_WEIGHT),
-                BorderFactory.createLineBorder(Color.DARK_GRAY, LINE_BORDER_INNER_WEIGHT));
-        pane.setBorder(border);
-        this.getContentPane().add(pane, BorderLayout.CENTER);
+        pane.setOpaque(false);
+        pane.setBounds(40,55, 220,440);
+
+        this.getContentPane().add(backgroundPanel);
+        backgroundPanel.add(pane, BorderLayout.CENTER);
 
         // Document default style.
         styleSet = new SimpleAttributeSet();
