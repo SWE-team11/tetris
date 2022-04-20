@@ -21,7 +21,7 @@ public class ConfigModel {
         }
     }
     public enum PlayerKey {
-        ROTATE, LEFT, RIGHT, DOWN, DROP, UNDEFINED
+        ROTATE, LEFT, RIGHT, DOWN, DROP, UNDEFINED, ESC
     }
 
     public static GameMode gameMode = GameMode.BASIC;
@@ -49,6 +49,7 @@ public class ConfigModel {
         keyBinding[PlayerKey.RIGHT.ordinal()] = KeyEvent.VK_RIGHT;
         keyBinding[PlayerKey.DOWN.ordinal()] = KeyEvent.VK_DOWN;
         keyBinding[PlayerKey.DROP.ordinal()] = KeyEvent.VK_SPACE;
+        keyBinding[PlayerKey.ESC.ordinal()] = KeyEvent.VK_ESCAPE;
         keyBinding[PlayerKey.UNDEFINED.ordinal()] = 0;
     }
 

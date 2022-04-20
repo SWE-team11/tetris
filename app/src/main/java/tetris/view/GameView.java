@@ -1,10 +1,13 @@
 package tetris.view;
 
+import tetris.App;
 import tetris.model.ConfigModel;
 import tetris.presenter.GamePresenter;
 import tetris.utils.BoardElement;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -29,9 +32,11 @@ public class GameView extends JFrame {
 
     private JTextPane pane;
     private SimpleAttributeSet styleSet;
+    private JPanel pauseDialog = new JPanel();
 
     private GamePresenter gamePresenter;
     private PlayerKeyListener playerKeyListener;
+    private PauseKeyListener pauseKeyListener;
 
     public GameView(final GamePresenter presenter) {
         super("SeoulTech SE 11team Tetris");
@@ -49,12 +54,41 @@ public class GameView extends JFrame {
         backgroundPanel.setLayout(null);
         backgroundPanel.setBorder(BorderFactory.createEmptyBorder(200 , 0 , 0 , 25));
 
+        // pane display setting
         pane = new JTextPane();
         pane.setEditable(false);
         pane.setOpaque(false);
         pane.setBounds(40,55, 220,440);
 
+        // pause display setting
+        pauseDialog.setBounds(100, 200, 200, 100);
+        pauseDialog.setLayout(null);
+        pauseDialog.setVisible(false);
+        pauseDialog.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 50));
+        JButton continueBtn = new JButton("Continue");
+        JButton exitBtn = new JButton("Exit");
+        continueBtn.setPreferredSize(new Dimension(60,30));
+        exitBtn.setPreferredSize(new Dimension(60,30));
+
+        // Button key listener
+        continueBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                gamePresenter.gameStart();
+            }
+        });
+        exitBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                App.navigate(App.View.Main);
+            }
+        });
+
+        // panel add
         this.getContentPane().add(backgroundPanel);
+        pauseDialog.add(continueBtn);
+        pauseDialog.add(exitBtn);
+        backgroundPanel.add(pauseDialog);
         backgroundPanel.add(pane, BorderLayout.CENTER);
 
         // Document default style.
@@ -72,6 +106,7 @@ public class GameView extends JFrame {
         pane.requestFocusInWindow();
 
         this.playerKeyListener = new PlayerKeyListener();
+        this.pauseKeyListener = new PauseKeyListener();
     }
 
     class PlayerKeyListener implements KeyListener {
@@ -88,6 +123,26 @@ public class GameView extends JFrame {
                 case LEFT -> gamePresenter.moveLeft();
                 case ROTATE -> gamePresenter.moveRotate();
                 case DROP -> gamePresenter.moveStraightDown();
+                case ESC -> gamePresenter.gameStop();
+            }
+        }
+
+        @Override
+        public void keyReleased(final KeyEvent e) {
+
+        }
+    }
+
+    class PauseKeyListener implements KeyListener {
+        @Override
+        public void keyTyped(final KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(final KeyEvent e) {
+            switch (ConfigModel.getPlayerKey(e)) {
+                case ESC -> gamePresenter.gameStart();
             }
         }
 
@@ -103,6 +158,18 @@ public class GameView extends JFrame {
 
     public void stopPlayerKeyListen() {
         pane.removeKeyListener(this.playerKeyListener);
+    }
+
+    public void startPauseKeyListen() {
+        pane.addKeyListener(this.pauseKeyListener);
+    }
+
+    public void stopPauseKeyListen() {
+        pane.removeKeyListener(this.pauseKeyListener);
+    }
+
+    public void setVisiblePauseDialog(boolean ifVisible) {
+        pauseDialog.setVisible(ifVisible);
     }
 
     public final void drawBoard(final ArrayList<BoardElement[]> board) {

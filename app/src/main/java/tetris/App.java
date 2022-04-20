@@ -31,6 +31,7 @@ public class App {
 
     public static void navigate(final View view) {
         currentPresenter.setVisible(false);
+        currentPresenter.initPresent();
         switch (view) {
             case Main -> currentPresenter = mainPresenter;
             case Game -> currentPresenter = gamePresenter;
