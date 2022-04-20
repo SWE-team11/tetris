@@ -2,6 +2,7 @@ package tetris.presenter;
 
 import tetris.model.ConfigModel;
 import tetris.model.GameModel;
+import tetris.utils.BoardElement;
 import tetris.utils.Presenter;
 import tetris.view.GameView;
 
@@ -13,22 +14,34 @@ import javax.swing.Timer;
 public class GamePresenter implements Presenter {
     private GameModel gameModel;
     private GameView gameView;
-    private final Timer timer;
+    private final Timer mainTimer;
+    private final Timer deleteTimer;
     private static final int VIEW_WIDTH = 400;
     private static final int VIEW_HEIGHT = 600;
 
     private static final int INIT_INTERVAL = 1000 / ConfigModel.gameSpeed;
 
     public GamePresenter() {
+        mainTimer = new Timer(INIT_INTERVAL, new MainTimerActionListener());
+        deleteTimer = new Timer(200, new DeleteTimerActionListener());
+
         this.gameModel = new GameModel(this);
         this.gameView = new GameView(this);
-        timer = new Timer(INIT_INTERVAL, new TimerActionListener());
+        this.gameView.drawBoard(this.gameModel.getBoard());
     }
 
-    public class TimerActionListener implements ActionListener {
+    public class MainTimerActionListener implements ActionListener {
         @Override
         public final void actionPerformed(final ActionEvent e) {
             moveDown();
+        }
+    }
+
+    public class DeleteTimerActionListener implements ActionListener {
+        @Override
+        public final void actionPerformed(final ActionEvent e) {
+            gameModel.runDelete();
+            drawBoard();
         }
     }
 
@@ -51,52 +64,63 @@ public class GamePresenter implements Presenter {
         }
     }
 
+    public final void deleteTimerStart(){
+        deleteTimer.start();
+    }
+    public final void deleteTimerStop(){
+        deleteTimer.stop();
+    }
+
     public final void gameStart() {
         gameView.stopPauseKeyListen();
         gameView.startPlayerKeyListen();
         gameView.setVisiblePauseDialog(false);
         gameView.drawBoard(gameModel.getBoard());
-        timer.start();
+        mainTimer.start();
     }
 
     public final void gameStop() {
         gameView.stopPlayerKeyListen();
         gameView.startPauseKeyListen();
         gameView.setVisiblePauseDialog(true);
-        timer.stop();
+        mainTimer.stop();
+    }
+
+    public void drawBoard() {
+        gameView.drawBoard(gameModel.getBoard());
     }
 
     public final void gameOver() {
         gameView.stopPlayerKeyListen();
         gameView.stopPauseKeyListen();
         gameView.setVisiblePauseDialog(false);
-        timer.stop();
+        mainTimer.stop();
         System.out.println("game over");
     }
 
     public final void moveRotate() {
         gameModel.moveRotate();
-        gameView.drawBoard(gameModel.getBoard());
+        drawBoard();
     }
 
     public final void moveDown() {
         gameModel.moveDownAndCheck();
-        gameView.drawBoard(gameModel.getBoard());
+        drawBoard();
     }
 
     public final void moveLeft() {
         gameModel.moveLeft();
-        gameView.drawBoard(gameModel.getBoard());
+        drawBoard();
     }
 
     public final void moveRight() {
         gameModel.moveRight();
-        gameView.drawBoard(gameModel.getBoard());
+        drawBoard();
     }
 
     public final void moveStraightDown() {
         gameModel.moveStraightDown();
-        gameView.drawBoard(gameModel.getBoard());
+        drawBoard();
     }
 
 }

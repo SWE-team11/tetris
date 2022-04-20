@@ -26,7 +26,7 @@ public class ConfigModel {
     }
 
     public enum PlayerKey {
-        ROTATE, LEFT, RIGHT, DOWN, DROP, UNDEFINED, ESC
+        ROTATE, LEFT, RIGHT, DOWN, DROP, ESC, UNDEFINED
     }
 
     public static GameMode gameMode = GameMode.BASIC;
@@ -37,7 +37,7 @@ public class ConfigModel {
     public static boolean colorBlindMode = true;
     public static int[] keyBinding = {
             KeyEvent.VK_UP, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT,
-            KeyEvent.VK_DOWN, KeyEvent.VK_SPACE, 0
+            KeyEvent.VK_DOWN, KeyEvent.VK_SPACE, KeyEvent.VK_ESCAPE, 0
     };
     private final static String path = "data/config.txt";
 

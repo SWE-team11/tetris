@@ -171,9 +171,8 @@ public class GameModel {
         }
 
         public void hook() {
-            checkBoard();
+            checkRaw();
             setRandomBlock();
-            placeBlock();
         }
     }
 
@@ -212,6 +211,7 @@ public class GameModel {
     }
 
     public final Result placeBlock() {
+
         for (int i = 0; i < currentBlock.width(); i++) {
             for (int j = 0; j < currentBlock.height(); j++) {
                 if (board.get(posY + j)[posX + i] != BoardElement.EMPTY
@@ -269,7 +269,7 @@ public class GameModel {
         rotate.run();
     }
 
-    public final void checkBoard() {
+    public final void checkRaw() {
         for (int i = 0; i < ConfigModel.boardHeight; i++) {
             boolean isRaw = true;
             for (int j = 0; j < ConfigModel.boardWidth; j++) {
@@ -279,14 +279,34 @@ public class GameModel {
                 }
             }
             if (isRaw) {
+                for (int j = 0; j < ConfigModel.boardWidth; j++) {
+                    board.get(i)[j] = BoardElement.DELETE;
+                }
+                gamePresenter.deleteTimerStart();
+            }
+        }
+        gamePresenter.drawBoard();
+    }
 
-                shiftDown(i - 1);
+    public final void runDelete() {
+        for (int i = 0; i < ConfigModel.boardHeight; i++) {
+            boolean isDeleteRaw = true;
+            for (int j = 0; j < ConfigModel.boardWidth; j++) {
+                if (board.get(i)[j] != BoardElement.DELETE) {
+                    isDeleteRaw = false;
+                    break;
+                }
+            }
+            if (isDeleteRaw) {
+                shiftDown(i-1);
+                gamePresenter.deleteTimerStop();
                 score += 100 * ConfigModel.getScoreRate();
             }
         }
     }
 
     public final void shiftDown(final int startHeight) {
+        eraseCurr();
         for (int i = startHeight; i >= 0; i--) {
             for (int j = 0; j < ConfigModel.boardWidth; j++) {
                 board.get(i + 1)[j] = board.get(i)[j];
