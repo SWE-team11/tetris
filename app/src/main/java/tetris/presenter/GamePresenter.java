@@ -33,7 +33,6 @@ public class GamePresenter implements Presenter {
         @Override
         public final void actionPerformed(final ActionEvent e) {
             moveDown();
-            System.out.println(gameModel.getScore());
         }
     }
 

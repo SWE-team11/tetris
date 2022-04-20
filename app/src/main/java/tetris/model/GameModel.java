@@ -48,7 +48,6 @@ public class GameModel {
     }
 
     public final void setRandomBlock() {
-        Random rnd = new Random(System.currentTimeMillis());
         int rndNum = rnd.nextInt(BlockKind.values().length);
         BlockKind blockKind = BlockKind.values()[rndNum];
         currentBlock = BlockKind.getBlockInstance(blockKind);

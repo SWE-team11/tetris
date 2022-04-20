@@ -24,6 +24,7 @@ public class ConfigModel {
             this.rate = rate;
         }
     }
+
     public enum PlayerKey {
         ROTATE, LEFT, RIGHT, DOWN, DROP, UNDEFINED
     }
@@ -54,27 +55,32 @@ public class ConfigModel {
         return PlayerKey.UNDEFINED;
     }
 
-    public static void saveConfig() throws IOException{
+    public static void saveConfig() {
         BufferedWriter out = null;
         List<String> strList = new ArrayList<>();
         for (Integer integer : keyBinding) {
             strList.add(String.valueOf(integer));
         }
 
-        File f = new File(path);
-        f.getParentFile().mkdir();
-        f.createNewFile();
-        FileWriter fStream = new FileWriter(f, false);
-        out = new BufferedWriter(fStream);
-        out.write(gameMode.name() + ",");
-        out.write(gameDifficulty.name() + ",");
-        out.write(Integer.toString(boardWidth) + ",");
-        out.write(Integer.toString(boardHeight) + ",");
-        out.write(Integer.toString(gameSpeed) + ",");
-        out.write(Boolean.toString(colorBlindMode) + ",");
-        out.write(Integer.toString(keyBinding.length) + ",");
-        out.write(String.join(",", strList));
-        out.close();
+        try {
+            File f = new File(path);
+            f.getParentFile().mkdir();
+            f.createNewFile();
+            FileWriter fStream = new FileWriter(f, false);
+            out = new BufferedWriter(fStream);
+            out.write(gameMode.name() + ",");
+            out.write(gameDifficulty.name() + ",");
+            out.write(Integer.toString(boardWidth) + ",");
+            out.write(Integer.toString(boardHeight) + ",");
+            out.write(Integer.toString(gameSpeed) + ",");
+            out.write(Boolean.toString(colorBlindMode) + ",");
+            out.write(Integer.toString(keyBinding.length) + ",");
+            out.write(String.join(",", strList));
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static void loadConfig() {

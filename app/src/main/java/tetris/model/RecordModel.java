@@ -6,12 +6,18 @@ import java.util.Collections;
 import java.util.Date;
 
 public class RecordModel {
-    static class Record implements Comparable<Record>{
-        public int score;
-        public String createdAt;
+    public static class Record implements Comparable<Record>{
+        private int score;
+        private int deletedLine;
+        private ConfigModel.GameMode gameMode;
+        private ConfigModel.GameDifficulty gameDifficulty;
+        private String createdAt;
 
-        Record(int score, String createdAt) {
+        public Record(int score, int deletedLine, ConfigModel.GameMode gameMode, ConfigModel.GameDifficulty gameDifficulty, String createdAt) {
             this.score = score;
+            this.deletedLine = deletedLine;
+            this.gameMode = gameMode;
+            this.gameDifficulty = gameDifficulty;
             this.createdAt = createdAt;
         }
 
@@ -29,28 +35,31 @@ public class RecordModel {
     public static ArrayList<Record> rankedRecords = new ArrayList<Record>();
     private final static String path = "data/record.txt";
 
-    public static void addRecord(int score) {
-        rankedRecords.add(new Record(score, new Date().toString()));
+    public static void addRecord(int score, int deletedLine, ConfigModel.GameMode gameMode, ConfigModel.GameDifficulty gameDifficulty, String createdAt) {
+        rankedRecords.add(new Record(score, deletedLine, gameMode, gameDifficulty, createdAt));
         Collections.sort(rankedRecords);
+        saveRecord();
+    }
+
+    public static void saveRecord() {
+        BufferedWriter out = null;
         try {
-            saveRecord();
+            File f = new File(path);
+            f.getParentFile().mkdir();
+            f.createNewFile();
+            FileWriter fStream = new FileWriter(f, false);
+            out = new BufferedWriter(fStream);
+            for (int i = 0; i < rankedRecords.size(); i++) {
+                out.write(Integer.toString(rankedRecords.get(i).score) + ",");
+                out.write(Integer.toString(rankedRecords.get(i).deletedLine) + ",");
+                out.write(rankedRecords.get(i).gameMode.name() + ",");
+                out.write(rankedRecords.get(i).gameDifficulty.name() + ",");
+                out.write(rankedRecords.get(i).createdAt + "\n");
+            }
+            out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void saveRecord() throws IOException {
-        BufferedWriter out = null;
-        File f = new File(path);
-        f.getParentFile().mkdir();
-        f.createNewFile();
-        FileWriter fStream = new FileWriter(f, false);
-        out = new BufferedWriter(fStream);
-        for (int i = 0; i < rankedRecords.size(); i++) {
-            out.write(Integer.toString(rankedRecords.get(i).score) + ",");
-            out.write(rankedRecords.get(i).createdAt + "\n");
-        }
-        out.close();
     }
 
     public static void loadRecord() {
@@ -61,7 +70,13 @@ public class RecordModel {
             String line = "";
             while((line = bufReader.readLine()) != null){
                 String[] record = line.split(",");
-                rankedRecords.add(new Record(Integer.parseInt(record[0]), record[1]));
+                rankedRecords.add(new Record(
+                        Integer.parseInt(record[0]),
+                        Integer.parseInt(record[1]),
+                        Enum.valueOf(ConfigModel.GameMode.class, record[2]),
+                        Enum.valueOf(ConfigModel.GameDifficulty.class, record[3]),
+                        record[4]
+                ));
             }
         } catch (IOException e) {
             e.printStackTrace();
