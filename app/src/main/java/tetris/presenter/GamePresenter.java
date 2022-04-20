@@ -1,6 +1,7 @@
 package tetris.presenter;
 
 import tetris.model.GameModel;
+import tetris.utils.BoardElement;
 import tetris.utils.Presenter;
 import tetris.view.GameView;
 
@@ -31,6 +32,7 @@ public class GamePresenter implements Presenter {
     public class TimerActionListener implements ActionListener {
         @Override
         public final void actionPerformed(final ActionEvent e) {
+            gameModel.runDelete();
             moveDown();
             System.out.println(gameModel.getScore());
         }
@@ -47,6 +49,7 @@ public class GamePresenter implements Presenter {
         }
     }
 
+
     public final void gameStart() {
         gameView.startPlayerKeyListen();
         timer.start();
@@ -57,29 +60,33 @@ public class GamePresenter implements Presenter {
         timer.stop();
     }
 
+    public void drawBoard() {
+        gameView.drawBoard(gameModel.getBoard());
+    }
+
     public final void moveRotate() {
         gameModel.moveRotate();
-        gameView.drawBoard(gameModel.getBoard());
+        drawBoard();
     }
 
     public final void moveDown() {
         gameModel.moveDownAndCheck();
-        gameView.drawBoard(gameModel.getBoard());
+        drawBoard();
     }
 
     public final void moveLeft() {
         gameModel.moveLeft();
-        gameView.drawBoard(gameModel.getBoard());
+        drawBoard();
     }
 
     public final void moveRight() {
         gameModel.moveRight();
-        gameView.drawBoard(gameModel.getBoard());
+        drawBoard();
     }
 
     public final void moveStraightDown() {
         gameModel.moveStraightDown();
-        gameView.drawBoard(gameModel.getBoard());
+        drawBoard();
     }
 
 }

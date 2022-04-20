@@ -51,7 +51,8 @@ public class GameModel {
         Random rnd = new Random(System.currentTimeMillis());
         int rndNum = rnd.nextInt(BlockKind.values().length);
         BlockKind blockKind = BlockKind.values()[rndNum];
-        currentBlock = BlockKind.getBlockInstance(blockKind);
+//        currentBlock = BlockKind.getBlockInstance(blockKind);
+        currentBlock = new IBlock();
         posX = DEFAULT_POS_X;
         posY = DEFAULT_POS_Y;
         GameOver gameOver = new GameOver();
@@ -59,8 +60,6 @@ public class GameModel {
             placeBlock();
         } else {
             gamePresenter.gameStop();
-            // TODO
-            // signal to presenter(KeyBinding 해제)
         }
     }
 
@@ -86,6 +85,8 @@ public class GameModel {
         }
 
         public void fallBack() {
+            System.out.println("fallback");
+
             moveBack();
             Result ret = placeBlock();
             if (ret == Result.ERR) {
@@ -171,9 +172,8 @@ public class GameModel {
         }
 
         public void hook() {
-            checkBoard();
+            checkRaw();
             setRandomBlock();
-            placeBlock();
         }
     }
 
@@ -212,6 +212,8 @@ public class GameModel {
     }
 
     public final Result placeBlock() {
+        System.out.println("place block");
+
         for (int i = 0; i < currentBlock.width(); i++) {
             for (int j = 0; j < currentBlock.height(); j++) {
                 if (board.get(posY + j)[posX + i] != BoardElement.EMPTY
@@ -258,6 +260,7 @@ public class GameModel {
         while (true) {
             cnt++;
             if (down.run() == Result.ERR) {
+                System.out.println("탈출");
                 break;
             }
         }
@@ -269,7 +272,7 @@ public class GameModel {
         rotate.run();
     }
 
-    public final void checkBoard() {
+    public final void checkRaw() {
         for (int i = 0; i < ConfigModel.boardHeight; i++) {
             boolean isRaw = true;
             for (int j = 0; j < ConfigModel.boardWidth; j++) {
@@ -279,14 +282,32 @@ public class GameModel {
                 }
             }
             if (isRaw) {
+                for (int j = 0; j < ConfigModel.boardWidth; j++) {
+                    board.get(i)[j] = BoardElement.DELETE;
+                }
+            }
+        }
+        gamePresenter.drawBoard();
+    }
 
-                shiftDown(i - 1);
+    public final void runDelete() {
+        for (int i = 0; i < ConfigModel.boardHeight; i++) {
+            boolean isDeleteRaw = true;
+            for (int j = 0; j < ConfigModel.boardWidth; j++) {
+                if (board.get(i)[j] != BoardElement.DELETE) {
+                    isDeleteRaw = false;
+                    break;
+                }
+            }
+            if (isDeleteRaw) {
+                shiftDown(i-1);
                 score += 100 * ConfigModel.getScoreRate();
             }
         }
     }
 
     public final void shiftDown(final int startHeight) {
+        eraseCurr();
         for (int i = startHeight; i >= 0; i--) {
             for (int j = 0; j < ConfigModel.boardWidth; j++) {
                 board.get(i + 1)[j] = board.get(i)[j];
