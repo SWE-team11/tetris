@@ -13,6 +13,7 @@ public class GameModel {
     private ArrayList<BoardElement[]> board;
     private Block currentBlock;
     private Block nextBlock;
+    private double score = 0;
 
     private final int DEFAULT_POS_X = 3;
     private final int DEFAULT_POS_Y = 0;
@@ -42,6 +43,9 @@ public class GameModel {
         }
     }
 
+    public double getScore() {
+        return this.score;
+    }
 
     public final void setRandomBlock() {
         Random rnd = new Random(System.currentTimeMillis());
@@ -250,11 +254,14 @@ public class GameModel {
 
     public final void moveStraightDown() {
         Down down = new Down();
+        int cnt = 0;
         while (true) {
+            cnt++;
             if (down.run() == Result.ERR) {
                 break;
             }
         }
+        score += cnt * ConfigModel.getScoreRate();
     }
 
     public final void moveRotate() {
@@ -272,7 +279,9 @@ public class GameModel {
                 }
             }
             if (isRaw) {
+
                 shiftDown(i - 1);
+                score += 100 * ConfigModel.getScoreRate();
             }
         }
     }
