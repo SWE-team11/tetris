@@ -24,6 +24,7 @@ public class GameModel {
     public GameModel(final GamePresenter presenter) {
         this.gamePresenter = presenter;
         initBoard(ConfigModel.boardWidth, ConfigModel.boardHeight);
+        this.setRandomBlock();
         posX = DEFAULT_POS_X;
         posY = DEFAULT_POS_Y;
     }
@@ -59,6 +60,7 @@ public class GameModel {
             placeBlock();
         } else {
             gamePresenter.gameStop();
+            gamePresenter.gameOver();
         }
     }
 

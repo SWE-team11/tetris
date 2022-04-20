@@ -1,5 +1,6 @@
 package tetris.presenter;
 
+import tetris.model.ConfigModel;
 import tetris.model.GameModel;
 import tetris.utils.BoardElement;
 import tetris.utils.Presenter;
@@ -11,24 +12,22 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 public class GamePresenter implements Presenter {
-    private final GameModel gameModel;
-    private final GameView gameView;
+    private GameModel gameModel;
+    private GameView gameView;
     private final Timer mainTimer;
     private final Timer deleteTimer;
     private static final int VIEW_WIDTH = 400;
     private static final int VIEW_HEIGHT = 600;
 
-    private static final int INIT_INTERVAL = 1000;
+    private static final int INIT_INTERVAL = 1000 / ConfigModel.gameSpeed;
 
     public GamePresenter() {
-        this.gameModel = new GameModel(this);
-        this.gameView = new GameView(this);
-
-        this.gameModel.setRandomBlock();
-        this.gameView.drawBoard(this.gameModel.getBoard());
-
         mainTimer = new Timer(INIT_INTERVAL, new MainTimerActionListener());
         deleteTimer = new Timer(200, new DeleteTimerActionListener());
+
+        this.gameModel = new GameModel(this);
+        this.gameView = new GameView(this);
+        this.gameView.drawBoard(this.gameModel.getBoard());
     }
 
     public class MainTimerActionListener implements ActionListener {
@@ -46,9 +45,17 @@ public class GamePresenter implements Presenter {
         }
     }
 
+    @Override
+    public void initPresent() {
+        this.gameModel = new GameModel(this);
+        this.gameView = new GameView(this);
+    }
+
+    @Override
     public final void setVisible(final boolean visible) {
         if (visible) {
             gameView.setSize(VIEW_WIDTH, VIEW_HEIGHT);
+            gameView.setLocationRelativeTo(null);
             gameView.setVisible(true);
             gameStart();
         } else {
@@ -65,17 +72,30 @@ public class GamePresenter implements Presenter {
     }
 
     public final void gameStart() {
+        gameView.stopPauseKeyListen();
         gameView.startPlayerKeyListen();
+        gameView.setVisiblePauseDialog(false);
+        gameView.drawBoard(gameModel.getBoard());
         mainTimer.start();
     }
 
     public final void gameStop() {
         gameView.stopPlayerKeyListen();
+        gameView.startPauseKeyListen();
+        gameView.setVisiblePauseDialog(true);
         mainTimer.stop();
     }
 
     public void drawBoard() {
         gameView.drawBoard(gameModel.getBoard());
+    }
+
+    public final void gameOver() {
+        gameView.stopPlayerKeyListen();
+        gameView.stopPauseKeyListen();
+        gameView.setVisiblePauseDialog(false);
+        mainTimer.stop();
+        System.out.println("game over");
     }
 
     public final void moveRotate() {
