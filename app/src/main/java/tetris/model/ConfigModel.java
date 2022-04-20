@@ -26,7 +26,7 @@ public class ConfigModel {
     }
 
     public enum PlayerKey {
-        ROTATE, LEFT, RIGHT, DOWN, DROP, UNDEFINED
+        ROTATE, LEFT, RIGHT, DOWN, DROP, UNDEFINED, ESC
     }
 
     public static GameMode gameMode = GameMode.BASIC;

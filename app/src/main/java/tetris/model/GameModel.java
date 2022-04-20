@@ -24,6 +24,7 @@ public class GameModel {
     public GameModel(final GamePresenter presenter) {
         this.gamePresenter = presenter;
         initBoard(ConfigModel.boardWidth, ConfigModel.boardHeight);
+        this.setRandomBlock();
         posX = DEFAULT_POS_X;
         posY = DEFAULT_POS_Y;
     }
@@ -48,6 +49,7 @@ public class GameModel {
     }
 
     public final void setRandomBlock() {
+        Random rnd = new Random(System.currentTimeMillis());
         int rndNum = rnd.nextInt(BlockKind.values().length);
         BlockKind blockKind = BlockKind.values()[rndNum];
         currentBlock = BlockKind.getBlockInstance(blockKind);
@@ -58,8 +60,7 @@ public class GameModel {
             placeBlock();
         } else {
             gamePresenter.gameStop();
-            // TODO
-            // signal to presenter(KeyBinding 해제)
+            gamePresenter.gameOver();
         }
     }
 

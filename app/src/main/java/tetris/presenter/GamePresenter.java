@@ -11,8 +11,8 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 public class GamePresenter implements Presenter {
-    private final GameModel gameModel;
-    private final GameView gameView;
+    private GameModel gameModel;
+    private GameView gameView;
     private final Timer timer;
     private static final int VIEW_WIDTH = 400;
     private static final int VIEW_HEIGHT = 600;
@@ -22,10 +22,6 @@ public class GamePresenter implements Presenter {
     public GamePresenter() {
         this.gameModel = new GameModel(this);
         this.gameView = new GameView(this);
-
-        this.gameModel.setRandomBlock();
-        this.gameView.drawBoard(this.gameModel.getBoard());
-
         timer = new Timer(INIT_INTERVAL, new TimerActionListener());
     }
 
@@ -36,6 +32,13 @@ public class GamePresenter implements Presenter {
         }
     }
 
+    @Override
+    public void initPresent() {
+        this.gameModel = new GameModel(this);
+        this.gameView = new GameView(this);
+    }
+
+    @Override
     public final void setVisible(final boolean visible) {
         if (visible) {
             gameView.setSize(VIEW_WIDTH, VIEW_HEIGHT);
@@ -49,13 +52,26 @@ public class GamePresenter implements Presenter {
     }
 
     public final void gameStart() {
+        gameView.stopPauseKeyListen();
         gameView.startPlayerKeyListen();
+        gameView.setVisiblePauseDialog(false);
+        gameView.drawBoard(gameModel.getBoard());
         timer.start();
     }
 
     public final void gameStop() {
         gameView.stopPlayerKeyListen();
+        gameView.startPauseKeyListen();
+        gameView.setVisiblePauseDialog(true);
         timer.stop();
+    }
+
+    public final void gameOver() {
+        gameView.stopPlayerKeyListen();
+        gameView.stopPauseKeyListen();
+        gameView.setVisiblePauseDialog(false);
+        timer.stop();
+        System.out.println("game over");
     }
 
     public final void moveRotate() {
