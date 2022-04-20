@@ -13,6 +13,7 @@ public class GameModel {
     private ArrayList<BoardElement[]> board;
     private Block currentBlock;
     private Block nextBlock;
+    private int deletedRowCount = 0;
 
     private final int DEFAULT_POS_X = 3;
     private final int DEFAULT_POS_Y = 0;
@@ -42,12 +43,22 @@ public class GameModel {
         }
     }
 
-
     public final void setRandomBlock() {
         Random rnd = new Random(System.currentTimeMillis());
-        int rndNum = rnd.nextInt(BlockKind.values().length);
-        BlockKind blockKind = BlockKind.values()[rndNum];
-        currentBlock = BlockKind.getBlockInstance(blockKind);
+        int rndNum;
+        BlockKind blockKind;
+        if (deletedRowCount > 9) {
+            deletedRowCount = 10 - deletedRowCount;
+            rndNum = rnd.nextInt(1) + 7;
+            blockKind = BlockKind.values()[rndNum];
+            currentBlock = BlockKind.getBlockInstance(blockKind);
+        }
+        else {
+            rndNum = rnd.nextInt(7);
+            blockKind = BlockKind.values()[rndNum];
+            currentBlock = BlockKind.getBlockInstance(blockKind);
+        }
+
         posX = DEFAULT_POS_X;
         posY = DEFAULT_POS_Y;
         GameOver gameOver = new GameOver();
@@ -59,7 +70,6 @@ public class GameModel {
             // signal to presenter(KeyBinding 해제)
         }
     }
-
 
     private enum Result {
         OK, ERR;
@@ -169,7 +179,6 @@ public class GameModel {
         public void hook() {
             checkBoard();
             setRandomBlock();
-            placeBlock();
         }
     }
 
@@ -237,7 +246,6 @@ public class GameModel {
         down.run();
     }
 
-
     public final void moveRight() {
         Right right = new Right();
         right.run();
@@ -263,16 +271,22 @@ public class GameModel {
     }
 
     public final void checkBoard() {
-        for (int i = 0; i < ConfigModel.boardHeight; i++) {
-            boolean isRaw = true;
-            for (int j = 0; j < ConfigModel.boardWidth; j++) {
-                if (board.get(i)[j] == BoardElement.EMPTY) {
-                    isRaw = false;
-                    break;
+        if (currentBlock.isItemBlock()) {
+            shiftDown(posY + currentBlock.getItemPosY() - 1);
+        }
+        else {
+            for (int i = 0; i < ConfigModel.boardHeight; i++) {
+                boolean isRaw = true;
+                for (int j = 0; j < ConfigModel.boardWidth; j++) {
+                    if (board.get(i)[j] == BoardElement.EMPTY) {
+                        isRaw = false;
+                        break;
+                    }
                 }
-            }
-            if (isRaw) {
-                shiftDown(i - 1);
+                if (isRaw) {
+                    shiftDown(i - 1);
+                    deletedRowCount++;
+                }
             }
         }
     }

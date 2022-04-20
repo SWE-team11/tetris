@@ -1,5 +1,6 @@
 package tetris.blocks;
 
+import tetris.utils.BlockKind;
 import tetris.utils.BoardElement;
 
 public class TBlock extends Block {
@@ -8,5 +9,6 @@ public class TBlock extends Block {
                 {BoardElement.EMPTY, BoardElement.T_BLOCK, BoardElement.EMPTY},
                 {BoardElement.T_BLOCK, BoardElement.T_BLOCK, BoardElement.T_BLOCK}
         };
+        kind = BlockKind.T_BLOCK;
     }
 }
