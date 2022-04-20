@@ -51,7 +51,7 @@ public class GameModel {
         Random rnd = new Random(System.currentTimeMillis());
         int rndNum = rnd.nextInt(BlockKind.values().length);
         BlockKind blockKind = BlockKind.values()[rndNum];
-        currentBlock = new IBlock();
+        currentBlock = BlockKind.getBlockInstance(blockKind);
         posX = DEFAULT_POS_X;
         posY = DEFAULT_POS_Y;
         GameOver gameOver = new GameOver();
