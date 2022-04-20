@@ -30,7 +30,7 @@ public class MainView extends JFrame {
         fl.setAlignment(FlowLayout.RIGHT);
         JPanel btnPanel = new JPanel() {
             public void paintComponent(Graphics g) {
-                g.drawImage(background, 0, 0, null);
+                g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(),null);
             }
         };
         btnPanel.setLayout(null);
@@ -53,6 +53,7 @@ public class MainView extends JFrame {
             }
         });
         playBtn.setBounds(30, 300, 320, 90);
+
 
         normalClickedBtn.setBorderPainted(false);
         normalClickedBtn.setContentAreaFilled(false);
