@@ -15,7 +15,7 @@ public class GameModel {
     private Block nextBlock;
     private double score = 0;
     private int deletedRowCount = 0;
-    private boolean itemCreated = false;
+    private int itemCount = 0;
 
     private final int DEFAULT_POS_X = 3;
     private final int DEFAULT_POS_Y = 0;
@@ -63,12 +63,11 @@ public class GameModel {
             currentBlock = nextBlock;
         }
 
-        if (!itemCreated && deletedRowCount != 0 && deletedRowCount % 10 == 0) {
-            itemCreated = true;
+        if (itemCount >= 2) {
+            itemCount = 0;
             rndNum = rnd.nextInt(1) + 7;
         }
         else {
-            itemCreated = false;
             switch (ConfigModel.gameDifficulty) {
                 case EASY -> {
                     rndNum = rnd.nextInt(72) / 10; // I_BLOCK 60 ~ 71, weight 12
@@ -193,7 +192,6 @@ public class GameModel {
         public void move() {
             posY++;
             score += ConfigModel.getScoreRate();
-            System.out.print(deletedRowCount + "," + currentBlock.getKind().name() + "," + nextBlock.getKind().name() + "\n");
         }
 
         public void moveBack() {
@@ -310,6 +308,7 @@ public class GameModel {
                 }
                 score += 100 * ConfigModel.getScoreRate();
                 deletedRowCount++;
+                itemCount++;
             }
         }
     }
@@ -329,6 +328,7 @@ public class GameModel {
                 }
                 score += 100 * ConfigModel.getScoreRate();
                 deletedRowCount++;
+                itemCount++;
             }
         }
         gamePresenter.drawBoard();
