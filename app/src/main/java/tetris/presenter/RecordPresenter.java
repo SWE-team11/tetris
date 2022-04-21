@@ -20,7 +20,6 @@ public class RecordPresenter implements Presenter {
     @Override
     public void initPresent() {
         recordView = new RecordView(this);
-        RecordModel.loadRecord();
     }
 
     @Override

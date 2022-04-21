@@ -8,6 +8,9 @@ import tetris.view.GameView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import javax.swing.Timer;
@@ -102,8 +105,13 @@ public class GamePresenter implements Presenter {
     }
 
     public final void recordGame(String name) {
+        Date date = new Date();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("MM.dd")
+                .withZone(ZoneId.systemDefault());
+        String dateToStr = format.format(date.toInstant());
+
         if(name == "") name = "Noname";
-        RecordModel.addRecord((int)gameModel.getScore(), gameModel.getDeletedRaw(), ConfigModel.gameMode, ConfigModel.gameDifficulty, new Date().toString(), name);
+        RecordModel.addRecord((int)gameModel.getScore(), gameModel.getDeletedRaw(), ConfigModel.gameMode, ConfigModel.gameDifficulty, dateToStr, name);
     }
 
     public final void weightItemStart() {
