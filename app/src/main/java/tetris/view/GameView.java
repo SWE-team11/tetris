@@ -31,6 +31,8 @@ public class GameView extends JFrame {
 
     static final int LINE_BORDER_OUTER_WEIGHT = 10;
     static final int LINE_BORDER_INNER_WEIGHT = 5;
+    private final int VIEW_WIDTH = 400;
+    private final int VIEW_HEIGHT = 600;
     static final int FONT_SIZE = 28;
     static final float LINE_SPACING = -0.45f;
     private static final long serialVersionUID = 2434035659171694595L;
@@ -47,12 +49,22 @@ public class GameView extends JFrame {
         }
     };
 
+    private int getWidth(ConfigModel.BoardSize boardSize) {
+        return switch (boardSize) {
+            case SMALL -> -20;
+            case MEDIUM -> 0;
+            case LARGE -> 60;
+        };
+    }
+
     private GamePresenter gamePresenter;
     private PlayerKeyListener playerKeyListener;
     private PauseKeyListener pauseKeyListener;
 
     public GameView(final GamePresenter presenter) {
         super("TETRIS");
+        setSize(VIEW_WIDTH + getWidth(ConfigModel.boardSize), VIEW_HEIGHT);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.gamePresenter = presenter;
@@ -71,7 +83,7 @@ public class GameView extends JFrame {
             }
         };
         nextPanel.setLayout(null);
-        nextPanel.setBounds(280,54,70,120);
+        nextPanel.setBounds(280 + getWidth(ConfigModel.boardSize),54,70,120);
 
         JPanel scorePanel = new JPanel() {
             public void paintComponent(Graphics g) {
@@ -79,7 +91,7 @@ public class GameView extends JFrame {
             }
         };
         scorePanel.setLayout(null);
-        scorePanel.setBounds(279,260,70,120);
+        scorePanel.setBounds(279 + getWidth(ConfigModel.boardSize),260,70,120);
 
         JPanel levelPanel = new JPanel() {
             public void paintComponent(Graphics g) {
@@ -87,7 +99,7 @@ public class GameView extends JFrame {
             }
         };
         levelPanel.setLayout(null);
-        levelPanel.setBounds(280,340,70,120);
+        levelPanel.setBounds(280 + getWidth(ConfigModel.boardSize),340,70,120);
 
         JPanel linesPanel = new JPanel() {
             public void paintComponent(Graphics g) {
@@ -95,13 +107,13 @@ public class GameView extends JFrame {
             }
         };
         linesPanel.setLayout(null);
-        linesPanel.setBounds(280,420,70,120);
+        linesPanel.setBounds(280 + getWidth(ConfigModel.boardSize),420,70,120);
 
         boardPane = new JTextPane();
         boardPane.setEditable(false);
         boardPane.setOpaque(false);
         boardPane.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
-        boardPane.setBounds(40,55, 220,440);
+        boardPane.setBounds(40,55, 220 + getWidth(ConfigModel.boardSize),440);
 
         nextBlockPane = new JTextPane();
         nextBlockPane.setEditable(false);
@@ -111,19 +123,19 @@ public class GameView extends JFrame {
         scorePane = new JTextPane();
         scorePane.setEditable(false);
         scorePane.setOpaque(false);
-        scorePane.setBounds(285, 290, 70, 70);
+        scorePane.setBounds(285 + getWidth(ConfigModel.boardSize), 290, 70, 70);
 
         levelPane = new JTextPane();
         levelPane.setEditable(false);
         levelPane.setOpaque(false);
-        levelPane.setBounds(280, 370, 70, 70);
+        levelPane.setBounds(280 + getWidth(ConfigModel.boardSize), 370, 70, 70);
 
         deletedRawPane = new JTextPane();
         deletedRawPane.setEditable(false);
         deletedRawPane.setOpaque(false);
-        deletedRawPane.setBounds(285, 450, 70, 70);
+        deletedRawPane.setBounds(285 + getWidth(ConfigModel.boardSize), 450, 70, 70);
 
-        pauseDialog.setBounds(100, 200, 200, 100);
+        pauseDialog.setBounds(100 + getWidth(ConfigModel.boardSize), 200, 200, 100);
         pauseDialog.setLayout(null);
         pauseDialog.setVisible(false);
         pauseDialog.setOpaque(false);
