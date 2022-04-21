@@ -2,11 +2,13 @@ package tetris.presenter;
 
 import tetris.model.ConfigModel;
 import tetris.model.GameModel;
+import tetris.model.RecordModel;
 import tetris.utils.Presenter;
 import tetris.view.GameView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.Timer;
 
@@ -90,6 +92,20 @@ public class GamePresenter implements Presenter {
         deleteTimer.stop();
     }
 
+    public final void gameOver() {
+        gameView.drawScrollDialog((int)gameModel.getScore());
+        gameView.stopPlayerKeyListen();
+        gameView.stopPauseKeyListen();
+        gameView.setVisiblePauseDialog(false);
+        gameView.setVisibleScoreDialog(true);
+        mainTimer.stop();
+    }
+
+    public final void recordGame(String name) {
+        if(name == "") name = "Noname";
+        RecordModel.addRecord((int)gameModel.getScore(), gameModel.getDeletedRaw(), ConfigModel.gameMode, ConfigModel.gameDifficulty, new Date().toString(), name);
+    }
+
     public final void weightItemStart() {
         gameView.stopPlayerKeyListen();
         mainTimer.stop();
@@ -108,14 +124,6 @@ public class GamePresenter implements Presenter {
         gameView.drawScore(gameModel.getScore());
         gameView.drawLevel();
         gameView.drawDeletedRaw(gameModel.getDeletedRaw());
-    }
-
-    public final void gameOver() {
-        gameView.stopPlayerKeyListen();
-        gameView.stopPauseKeyListen();
-        gameView.setVisiblePauseDialog(false);
-        gameView.setVisibleScoreDialog(true);
-        mainTimer.stop();
     }
 
     public final void moveRotate() {
