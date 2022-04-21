@@ -164,6 +164,7 @@ public class GameModel {
 
         public void move() {
             posY++;
+            score += ConfigModel.getScoreRate();
         }
 
         public void moveBack() {
