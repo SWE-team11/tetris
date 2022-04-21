@@ -15,6 +15,7 @@ public class GameModel {
     private Block nextBlock;
     private double score = 0;
     private int deletedRowCount = 0;
+    private int itemCount = 0;
 
     private final int DEFAULT_POS_X = 3;
     private final int DEFAULT_POS_Y = 0;
@@ -53,7 +54,7 @@ public class GameModel {
     public final void setRandomBlock() {
         Random rnd = new Random(System.currentTimeMillis());
         BlockKind blockKind;
-        int rndNum;
+        int rndNum = 0;
 
         if(nextBlock == null) {
             rndNum = rnd.nextInt(7);
@@ -63,8 +64,20 @@ public class GameModel {
             currentBlock = nextBlock;
         }
 
-        if (deletedRowCount != 0 && deletedRowCount % 10 == 0) rndNum = rnd.nextInt(1) + 7;
-        else rndNum = rnd.nextInt(7);
+        if (itemCount >= 10) {
+            itemCount -= 10;
+            rndNum = rnd.nextInt(1) + 7;
+        }
+        else {
+            switch (ConfigModel.gameDifficulty) {
+                case EASY -> {
+                    rndNum = rnd.nextInt(72) / 10; // I_BLOCK 60 ~ 71, weight 12
+                    if(rndNum > 6) rndNum = 6;
+                }
+                case NORMAL -> rndNum = rnd.nextInt(70) / 10; // I_BLOCK 60 ~ 69, weight 10
+                case HARD -> rndNum = rnd.nextInt(68) / 10; // I_BLOCK 60 ~ 67, weight 8
+            }
+        }
 
         blockKind = BlockKind.values()[rndNum];
         nextBlock = BlockKind.getBlockInstance(blockKind);
@@ -302,8 +315,11 @@ public class GameModel {
                 for (int j = 0; j < ConfigModel.boardWidth; j++) {
                     board.get(posY + currentBlock.getItemPosY())[j] = BoardElement.DELETE;
                 }
+                checkRaw();
+
                 score += 100 * ConfigModel.getScoreRate();
                 deletedRowCount++;
+                itemCount++;
                 gameSpeedUp();
             }
         }
@@ -324,6 +340,7 @@ public class GameModel {
                 }
                 score += 100 * ConfigModel.getScoreRate();
                 deletedRowCount++;
+                itemCount++;
                 gameSpeedUp();
             }
         }

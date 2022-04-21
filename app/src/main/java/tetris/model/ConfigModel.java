@@ -30,7 +30,7 @@ public class ConfigModel {
     }
 
     public static GameMode gameMode = GameMode.BASIC;
-    public static GameDifficulty gameDifficulty = GameDifficulty.NORMAL;
+    public static GameDifficulty gameDifficulty = GameDifficulty.EASY;
     public static int boardWidth = 10;
     public static int boardHeight = 20;
     public static int gameSpeed = 1;
