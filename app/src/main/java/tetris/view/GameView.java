@@ -14,6 +14,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.text.*;
 
 public class GameView extends JFrame {
@@ -23,6 +25,10 @@ public class GameView extends JFrame {
     }
 
     private Image background = getResource("image/GameViewBackground.png").getImage();
+    private Image nextImg = getResource("image/next.png").getImage();
+    private Image scoreImg = getResource("image/score.png").getImage();
+    private Image levelImg = getResource("image/level.png").getImage();
+    private Image linesImg = getResource("image/lines.png").getImage();
 
     static final int LINE_BORDER_OUTER_WEIGHT = 10;
     static final int LINE_BORDER_INNER_WEIGHT = 5;
@@ -56,30 +62,63 @@ public class GameView extends JFrame {
         backgroundPanel.setLayout(null);
         backgroundPanel.setBorder(BorderFactory.createEmptyBorder(200 , 0 , 0 , 25));
 
+        JPanel nextPanel = new JPanel() {
+            public void paintComponent(Graphics g) {
+                g.drawImage(nextImg, 0, 0, 70,120,null);
+            }
+        };
+        nextPanel.setLayout(null);
+        nextPanel.setBounds(280,54,70,120);
+
+        JPanel scorePanel = new JPanel() {
+            public void paintComponent(Graphics g) {
+                g.drawImage(scoreImg, 0, 0, 70,76,null);
+            }
+        };
+        scorePanel.setLayout(null);
+        scorePanel.setBounds(279,260,70,120);
+
+        JPanel levelPanel = new JPanel() {
+            public void paintComponent(Graphics g) {
+                g.drawImage(levelImg, 0, 0, 70,76,null);
+            }
+        };
+        levelPanel.setLayout(null);
+        levelPanel.setBounds(280,340,70,120);
+
+        JPanel linesPanel = new JPanel() {
+            public void paintComponent(Graphics g) {
+                g.drawImage(linesImg, 0, 0, 70,76,null);
+            }
+        };
+        linesPanel.setLayout(null);
+        linesPanel.setBounds(280,420,70,120);
+
         boardPane = new JTextPane();
         boardPane.setEditable(false);
         boardPane.setOpaque(false);
+        boardPane.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
         boardPane.setBounds(40,55, 220,440);
 
         nextBlockPane = new JTextPane();
         nextBlockPane.setEditable(false);
         nextBlockPane.setOpaque(false);
-        nextBlockPane.setBounds(290, 90, 70, 80);
+        nextBlockPane.setBounds(0, 28, 70, 85);
 
         scorePane = new JTextPane();
         scorePane.setEditable(false);
         scorePane.setOpaque(false);
-        scorePane.setBounds(290, 317, 70, 70);
+        scorePane.setBounds(285, 290, 70, 70);
 
         levelPane = new JTextPane();
         levelPane.setEditable(false);
         levelPane.setOpaque(false);
-        levelPane.setBounds(290, 385, 70, 70);
+        levelPane.setBounds(280, 370, 70, 70);
 
         deletedRawPane = new JTextPane();
         deletedRawPane.setEditable(false);
         deletedRawPane.setOpaque(false);
-        deletedRawPane.setBounds(290, 462, 70, 70);
+        deletedRawPane.setBounds(285, 450, 70, 70);
 
         pauseDialog.setBounds(100, 200, 200, 100);
         pauseDialog.setLayout(null);
@@ -99,10 +138,16 @@ public class GameView extends JFrame {
         pauseDialog.add(exitBtn);
         backgroundPanel.add(pauseDialog);
         backgroundPanel.add(boardPane);
-        backgroundPanel.add(nextBlockPane);
         backgroundPanel.add(scorePane);
         backgroundPanel.add(levelPane);
         backgroundPanel.add(deletedRawPane);
+        backgroundPanel.add(nextPanel);
+        backgroundPanel.add(scorePanel);
+        backgroundPanel.add(levelPanel);
+        backgroundPanel.add(linesPanel);
+        nextPanel.add(nextBlockPane);
+
+
 
         styleSet = new SimpleAttributeSet();
         StyleConstants.setFontSize(styleSet, FONT_SIZE);
