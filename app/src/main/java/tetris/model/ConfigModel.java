@@ -33,7 +33,7 @@ public class ConfigModel {
     public static GameDifficulty gameDifficulty = GameDifficulty.NORMAL;
     public static int boardWidth = 10;
     public static int boardHeight = 20;
-    public static int gameSpeed = 2;
+    public static int gameSpeed = 1;
     public static boolean colorBlindMode = true;
     public static int[] keyBinding = {
             KeyEvent.VK_UP, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT,

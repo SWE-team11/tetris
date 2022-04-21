@@ -1,6 +1,6 @@
 package tetris.model;
 
-import tetris.blocks.*;
+import tetris.utils.Block;
 import tetris.utils.BlockKind;
 import tetris.utils.BoardElement;
 import tetris.presenter.GamePresenter;
@@ -14,6 +14,7 @@ public class GameModel {
     private Block currentBlock;
     private Block nextBlock;
     private double score = 0;
+    private int deletedRowCount = 0;
 
     private final int DEFAULT_POS_X = 3;
     private final int DEFAULT_POS_Y = 0;
@@ -33,6 +34,10 @@ public class GameModel {
         return board;
     }
 
+    public double getScore() {
+        return this.score;
+    }
+
     public final void initBoard(final int width, final int height) {
         board = new ArrayList<BoardElement[]>(height);
         for (int i = 0; i < height; i++) {
@@ -44,15 +49,16 @@ public class GameModel {
         }
     }
 
-    public double getScore() {
-        return this.score;
-    }
-
     public final void setRandomBlock() {
         Random rnd = new Random(System.currentTimeMillis());
-        int rndNum = rnd.nextInt(BlockKind.values().length);
-        BlockKind blockKind = BlockKind.values()[rndNum];
+        int rndNum;
+        if (deletedRowCount != 0 && deletedRowCount % 10 == 0) rndNum = rnd.nextInt(1) + 7;
+        else rndNum = rnd.nextInt(7);
+
+        BlockKind blockKind;
+        blockKind = BlockKind.values()[rndNum];
         currentBlock = BlockKind.getBlockInstance(blockKind);
+
         posX = DEFAULT_POS_X;
         posY = DEFAULT_POS_Y;
         GameOver gameOver = new GameOver();
@@ -63,7 +69,6 @@ public class GameModel {
             gamePresenter.gameOver();
         }
     }
-
 
     private enum Result {
         OK, ERR;
@@ -172,7 +177,11 @@ public class GameModel {
         }
 
         public void hook() {
-            checkRaw();
+            if(currentBlock.isItemBlock()) {
+                triggerItem();
+            } else {
+                checkRaw();
+            }
             setRandomBlock();
         }
     }
@@ -242,7 +251,6 @@ public class GameModel {
         down.run();
     }
 
-
     public final void moveRight() {
         Right right = new Right();
         right.run();
@@ -270,6 +278,18 @@ public class GameModel {
         rotate.run();
     }
 
+    public final void triggerItem() {
+        switch (currentBlock.getKind()) {
+            case LINE_CLEAR_ITEM -> {
+                for (int j = 0; j < ConfigModel.boardWidth; j++) {
+                    board.get(posY + currentBlock.getItemPosY())[j] = BoardElement.DELETE;
+                }
+                score += 100 * ConfigModel.getScoreRate();
+                deletedRowCount++;
+            }
+        }
+    }
+
     public final void checkRaw() {
         for (int i = 0; i < ConfigModel.boardHeight; i++) {
             boolean isRaw = true;
@@ -283,7 +303,8 @@ public class GameModel {
                 for (int j = 0; j < ConfigModel.boardWidth; j++) {
                     board.get(i)[j] = BoardElement.DELETE;
                 }
-                gamePresenter.deleteTimerStart();
+                score += 100 * ConfigModel.getScoreRate();
+                deletedRowCount++;
             }
         }
         gamePresenter.drawBoard();
@@ -291,27 +312,19 @@ public class GameModel {
 
     public final void runDelete() {
         for (int i = 0; i < ConfigModel.boardHeight; i++) {
-            boolean isDeleteRaw = true;
             for (int j = 0; j < ConfigModel.boardWidth; j++) {
-                if (board.get(i)[j] != BoardElement.DELETE) {
-                    isDeleteRaw = false;
-                    break;
+                if (board.get(i)[j] == BoardElement.DELETE) {
+                    shiftDown(i-1, j);
                 }
-            }
-            if (isDeleteRaw) {
-                shiftDown(i-1);
-                gamePresenter.deleteTimerStop();
-                score += 100 * ConfigModel.getScoreRate();
             }
         }
     }
 
-    public final void shiftDown(final int startHeight) {
+    public final void shiftDown(final int startHeight, final int posX) {
         eraseCurr();
         for (int i = startHeight; i >= 0; i--) {
-            for (int j = 0; j < ConfigModel.boardWidth; j++) {
-                board.get(i + 1)[j] = board.get(i)[j];
-            }
+            board.get(i + 1)[posX] = board.get(i)[posX];
         }
+        placeBlock();
     }
 }

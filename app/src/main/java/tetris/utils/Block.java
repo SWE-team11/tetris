@@ -1,9 +1,10 @@
-package tetris.blocks;
+package tetris.utils;
 
+import tetris.utils.BlockKind;
 import tetris.utils.BoardElement;
 
 public abstract class Block {
-
+    protected BlockKind kind;
     protected BoardElement[][] shape;
 
     public Block() {
@@ -17,7 +18,11 @@ public abstract class Block {
         return shape[y][x];
     }
 
-    public final void rotate() {
+    public final BoardElement[][] getFullShape() {
+        return shape;
+    }
+
+    public void rotate() {
         BoardElement[][] temp = new BoardElement[width()][height()];
         for (int i = 0; i < width(); i++) {
             for (int j = 0; j < height(); j++) {
@@ -36,5 +41,17 @@ public abstract class Block {
             return shape[0].length;
         }
         return 0;
+    }
+
+    public int getItemPosY() {
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean isItemBlock() {
+        return false;
+    }
+
+    public BlockKind getKind() {
+        return kind;
     }
 }
