@@ -1,18 +1,18 @@
 package tetris.utils;
 
 import tetris.blocks.*;
-import tetris.items.LineClearItem;
-import tetris.items.SameDeleteItem;
+import tetris.items.*;
 
 public enum BlockKind {
-    J_BLOCK, L_BLOCK, Z_BLOCK, S_BLOCK, T_BLOCK, O_BLOCK, I_BLOCK, LINE_CLEAR_ITEM, SAME_DELETE_ITEM;
+    J_BLOCK, L_BLOCK, Z_BLOCK, S_BLOCK, T_BLOCK, O_BLOCK, I_BLOCK,
+    LINE_CLEAR_ITEM, BOMB_ITEM, CROSS_DELETE_ITEM, SAME_DELETE_ITEM;
 
     public static final int getTetrominoSize() {
         return 7;
     }
 
     public static final int getItemSize() {
-        return 2;
+        return 4;
     }
 
     public static final Block getBlockInstance(final BlockKind blockKind) {
@@ -25,6 +25,8 @@ public enum BlockKind {
             case T_BLOCK -> new TBlock();
             case O_BLOCK -> new OBlock();
             case LINE_CLEAR_ITEM -> new LineClearItem();
+            case BOMB_ITEM -> new BombItem();
+            case CROSS_DELETE_ITEM -> new CrossDeleteItem();
             case SAME_DELETE_ITEM -> new SameDeleteItem();
         };
     }

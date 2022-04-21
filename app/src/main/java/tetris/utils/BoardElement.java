@@ -5,13 +5,14 @@ import tetris.model.ConfigModel;
 import java.awt.*;
 
 public enum BoardElement {
-    EMPTY, BORDER, I_BLOCK, J_BLOCK, L_BLOCK, O_BLOCK, S_BLOCK, T_BLOCK, Z_BLOCK, DELETE, LINE_CLEAR_ITEM, SAME_DELETE_ITEM;
+    EMPTY, BORDER, I_BLOCK, J_BLOCK, L_BLOCK, O_BLOCK, S_BLOCK, T_BLOCK, Z_BLOCK, DELETE, 
+    LINE_CLEAR_ITEM, BOMB_ITEM, CROSS_DELETE_ITEM, SAME_DELETE_ITEM;
 
     public static Color getElementColor(final BoardElement element) {
         if (ConfigModel.colorBlindMode) {
             return switch (element) {
                 case EMPTY -> Color.BLACK;
-                case BORDER, DELETE, LINE_CLEAR_ITEM, SAME_DELETE_ITEM -> Color.WHITE;
+                case BORDER, DELETE, LINE_CLEAR_ITEM, BOMB_ITEM, CROSS_DELETE_ITEM, SAME_DELETE_ITEM -> Color.WHITE;
                 case I_BLOCK -> Color.decode("#0074B6"); //Sky Blue
                 case J_BLOCK -> Color.decode("#1BB7ED"); //Blue
                 case L_BLOCK -> Color.decode("#F19B00"); //Orange
@@ -23,7 +24,7 @@ public enum BoardElement {
         } else {
             return switch (element) {
                 case EMPTY -> Color.BLACK;
-                case BORDER, DELETE, LINE_CLEAR_ITEM, SAME_DELETE_ITEM -> Color.WHITE;
+                case BORDER, DELETE, LINE_CLEAR_ITEM, BOMB_ITEM, CROSS_DELETE_ITEM, SAME_DELETE_ITEM -> Color.WHITE;
                 case I_BLOCK -> Color.CYAN;
                 case J_BLOCK -> Color.BLUE;
                 case L_BLOCK -> Color.ORANGE;
@@ -42,6 +43,8 @@ public enum BoardElement {
             case BORDER -> "X";
             case I_BLOCK, J_BLOCK, L_BLOCK, O_BLOCK, S_BLOCK, T_BLOCK, Z_BLOCK, DELETE -> "O";
             case LINE_CLEAR_ITEM -> "L";
+            case BOMB_ITEM -> "B";
+            case CROSS_DELETE_ITEM -> "C";
             case SAME_DELETE_ITEM -> "S";
         };
     }

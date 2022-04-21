@@ -19,6 +19,7 @@ public class GameModel {
 
     private final int DEFAULT_POS_X = 3;
     private final int DEFAULT_POS_Y = 0;
+    private final int ITEM_GENERATE_INTERVAL = 1;
     private double gameSpeed = ConfigModel.gameSpeed;
 
     private int posX;
@@ -64,10 +65,10 @@ public class GameModel {
             currentBlock = nextBlock;
         }
 
-        if (ConfigModel.gameMode == ConfigModel.GameMode.ITEM && itemCount >= 10) {
-            itemCount -= 10;
+        if (ConfigModel.gameMode == ConfigModel.GameMode.ITEM && itemCount >= ITEM_GENERATE_INTERVAL) {
+            itemCount = Math.max(0, itemCount - ITEM_GENERATE_INTERVAL);
             rndNum = rnd.nextInt(BlockKind.getItemSize()) + BlockKind.getTetrominoSize();
-        }
+        } 
         else {
             switch (ConfigModel.gameDifficulty) {
                 case EASY -> {
@@ -252,7 +253,6 @@ public class GameModel {
     }
 
     public final Result placeBlock() {
-
         for (int i = 0; i < currentBlock.width(); i++) {
             for (int j = 0; j < currentBlock.height(); j++) {
                 if (board.get(posY + j)[posX + i] != BoardElement.EMPTY
@@ -322,17 +322,48 @@ public class GameModel {
                 itemCount++;
                 gameSpeedUp();
             }
+            case BOMB_ITEM -> {
+                int Xstart = Math.max(0, posX - 2);
+                int Xend = Math.min(ConfigModel.boardWidth - 1, posX + 2);
+                int Ystart = Math.max(0, posY - 2);
+                int Yend = Math.min(ConfigModel.boardHeight - 1, posY + 2);
+                int cnt = 0;
+                for (int i = Ystart; i <= Yend; i++) {
+                    for (int j = Xstart; j <= Xend; j++) {
+                        if (board.get(i)[j] != BoardElement.EMPTY) {
+                            board.get(i)[j] = BoardElement.DELETE;
+                            cnt++;
+                        }
+                    }
+                }
+                score += 10 * cnt * ConfigModel.getScoreRate();
+                gameSpeedUp();
+            }
+            case CROSS_DELETE_ITEM -> {
+                int cnt = 0;
+                for (int i = 0; i < ConfigModel.boardHeight; i++) {
+                    for (int j = 0; j < ConfigModel.boardWidth; j++) {
+                        if(Math.abs(posX - j) == Math.abs(posY - i) && board.get(i)[j] != BoardElement.EMPTY) {
+                            board.get(i)[j] = BoardElement.DELETE;
+                            cnt++;
+                        }
+                    }
+                }
+                score += 10 * cnt * ConfigModel.getScoreRate();
+                gameSpeedUp();
+            }
             case SAME_DELETE_ITEM -> {
+                int cnt = 0;
                 for (int i = 0; i < ConfigModel.boardHeight; i++) {
                     for (int j = 0; j < ConfigModel.boardWidth; j++) {
                         if(board.get(i)[j] == currentBlock.getBoardElement()
                                 || board.get(i)[j] == BoardElement.SAME_DELETE_ITEM) {
                             board.get(i)[j] = BoardElement.DELETE;
+                            cnt++;
                         }
                     }
                 }
-                score += 100 * ConfigModel.getScoreRate();
-                deletedRowCount++;
+                score += 10 * cnt * ConfigModel.getScoreRate();
                 gameSpeedUp();
             }
         }

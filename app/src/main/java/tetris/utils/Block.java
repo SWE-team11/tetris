@@ -40,6 +40,10 @@ public abstract class Block {
         throw new UnsupportedOperationException();
     }
 
+    public int getItemPosX() {
+        throw new UnsupportedOperationException();
+    }
+
     public BoardElement getBoardElement() {
         return this.boardElement;
     }
