@@ -114,6 +114,7 @@ public class GamePresenter implements Presenter {
         gameView.stopPlayerKeyListen();
         gameView.stopPauseKeyListen();
         gameView.setVisiblePauseDialog(false);
+        gameView.setVisibleScoreDialog(true);
         mainTimer.stop();
     }
 
