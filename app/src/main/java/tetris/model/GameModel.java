@@ -79,8 +79,7 @@ public class GameModel {
 
         if (ConfigModel.gameMode == ConfigModel.GameMode.ITEM && itemCount >= ITEM_GENERATE_INTERVAL) {
             itemCount = Math.max(0, itemCount - ITEM_GENERATE_INTERVAL);
-            // rndNum = rnd.nextInt(BlockKind.getItemSize()) + BlockKind.getTetrominoSize();
-            rndNum = 11;
+            rndNum = rnd.nextInt(BlockKind.getItemSize()) + BlockKind.getTetrominoSize();
         } 
         else {
             switch (ConfigModel.gameDifficulty) {
