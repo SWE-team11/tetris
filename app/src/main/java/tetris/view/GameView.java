@@ -29,6 +29,7 @@ public class GameView extends JFrame {
     private Image scoreImg = getResource("image/score.png").getImage();
     private Image levelImg = getResource("image/level.png").getImage();
     private Image linesImg = getResource("image/lines.png").getImage();
+    private Image pausePanelImg = getResource("image/pausePanel.png").getImage();
 
     static final int LINE_BORDER_OUTER_WEIGHT = 10;
     static final int LINE_BORDER_INNER_WEIGHT = 5;
@@ -42,7 +43,11 @@ public class GameView extends JFrame {
     private JTextPane levelPane;
     private JTextPane deletedRawPane;
     private SimpleAttributeSet styleSet;
-    private JPanel pauseDialog = new JPanel();
+    private JPanel pauseDialog = new JPanel(){
+        public void paintComponent(Graphics g) {
+            g.drawImage(pausePanelImg, 0, 0, 200, 100,null);
+        }
+    };
 
     private GamePresenter gamePresenter;
     private PlayerKeyListener playerKeyListener;
@@ -123,20 +128,25 @@ public class GameView extends JFrame {
         pauseDialog.setBounds(100, 200, 200, 100);
         pauseDialog.setLayout(null);
         pauseDialog.setVisible(false);
-        pauseDialog.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 50));
+        pauseDialog.setOpaque(false);
 
-        JButton continueBtn = new JButton("Continue");
-        JButton exitBtn = new JButton("Exit");
-        continueBtn.setPreferredSize(new Dimension(60,30));
-        exitBtn.setPreferredSize(new Dimension(60,30));
+        JButton continueBtn = new JButton(getResource("image/continue.png"));
+        continueBtn.setBounds(10,30,80,40);
+        continueBtn.setBorderPainted(false);
+        continueBtn.setContentAreaFilled(false);
+
+        JButton exitBtn = new JButton(getResource("image/toMain.png"));
+        exitBtn.setBounds(110,30,80,40);
+        exitBtn.setBorderPainted(false);
+        exitBtn.setContentAreaFilled(false);
 
         continueBtn.addActionListener(e -> gamePresenter.gameStart());
         exitBtn.addActionListener(e -> App.navigate(App.View.MAIN));
 
         this.getContentPane().add(backgroundPanel);
+        backgroundPanel.add(pauseDialog);
         pauseDialog.add(continueBtn);
         pauseDialog.add(exitBtn);
-        backgroundPanel.add(pauseDialog);
         backgroundPanel.add(boardPane);
         backgroundPanel.add(scorePane);
         backgroundPanel.add(levelPane);
@@ -146,7 +156,6 @@ public class GameView extends JFrame {
         backgroundPanel.add(levelPanel);
         backgroundPanel.add(linesPanel);
         nextPanel.add(nextBlockPane);
-
 
 
         styleSet = new SimpleAttributeSet();
