@@ -71,6 +71,11 @@ public class ConfigModel {
         saveConfig();
     }
 
+    public static void changeGameDifficulty(GameDifficulty d) {
+        gameDifficulty = d;
+        saveConfig();
+    }
+
     public static void changeBoardSize(BoardSize b) {
         boardWidth = b.width;
         boardHeight = b.height;
