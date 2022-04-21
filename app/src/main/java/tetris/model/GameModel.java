@@ -40,7 +40,7 @@ public class GameModel {
     }
 
     public final void initBoard(final int width, final int height) {
-        board = new ArrayList<BoardElement[]>(height);
+        board = new ArrayList<>(height);
         for (int i = 0; i < height; i++) {
             BoardElement[] row = new BoardElement[width];
             for (int j = 0; j < width; j++) {
@@ -52,13 +52,22 @@ public class GameModel {
 
     public final void setRandomBlock() {
         Random rnd = new Random(System.currentTimeMillis());
+        BlockKind blockKind;
         int rndNum;
+
+        if(nextBlock == null) {
+            rndNum = rnd.nextInt(7);
+            blockKind = BlockKind.values()[rndNum];
+            currentBlock = BlockKind.getBlockInstance(blockKind);
+        } else {
+            currentBlock = nextBlock;
+        }
+
         if (deletedRowCount != 0 && deletedRowCount % 10 == 0) rndNum = rnd.nextInt(1) + 7;
         else rndNum = rnd.nextInt(7);
 
-        BlockKind blockKind;
         blockKind = BlockKind.values()[rndNum];
-        currentBlock = BlockKind.getBlockInstance(blockKind);
+        nextBlock = BlockKind.getBlockInstance(blockKind);
 
         posX = DEFAULT_POS_X;
         posY = DEFAULT_POS_Y;
