@@ -3,6 +3,7 @@ package tetris.utils;
 import tetris.model.ConfigModel;
 
 public class Record implements Comparable<Record> {
+    public int id;
     public int score;
     public int deletedLine;
     public ConfigModel.GameMode gameMode;
@@ -10,8 +11,9 @@ public class Record implements Comparable<Record> {
     public String createdAt;
     public String name;
 
-    public Record(int score, int deletedLine, ConfigModel.GameMode gameMode, ConfigModel.GameDifficulty gameDifficulty,
+    public Record(int id, int score, int deletedLine, ConfigModel.GameMode gameMode, ConfigModel.GameDifficulty gameDifficulty,
             String createdAt, String name) {
+        this.id = id;
         this.score = score;
         this.deletedLine = deletedLine;
         this.gameMode = gameMode;
@@ -22,9 +24,9 @@ public class Record implements Comparable<Record> {
 
     @Override
     public int compareTo(Record o) {
-        if (o.score < score) {
+        if (o.score > score) {
             return 1;
-        } else if (o.score > score) {
+        } else if (o.score < score) {
             return -1;
         }
         return 0;
