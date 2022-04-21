@@ -40,7 +40,7 @@ public class ConfigModel {
     }
 
     public static GameMode gameMode = GameMode.BASIC;
-    public static GameDifficulty gameDifficulty = GameDifficulty.EASY;
+    public static GameDifficulty gameDifficulty = GameDifficulty.NORMAL;
     public static BoardSize boardSize = BoardSize.MEDIUM;
     public static int boardWidth = 10;
     public static int boardHeight = 20;
@@ -71,9 +71,10 @@ public class ConfigModel {
         saveConfig();
     }
 
-    public static void changeBoardSize(BoardSize boardSize) {
-        boardWidth = boardSize.width;
-        boardHeight = boardSize.height;
+    public static void changeBoardSize(BoardSize b) {
+        boardWidth = b.width;
+        boardHeight = b.height;
+        boardSize = b;
         saveConfig();
     }
 
@@ -94,7 +95,7 @@ public class ConfigModel {
 
     public static void initConfig() {
         gameMode = GameMode.BASIC;
-        gameDifficulty = GameDifficulty.EASY;
+        gameDifficulty = GameDifficulty.NORMAL;
         boardSize = BoardSize.MEDIUM;
         boardWidth = 10;
         boardHeight = 20;
