@@ -57,7 +57,7 @@ public class GameModel {
         int rndNum = 0;
 
         if(nextBlock == null) {
-            rndNum = rnd.nextInt(7);
+            rndNum = rnd.nextInt(BlockKind.getTetrominoSize());
             blockKind = BlockKind.values()[rndNum];
             currentBlock = BlockKind.getBlockInstance(blockKind);
         } else {
@@ -66,7 +66,7 @@ public class GameModel {
 
         if (itemCount >= 10) {
             itemCount -= 10;
-            rndNum = rnd.nextInt(1) + 7;
+            rndNum = rnd.nextInt(BlockKind.getItemSize()) + BlockKind.getTetrominoSize();
         }
         else {
             switch (ConfigModel.gameDifficulty) {
@@ -320,6 +320,19 @@ public class GameModel {
                 score += 100 * ConfigModel.getScoreRate();
                 deletedRowCount++;
                 itemCount++;
+                gameSpeedUp();
+            }
+            case SAME_DELETE_ITEM -> {
+                for (int i = 0; i < ConfigModel.boardHeight; i++) {
+                    for (int j = 0; j < ConfigModel.boardWidth; j++) {
+                        if(board.get(i)[j] == currentBlock.getBoardElement()
+                                || board.get(i)[j] == BoardElement.SAME_DELETE_ITEM) {
+                            board.get(i)[j] = BoardElement.DELETE;
+                        }
+                    }
+                }
+                score += 100 * ConfigModel.getScoreRate();
+                deletedRowCount++;
                 gameSpeedUp();
             }
         }
