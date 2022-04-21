@@ -96,6 +96,7 @@ public class MainView extends JFrame {
         easyLevelBtn.setBorderPainted(false);
         easyLevelBtn.setContentAreaFilled(false);
         easyLevelBtn.setBounds(30, 395, 98, 48);
+        easyLevelBtn.setVisible(ConfigModel.gameDifficulty != ConfigModel.GameDifficulty.EASY);
 
         easyLevelBtn.addActionListener(e -> {
             ConfigModel.changeGameDifficulty(ConfigModel.GameDifficulty.EASY);
@@ -111,12 +112,13 @@ public class MainView extends JFrame {
         easyLevelClickedBtn.setBorderPainted(false);
         easyLevelClickedBtn.setContentAreaFilled(false);
         easyLevelClickedBtn.setBounds(30, 395, 98, 48);
-        easyLevelClickedBtn.setVisible(ConfigModel.gameDifficulty == ConfigModel.GameDifficulty.EASY ? true : false);
+        easyLevelClickedBtn.setVisible(ConfigModel.gameDifficulty == ConfigModel.GameDifficulty.EASY);
 
 
         normalLevelBtn.setBorderPainted(false);
         normalLevelBtn.setContentAreaFilled(false);
         normalLevelBtn.setBounds(140, 395, 98, 48);
+        normalLevelBtn.setVisible(ConfigModel.gameDifficulty != ConfigModel.GameDifficulty.NORMAL);
 
         normalLevelBtn.addActionListener(e -> {
             ConfigModel.changeGameDifficulty(ConfigModel.GameDifficulty.NORMAL);
@@ -137,6 +139,7 @@ public class MainView extends JFrame {
         hardLevelBtn.setBorderPainted(false);
         hardLevelBtn.setContentAreaFilled(false);
         hardLevelBtn.setBounds(252, 395, 98, 48);
+        hardLevelBtn.setVisible(ConfigModel.gameDifficulty != ConfigModel.GameDifficulty.HARD);
 
         hardLevelBtn.addActionListener(e -> {
             ConfigModel.changeGameDifficulty(ConfigModel.GameDifficulty.HARD);
