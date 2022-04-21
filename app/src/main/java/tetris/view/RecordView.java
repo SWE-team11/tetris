@@ -46,7 +46,7 @@ public class RecordView extends JFrame {
             recordPanelList.add(new JPanel());
             JPanel currentPanel = recordPanelList.get(i);
             currentPanel.setLayout(null);
-            currentPanel.setBounds(35, 110 + 35*i, 330, 25);
+            currentPanel.setBounds(30, 110 + 33*i, 324, 25);
             currentPanel.setBackground(Color.black);
             currentPanel.setBorder(new TitledBorder(new LineBorder(Color.white,2)));
 
@@ -54,43 +54,43 @@ public class RecordView extends JFrame {
             rank.setText(Integer.toString(i+1));
             rank.setOpaque(false);
             rank.setForeground(Color.white);
-            rank.setBounds(15, 5, 50, 25);
+            rank.setBounds(10, 0, 50, 25);
 
             JTextPane name = new JTextPane();
             name.setText(RecordModel.rankedRecords.get(i).name);
             name.setOpaque(false);
             name.setForeground(Color.white);
-            name.setBounds(50, 5, 50, 25);
+            name.setBounds(45, 0, 50, 25);
 
             JTextPane score = new JTextPane();
             score.setText(Integer.toString(RecordModel.rankedRecords.get(i).score));
             score.setOpaque(false);
             score.setForeground(Color.white);
-            score.setBounds(110, 5, 50, 25);
+            score.setBounds(100, 0, 50, 25);
 
             JTextPane lines = new JTextPane();
             lines.setText(Integer.toString(RecordModel.rankedRecords.get(i).deletedLine));
             lines.setOpaque(false);
             lines.setForeground(Color.white);
-            lines.setBounds(170, 5, 50, 25);
+            lines.setBounds(150, 0, 50, 25);
 
             JTextPane mode = new JTextPane();
             mode.setText(RecordModel.rankedRecords.get(i).gameMode.name());
             mode.setOpaque(false);
             mode.setForeground(Color.white);
-            mode.setBounds(200, 5, 50, 25);
+            mode.setBounds(185, 0, 52, 25);
 
             JTextPane level = new JTextPane();
             level.setText(RecordModel.rankedRecords.get(i).gameDifficulty.name());
             level.setOpaque(false);
             level.setForeground(Color.white);
-            level.setBounds(245, 5, 50, 25);
+            level.setBounds(230, 0, 50, 25);
 
             JTextPane date = new JTextPane();
             date.setText(RecordModel.rankedRecords.get(i).createdAt);
             date.setOpaque(false);
             date.setForeground(Color.white);
-            date.setBounds(290, 5, 50, 25);
+            date.setBounds(285, 0, 50, 25);
 
             System.out.print(RecordModel.rankedRecords.get(i).id);
             System.out.print(", ");
