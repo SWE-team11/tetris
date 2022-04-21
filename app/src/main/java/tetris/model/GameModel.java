@@ -19,6 +19,7 @@ public class GameModel {
 
     private final int DEFAULT_POS_X = 3;
     private final int DEFAULT_POS_Y = 0;
+    private double gameSpeed = ConfigModel.gameSpeed;
 
     private int posX;
     private int posY;
@@ -90,6 +91,14 @@ public class GameModel {
             gamePresenter.gameStop();
             gamePresenter.gameOver();
         }
+
+        gameSpeedUp();
+    }
+
+    public void gameSpeedUp() {
+        if(gameSpeed > ConfigModel.gameSpeed * 5) return;
+        gameSpeed *= 1.005;
+        gamePresenter.setTimeInterval((int)(1000 / gameSpeed));
     }
 
     private enum Result {
@@ -309,6 +318,7 @@ public class GameModel {
                 score += 100 * ConfigModel.getScoreRate();
                 deletedRowCount++;
                 itemCount++;
+                gameSpeedUp();
             }
         }
     }
@@ -329,6 +339,7 @@ public class GameModel {
                 score += 100 * ConfigModel.getScoreRate();
                 deletedRowCount++;
                 itemCount++;
+                gameSpeedUp();
             }
         }
         gamePresenter.drawBoard();

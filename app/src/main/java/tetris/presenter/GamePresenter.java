@@ -22,8 +22,7 @@ public class GamePresenter implements Presenter {
 
     public GamePresenter() {
         mainTimer = new Timer(INIT_INTERVAL, new MainTimerActionListener());
-        deleteTimer = new Timer(INIT_INTERVAL, new DeleteTimerActionListener());
-        deleteTimer.setInitialDelay(INIT_INTERVAL/2);
+        deleteTimer = new Timer(INIT_INTERVAL/3, new DeleteTimerActionListener());
 
         this.gameModel = new GameModel(this);
         this.gameView = new GameView(this);
@@ -64,6 +63,11 @@ public class GamePresenter implements Presenter {
         }
     }
 
+    public final void setTimeInterval(int interval) {
+        mainTimer.setDelay(interval);
+        deleteTimer.setDelay(Math.max(interval/3, 200));
+    }
+
     public final void gameStart() {
         gameView.stopPauseKeyListen();
         gameView.startPlayerKeyListen();
@@ -89,7 +93,6 @@ public class GamePresenter implements Presenter {
         gameView.stopPauseKeyListen();
         gameView.setVisiblePauseDialog(false);
         mainTimer.stop();
-        System.out.println("game over");
     }
 
     public final void moveRotate() {
