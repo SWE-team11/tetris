@@ -91,8 +91,23 @@ public class GameView extends JFrame {
         continueBtn.setPreferredSize(new Dimension(60,30));
         exitBtn.setPreferredSize(new Dimension(60,30));
 
-        exitBtn.addActionListener(e -> App.navigate(App.View.Main));
+        continueBtn.addActionListener(e -> gamePresenter.gameStart());
+        exitBtn.addActionListener(e -> App.navigate(App.View.MAIN));
 
+        this.getContentPane().add(backgroundPanel);
+        pauseDialog.add(continueBtn);
+        pauseDialog.add(exitBtn);
+        backgroundPanel.add(pauseDialog);
+        backgroundPanel.add(boardPane);
+        backgroundPanel.add(nextBlockPane);
+        backgroundPanel.add(scorePane);
+        backgroundPanel.add(levelPane);
+        backgroundPanel.add(deletedRawPane);
+
+        styleSet = new SimpleAttributeSet();
+        StyleConstants.setFontSize(styleSet, FONT_SIZE);
+        StyleConstants.setLineSpacing(styleSet, LINE_SPACING);
+        StyleConstants.setFontFamily(styleSet, "Courier New");
         StyleConstants.setBold(styleSet, true);
         StyleConstants.setAlignment(styleSet, StyleConstants.ALIGN_CENTER);
 
