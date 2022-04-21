@@ -24,7 +24,6 @@ public class ConfigView extends JFrame {
     private JTextPane rotationKeyPane;
 
 
-
     public ConfigView(final ConfigPresenter presenter) {
 
         super("TETRIS");
@@ -51,6 +50,7 @@ public class ConfigView extends JFrame {
         JButton setBtn05 = new JButton("set");
         JButton initializeRecordBtn = new JButton("Initialize Record");
         JButton initializeSettingBtn = new JButton("Initialize Setting");
+        JButton exit = new JButton(getResource("image/smallExit.png"));
 
         // Button
         upBtn.setBorder(new TitledBorder(new LineBorder(Color.white,2)));
@@ -105,6 +105,11 @@ public class ConfigView extends JFrame {
         initializeSettingBtn.setContentAreaFilled(false);
         initializeSettingBtn.setBounds(208, 488, 130, 33);
 
+        exit.setBorderPainted(false);
+        exit.setContentAreaFilled(false);
+        exit.addActionListener(e -> App.navigate(App.View.MAIN));
+        exit.setBounds(343, 10, 30, 30);
+
         // pane
         gameSpeedPane = new JTextPane();
         gameSpeedPane.setEditable(false);
@@ -158,6 +163,7 @@ public class ConfigView extends JFrame {
         configPanel.add(setBtn05);
         configPanel.add(initializeRecordBtn);
         configPanel.add(initializeSettingBtn);
+        configPanel.add(exit);
 
         configPanel.add(gameSpeedPane);
         configPanel.add(downKeyPane);
