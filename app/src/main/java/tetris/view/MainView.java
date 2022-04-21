@@ -1,14 +1,14 @@
 package tetris.view;
 
 import tetris.App;
+import tetris.model.ConfigModel;
 import tetris.presenter.MainPresenter;
 
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 public class MainView extends JFrame {
 
@@ -46,34 +46,66 @@ public class MainView extends JFrame {
 
         playBtn.setBorderPainted(false);
         playBtn.setContentAreaFilled(false);
-        playBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                App.navigate(App.View.Game);
-            }
-        });
+        playBtn.addActionListener(e -> App.navigate(App.View.GAME));
         playBtn.setBounds(30, 300, 320, 90);
 
+        normalBtn.setBorderPainted(false);
+        normalBtn.setContentAreaFilled(false);
+        normalBtn.setBounds(30, 215, 150, 60);
+        normalBtn.setVisible(ConfigModel.gameMode == ConfigModel.GameMode.BASIC ? false : true);
+        normalBtn.addActionListener(e -> {
+            ConfigModel.changeGameMode(ConfigModel.GameMode.BASIC);
+            normalBtn.setVisible(false);
+            normalClickedBtn.setVisible(true);
+            itemBtn.setVisible(true);
+            itemClickedBtn.setVisible(false);
+            repaint();
+        });
 
         normalClickedBtn.setBorderPainted(false);
         normalClickedBtn.setContentAreaFilled(false);
         normalClickedBtn.setBounds(30, 215, 150, 60);
+        normalClickedBtn.setVisible(ConfigModel.gameMode == ConfigModel.GameMode.BASIC ? true : false);
 
         itemBtn.setBorderPainted(false);
         itemBtn.setContentAreaFilled(false);
         itemBtn.setBounds(200, 215, 150, 60);
+        itemBtn.setVisible(ConfigModel.gameMode == ConfigModel.GameMode.BASIC ? true : false);
+
+        itemBtn.addActionListener(e -> {
+            ConfigModel.changeGameMode(ConfigModel.GameMode.ITEM);
+            normalBtn.setVisible(true);
+            normalClickedBtn.setVisible(false);
+            itemBtn.setVisible(false);
+            itemClickedBtn.setVisible(true);
+            repaint();
+        });
+
+        itemClickedBtn.setBorderPainted(false);
+        itemClickedBtn.setContentAreaFilled(false);
+        itemClickedBtn.setBounds(200, 215, 150, 60);
+        itemClickedBtn.setVisible(ConfigModel.gameMode == ConfigModel.GameMode.BASIC ? false : true);
+
 
         settingBtn.setBorderPainted(false);
         settingBtn.setContentAreaFilled(false);
         settingBtn.setBounds(250, 485, 46, 46);
+        settingBtn.addActionListener(e -> {
+            App.navigate(App.View.CONFIG);
+        });
 
         exitBtn.setBorderPainted(false);
         exitBtn.setContentAreaFilled(false);
         exitBtn.setBounds(305, 485, 46, 46);
+        exitBtn.addActionListener(e -> {
+            dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        });
 
         this.setContentPane(btnPanel);
+        btnPanel.add(normalBtn);
         btnPanel.add(normalClickedBtn);
         btnPanel.add(itemBtn);
+        btnPanel.add(itemClickedBtn);
         btnPanel.add(playBtn);
         btnPanel.add(settingBtn);
         btnPanel.add(exitBtn);
