@@ -47,6 +47,10 @@ public abstract class Block {
         throw new UnsupportedOperationException();
     }
 
+    public int getItemPosX() {
+        throw new UnsupportedOperationException();
+    }
+
     public boolean isItemBlock() {
         return false;
     }

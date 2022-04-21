@@ -66,8 +66,8 @@ public class GameModel {
         }
 
         if (itemCount >= ITEM_GENERATE_INTERVAL) {
-            itemCount -= ITEM_GENERATE_INTERVAL;
-            rndNum = rnd.nextInt(2) + 7;
+            itemCount = Math.max(0, itemCount - ITEM_GENERATE_INTERVAL);
+            rndNum = rnd.nextInt(3) + 7;
         }
         else {
             switch (ConfigModel.gameDifficulty) {
@@ -338,6 +338,25 @@ public class GameModel {
                 }
                 score += 10 * cnt * ConfigModel.getScoreRate();
                 gameSpeedUp();
+            }
+            case PERFECT_CLEAR_ITEM -> {
+                boolean isRaw = true;
+                for (int j = 0; j < ConfigModel.boardWidth; j++) {
+                    if (board.get(posY + currentBlock.getItemPosY())[j] == BoardElement.EMPTY) {
+                        isRaw = false;
+                        break;
+                    }
+                }
+                if (isRaw) {
+                    initBoard(ConfigModel.boardWidth, ConfigModel.boardHeight);
+                    score += 1000 * ConfigModel.getScoreRate();
+                    gameSpeedUp();
+                }
+                else {
+                    // TODO
+                    // to change original block element
+                    board.get(posY + currentBlock.getItemPosY())[posX + currentBlock.getItemPosX()] = BoardElement.O_BLOCK;
+                }
             }
         }
     }
