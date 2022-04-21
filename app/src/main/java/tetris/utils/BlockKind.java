@@ -1,10 +1,10 @@
 package tetris.utils;
 
 import tetris.blocks.*;
-import tetris.items.LineClearItem;
+import tetris.items.*;
 
 public enum BlockKind {
-    J_BLOCK, L_BLOCK, Z_BLOCK, S_BLOCK, T_BLOCK, O_BLOCK, I_BLOCK, LINE_CLEAR_ITEM;
+    J_BLOCK, L_BLOCK, Z_BLOCK, S_BLOCK, T_BLOCK, O_BLOCK, I_BLOCK, LINE_CLEAR_ITEM, BOMB_ITEM;
 
     public static Block getBlockInstance(final BlockKind blockKind) {
         return switch (blockKind) {
@@ -16,6 +16,7 @@ public enum BlockKind {
             case T_BLOCK -> new TBlock();
             case O_BLOCK -> new OBlock();
             case LINE_CLEAR_ITEM -> new LineClearItem();
+            case BOMB_ITEM -> new BombItem();
         };
     }
 }
