@@ -41,17 +41,24 @@ public class MainView extends JFrame {
         JButton normalClickedBtn = new JButton(getResource("image/normal_clicked.png"));
         JButton itemBtn = new JButton(getResource("image/item.png"));
         JButton itemClickedBtn = new JButton(getResource("image/item_clicked.png"));
+        JButton easyLevelBtn = new JButton(getResource("image/easyLevel.png"));
+        JButton easyLevelClickedBtn = new JButton(getResource("image/easyLevelClicked.png"));
+        JButton normalLevelBtn = new JButton(getResource("image/normalLevel.png"));
+        JButton normalLevelClickedBtn = new JButton(getResource("image/normalLevelClicked.png"));
+        JButton hardLevelBtn = new JButton(getResource("image/hardLevel.png"));
+        JButton hardLevelClickedBtn = new JButton(getResource("image/hardLevelClicked.png"));
+
         JButton settingBtn = new JButton(getResource("image/setting.png"));
         JButton exitBtn = new JButton(getResource("image/exit.png"));
 
         playBtn.setBorderPainted(false);
         playBtn.setContentAreaFilled(false);
         playBtn.addActionListener(e -> App.navigate(App.View.GAME));
-        playBtn.setBounds(30, 300, 320, 90);
+        playBtn.setBounds(30, 285, 320, 90);
 
         normalBtn.setBorderPainted(false);
         normalBtn.setContentAreaFilled(false);
-        normalBtn.setBounds(30, 215, 150, 60);
+        normalBtn.setBounds(30, 205, 150, 60);
         normalBtn.setVisible(ConfigModel.gameMode == ConfigModel.GameMode.BASIC ? false : true);
         normalBtn.addActionListener(e -> {
             ConfigModel.changeGameMode(ConfigModel.GameMode.BASIC);
@@ -64,12 +71,12 @@ public class MainView extends JFrame {
 
         normalClickedBtn.setBorderPainted(false);
         normalClickedBtn.setContentAreaFilled(false);
-        normalClickedBtn.setBounds(30, 215, 150, 60);
+        normalClickedBtn.setBounds(30, 205, 150, 60);
         normalClickedBtn.setVisible(ConfigModel.gameMode == ConfigModel.GameMode.BASIC ? true : false);
 
         itemBtn.setBorderPainted(false);
         itemBtn.setContentAreaFilled(false);
-        itemBtn.setBounds(200, 215, 150, 60);
+        itemBtn.setBounds(200, 205, 150, 60);
         itemBtn.setVisible(ConfigModel.gameMode == ConfigModel.GameMode.BASIC ? true : false);
 
         itemBtn.addActionListener(e -> {
@@ -83,9 +90,69 @@ public class MainView extends JFrame {
 
         itemClickedBtn.setBorderPainted(false);
         itemClickedBtn.setContentAreaFilled(false);
-        itemClickedBtn.setBounds(200, 215, 150, 60);
+        itemClickedBtn.setBounds(200, 205, 150, 60);
         itemClickedBtn.setVisible(ConfigModel.gameMode == ConfigModel.GameMode.BASIC ? false : true);
 
+        easyLevelBtn.setBorderPainted(false);
+        easyLevelBtn.setContentAreaFilled(false);
+        easyLevelBtn.setBounds(30, 395, 98, 48);
+
+        easyLevelBtn.addActionListener(e -> {
+            ConfigModel.changeGameDifficulty(ConfigModel.GameDifficulty.EASY);
+            easyLevelBtn.setVisible(false);
+            easyLevelClickedBtn.setVisible(true);
+            normalLevelBtn.setVisible(true);
+            normalLevelClickedBtn.setVisible(false);
+            hardLevelBtn.setVisible(true);
+            hardLevelClickedBtn.setVisible(false);
+            repaint();
+        });
+
+        easyLevelClickedBtn.setBorderPainted(false);
+        easyLevelClickedBtn.setContentAreaFilled(false);
+        easyLevelClickedBtn.setBounds(30, 395, 98, 48);
+        easyLevelClickedBtn.setVisible(ConfigModel.gameDifficulty == ConfigModel.GameDifficulty.EASY ? true : false);
+
+
+        normalLevelBtn.setBorderPainted(false);
+        normalLevelBtn.setContentAreaFilled(false);
+        normalLevelBtn.setBounds(140, 395, 98, 48);
+
+        normalLevelBtn.addActionListener(e -> {
+            ConfigModel.changeGameDifficulty(ConfigModel.GameDifficulty.NORMAL);
+            easyLevelBtn.setVisible(true);
+            easyLevelClickedBtn.setVisible(false);
+            normalLevelBtn.setVisible(false);
+            normalLevelClickedBtn.setVisible(true);
+            hardLevelBtn.setVisible(true);
+            hardLevelClickedBtn.setVisible(false);
+            repaint();
+        });
+
+        normalLevelClickedBtn.setBorderPainted(false);
+        normalLevelClickedBtn.setContentAreaFilled(false);
+        normalLevelClickedBtn.setBounds(140, 395, 98, 48);
+        normalLevelClickedBtn.setVisible(ConfigModel.gameDifficulty == ConfigModel.GameDifficulty.NORMAL);
+
+        hardLevelBtn.setBorderPainted(false);
+        hardLevelBtn.setContentAreaFilled(false);
+        hardLevelBtn.setBounds(252, 395, 98, 48);
+
+        hardLevelBtn.addActionListener(e -> {
+            ConfigModel.changeGameDifficulty(ConfigModel.GameDifficulty.HARD);
+            easyLevelBtn.setVisible(true);
+            easyLevelClickedBtn.setVisible(false);
+            normalLevelBtn.setVisible(true);
+            normalLevelClickedBtn.setVisible(false);
+            hardLevelBtn.setVisible(false);
+            hardLevelClickedBtn.setVisible(true);
+            repaint();
+        });
+
+        hardLevelClickedBtn.setBorderPainted(false);
+        hardLevelClickedBtn.setContentAreaFilled(false);
+        hardLevelClickedBtn.setBounds(252, 395, 98, 48);
+        hardLevelClickedBtn.setVisible(ConfigModel.gameDifficulty == ConfigModel.GameDifficulty.HARD ? true : false);
 
         settingBtn.setBorderPainted(false);
         settingBtn.setContentAreaFilled(false);
@@ -107,6 +174,12 @@ public class MainView extends JFrame {
         btnPanel.add(itemBtn);
         btnPanel.add(itemClickedBtn);
         btnPanel.add(playBtn);
+        btnPanel.add(easyLevelBtn);
+        btnPanel.add(easyLevelClickedBtn);
+        btnPanel.add(normalLevelBtn);
+        btnPanel.add(normalLevelClickedBtn);
+        btnPanel.add(hardLevelBtn);
+        btnPanel.add(hardLevelClickedBtn);
         btnPanel.add(settingBtn);
         btnPanel.add(exitBtn);
     }
