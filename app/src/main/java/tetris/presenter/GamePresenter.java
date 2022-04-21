@@ -22,9 +22,9 @@ public class GamePresenter implements Presenter {
     private static final double INIT_INTERVAL = 1000 / ConfigModel.gameSpeed;
 
     public GamePresenter() {
-        mainTimer = new Timer(INIT_INTERVAL, new MainTimerActionListener());
-        deleteTimer = new Timer(INIT_INTERVAL / 3, new DeleteTimerActionListener());
-        weightItemTimer = new Timer(INIT_INTERVAL / 5, new WeightItemTimerActionListener());
+        mainTimer = new Timer((int)INIT_INTERVAL, new MainTimerActionListener());
+        deleteTimer = new Timer((int)INIT_INTERVAL / 3, new DeleteTimerActionListener());
+        weightItemTimer = new Timer((int)INIT_INTERVAL / 5, new WeightItemTimerActionListener());
 
         initPresent();
     }

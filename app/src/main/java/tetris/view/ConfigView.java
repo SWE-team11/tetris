@@ -89,7 +89,6 @@ public class ConfigView extends JFrame {
         upBtn.setContentAreaFilled(false);
         upBtn.setBounds(302, 55, 35, 33);
         upBtn.addActionListener(e -> {
-            System.out.println("up");
             ConfigModel.changeGameSpeed(Math.min(ConfigModel.gameSpeed + 0.5, 3));
             gameSpeedPane.setText(Double.toString(ConfigModel.gameSpeed));
             setFocusable(true);
@@ -362,7 +361,6 @@ public class ConfigView extends JFrame {
         @Override
         public void keyPressed(final KeyEvent e) {
             lastKeyEvent = e;
-            System.out.println(e.toString());
         }
 
         @Override
