@@ -208,8 +208,11 @@ public class GameModel {
         }
 
         public void hook() {
-            triggerItem();
-            checkRaw();
+            if(currentBlock.isItemBlock()) {
+                triggerItem();
+            } else {
+                checkRaw();
+            }
             setRandomBlock();
         }
     }
@@ -312,6 +315,8 @@ public class GameModel {
                 for (int j = 0; j < ConfigModel.boardWidth; j++) {
                     board.get(posY + currentBlock.getItemPosY())[j] = BoardElement.DELETE;
                 }
+                checkRaw();
+
                 score += 100 * ConfigModel.getScoreRate();
                 deletedRowCount++;
                 itemCount++;
