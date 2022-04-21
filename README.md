@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24623403/158942475-181c244b-6109-4414-bd24-8c4de1896eda.png" width="350px"/>
+![image](https://user-images.githubusercontent.com/24623403/164539429-f3c2c113-a300-4968-aefd-848a516c5bc7.png)
 </p>
 <p align="center">   
      <a href="https://github.com/SWE-team11/tetris/issues"><img src='https://img.shields.io/github/issues/SWE-team11/tetris'></a>
