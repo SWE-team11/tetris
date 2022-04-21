@@ -3,6 +3,11 @@ package tetris.presenter;
 import tetris.utils.Presenter;
 import tetris.view.RecordView;
 
+import java.util.ArrayList;
+
+import tetris.model.RecordModel;
+import tetris.utils.Record;
+
 public class RecordPresenter implements Presenter {
     private RecordView recordView;
     private final int VIEW_WIDTH = 400;
@@ -15,6 +20,7 @@ public class RecordPresenter implements Presenter {
     @Override
     public void initPresent() {
         recordView = new RecordView(this);
+        RecordModel.loadRecord();
     }
 
     @Override
@@ -27,5 +33,8 @@ public class RecordPresenter implements Presenter {
             recordView.setVisible(false);
         }
     }
-    
+
+    public ArrayList<Record> getRecords() {
+        return RecordModel.rankedRecords;
+    }
 }

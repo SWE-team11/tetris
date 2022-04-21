@@ -4,35 +4,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import tetris.utils.Record;
+
 public class RecordModel {
-    public static class Record implements Comparable<Record>{
-        private int score;
-        private int deletedLine;
-        private ConfigModel.GameMode gameMode;
-        private ConfigModel.GameDifficulty gameDifficulty;
-        private String createdAt;
-        private String name;
-
-        public Record(int score, int deletedLine, ConfigModel.GameMode gameMode, ConfigModel.GameDifficulty gameDifficulty, String createdAt, String name) {
-            this.score = score;
-            this.deletedLine = deletedLine;
-            this.gameMode = gameMode;
-            this.gameDifficulty = gameDifficulty;
-            this.createdAt = createdAt;
-            this.name = name;
-        }
-
-        @Override
-        public int compareTo(Record o) {
-            if (o.score < score) {
-                return 1;
-            } else if (o.score > score) {
-                return -1;
-            }
-            return 0;
-        }
-    }
-
     public static ArrayList<Record> rankedRecords = new ArrayList<Record>();
     private final static String path = "data/record.txt";
 
