@@ -43,6 +43,7 @@ public class MainView extends JFrame {
         JButton itemClickedBtn = new JButton(getResource("image/item_clicked.png"));
         JButton settingBtn = new JButton(getResource("image/setting.png"));
         JButton exitBtn = new JButton(getResource("image/exit.png"));
+        JButton toRecordBtn = new JButton(getResource("image/toRecord.png"));
 
         playBtn.setBorderPainted(false);
         playBtn.setContentAreaFilled(false);
@@ -101,6 +102,13 @@ public class MainView extends JFrame {
             dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         });
 
+        toRecordBtn.setBorderPainted(false);
+        toRecordBtn.setContentAreaFilled(false);
+        toRecordBtn.setBounds(30, 485, 85, 45);
+        toRecordBtn.addActionListener(e -> {
+            App.navigate(App.View.RECORD);
+        });
+
         this.setContentPane(btnPanel);
         btnPanel.add(normalBtn);
         btnPanel.add(normalClickedBtn);
@@ -109,5 +117,6 @@ public class MainView extends JFrame {
         btnPanel.add(playBtn);
         btnPanel.add(settingBtn);
         btnPanel.add(exitBtn);
+        btnPanel.add(toRecordBtn);
     }
 }

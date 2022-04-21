@@ -29,13 +29,14 @@ public class RecordView extends JFrame {
         recordPresenter = presenter;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel configPanel = new JPanel() {
+        JPanel recordPanel = new JPanel() {
             public void paintComponent(Graphics g) {
                 g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
             }
         };
-        configPanel.setLayout(null);
+        recordPanel.setLayout(null);
 
+        this.setContentPane(recordPanel);
         setFocusable(true);
         requestFocus();
     }
