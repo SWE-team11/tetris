@@ -18,6 +18,7 @@ public class GameModel {
 
     private final int DEFAULT_POS_X = 3;
     private final int DEFAULT_POS_Y = 0;
+    private double gameSpeed = ConfigModel.gameSpeed;
 
     private int posX;
     private int posY;
@@ -56,7 +57,7 @@ public class GameModel {
         else rndNum = rnd.nextInt(7);
 
         BlockKind blockKind;
-        blockKind = BlockKind.values()[rndNum];
+        blockKind = BlockKind.values()[7];
         currentBlock = BlockKind.getBlockInstance(blockKind);
 
         posX = DEFAULT_POS_X;
@@ -68,6 +69,14 @@ public class GameModel {
             gamePresenter.gameStop();
             gamePresenter.gameOver();
         }
+
+        gameSpeedUp();
+    }
+
+    public void gameSpeedUp() {
+        if(gameSpeed > ConfigModel.gameSpeed * 5) return;
+        gameSpeed *= 1.01;
+        gamePresenter.setMainTimeInterval((int)(1000 / gameSpeed));
     }
 
     private enum Result {
@@ -285,6 +294,7 @@ public class GameModel {
                 }
                 score += 100 * ConfigModel.getScoreRate();
                 deletedRowCount++;
+                gameSpeedUp();
             }
         }
     }
@@ -304,6 +314,7 @@ public class GameModel {
                 }
                 score += 100 * ConfigModel.getScoreRate();
                 deletedRowCount++;
+                gameSpeedUp();
             }
         }
         gamePresenter.drawBoard();
