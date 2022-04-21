@@ -19,7 +19,7 @@ public class GameModel {
 
     private final int DEFAULT_POS_X = 3;
     private final int DEFAULT_POS_Y = 0;
-    private final int ITEM_GENERATE_INTERVAL = 2;
+    private final int ITEM_GENERATE_INTERVAL = 1;
     private double gameSpeed = ConfigModel.gameSpeed;
 
     private int posX;
@@ -339,22 +339,18 @@ public class GameModel {
                 score += 10 * cnt * ConfigModel.getScoreRate();
                 gameSpeedUp();
             }
-            case PERFECT_CLEAR_ITEM -> {
-                boolean isRaw = true;
-                for (int j = 0; j < ConfigModel.boardWidth; j++) {
-                    if (board.get(posY + currentBlock.getItemPosY())[j] == BoardElement.EMPTY) {
-                        isRaw = false;
-                        break;
+            case CROSS_DELETE_ITEM -> {
+                int cnt = 0;
+                for (int i = 0; i < ConfigModel.boardHeight; i++) {
+                    for (int j = 0; j < ConfigModel.boardWidth; j++) {
+                        if(Math.abs(posX - j) == Math.abs(posY - i) && board.get(i)[j] != BoardElement.EMPTY) {
+                            board.get(i)[j] = BoardElement.DELETE;
+                            cnt++;
+                        }
                     }
                 }
-                if (isRaw) {
-                    initBoard(ConfigModel.boardWidth, ConfigModel.boardHeight);
-                    score += 1000 * ConfigModel.getScoreRate();
-                    gameSpeedUp();
-                }
-                else {
-                    board.get(posY + currentBlock.getItemPosY())[posX + currentBlock.getItemPosX()] = currentBlock.getBoardElement();
-                }
+                score += 10 * cnt * ConfigModel.getScoreRate();
+                gameSpeedUp();
             }
             case SAME_DELETE_ITEM -> {
                 int cnt = 0;
@@ -397,32 +393,18 @@ public class GameModel {
 
     public final void runDelete() {
         for (int i = 0; i < ConfigModel.boardHeight; i++) {
-            boolean isRaw = true;
             for (int j = 0; j < ConfigModel.boardWidth; j++) {
-                if (board.get(i)[j] != BoardElement.DELETE) {
-                    isRaw = false;
-                    break;
-                }
-            }
-            if (isRaw) {
-                shiftDown(i - 1);
-            }
-            else {
-                for (int j = 0; j < ConfigModel.boardWidth; j++) {
-                    if (board.get(i)[j] == BoardElement.DELETE) {
-                        board.get(i)[j] = BoardElement.EMPTY;
-                    }
+                if (board.get(i)[j] == BoardElement.DELETE) {
+                    shiftDown(i-1, j);
                 }
             }
         }
     }
 
-    public final void shiftDown(final int startHeight) {
+    public final void shiftDown(final int startHeight, final int posX) {
         eraseCurr();
         for (int i = startHeight; i >= 0; i--) {
-            for (int j = 0; j < ConfigModel.boardWidth; j++) {
-                board.get(i + 1)[j] = board.get(i)[j];
-            }
+            board.get(i + 1)[posX] = board.get(i)[posX];
         }
         placeBlock();
     }
