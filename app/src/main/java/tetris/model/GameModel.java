@@ -63,8 +63,8 @@ public class GameModel {
             currentBlock = nextBlock;
         }
 
-        if (itemCount >= 2) {
-            itemCount = 0;
+        if (itemCount >= 10) {
+            itemCount -= 10;
             rndNum = rnd.nextInt(1) + 7;
         }
         else {
