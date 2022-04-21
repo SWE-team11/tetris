@@ -15,8 +15,8 @@ public class GamePresenter implements Presenter {
     private GameView gameView;
     private final Timer mainTimer;
     private final Timer deleteTimer;
-    private static final int VIEW_WIDTH = 400;
-    private static final int VIEW_HEIGHT = 600;
+    private final int VIEW_WIDTH = 400;
+    private final int VIEW_HEIGHT = 600;
 
     private static final int INIT_INTERVAL = 1000 / ConfigModel.gameSpeed;
 
@@ -24,9 +24,7 @@ public class GamePresenter implements Presenter {
         mainTimer = new Timer(INIT_INTERVAL, new MainTimerActionListener());
         deleteTimer = new Timer(INIT_INTERVAL/3, new DeleteTimerActionListener());
 
-        this.gameModel = new GameModel(this);
-        this.gameView = new GameView(this);
-        this.gameView.drawBoard(this.gameModel.getBoard());
+        initPresent();
     }
 
     public class MainTimerActionListener implements ActionListener {
@@ -48,6 +46,7 @@ public class GamePresenter implements Presenter {
     public void initPresent() {
         this.gameModel = new GameModel(this);
         this.gameView = new GameView(this);
+        this.gameView.drawBoard(this.gameModel.getBoard());
     }
 
     @Override

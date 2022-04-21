@@ -76,7 +76,7 @@ public class GameModel {
             currentBlock = nextBlock;
         }
 
-        if (itemCount >= 10) {
+        if (ConfigModel.gameMode == ConfigModel.GameMode.ITEM && itemCount >= 10) {
             itemCount -= 10;
             rndNum = rnd.nextInt(BlockKind.getItemSize()) + BlockKind.getTetrominoSize();
         }
