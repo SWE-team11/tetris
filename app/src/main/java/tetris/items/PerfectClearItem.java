@@ -14,7 +14,9 @@ public class PerfectClearItem extends Block {
         Random rnd = new Random(System.currentTimeMillis());
         int rndNum = rnd.nextInt(7);
         BlockKind blockKind = BlockKind.values()[rndNum];
-        shape = BlockKind.getBlockInstance(blockKind).getFullShape();
+        Block originalBlock = BlockKind.getBlockInstance(blockKind);
+        boardElement = originalBlock.getBoardElement();
+        shape = originalBlock.getFullShape();
 
         int cnt = 0;
         rndNum = rnd.nextInt(4);
