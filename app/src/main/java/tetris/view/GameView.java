@@ -2,6 +2,7 @@ package tetris.view;
 
 import tetris.App;
 import tetris.model.ConfigModel;
+import tetris.model.RecordModel;
 import tetris.presenter.GamePresenter;
 import tetris.utils.Block;
 import tetris.utils.BoardElement;
@@ -44,7 +45,7 @@ public class GameView extends JFrame {
     private JTextPane levelPane;
     private JTextPane deletedRawPane;
     private JTextPane recordScorePane;
-    private JTextPane namePane;
+    private JTextField namePane;
     private SimpleAttributeSet styleSet;
     private JPanel pauseDialog = new JPanel(){
         public void paintComponent(Graphics g) {
@@ -173,9 +174,9 @@ public class GameView extends JFrame {
         recordScorePane.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
         recordScorePane.setBounds(25,100, 230,85);
 
-        namePane = new JTextPane();
-        namePane.setEditable(false);
+        namePane = new JTextField();
         namePane.setOpaque(false);
+        namePane.setForeground(Color.white);
         namePane.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
         namePane.setBounds(115,205, 140  ,50);
 
@@ -183,7 +184,10 @@ public class GameView extends JFrame {
         enterBtn.setBorderPainted(false);
         enterBtn.setContentAreaFilled(false);
         enterBtn.setBounds(70, 275, 140, 50);
-        enterBtn.addActionListener(e -> App.navigate(App.View.MAIN));
+        enterBtn.addActionListener(e -> {
+            presenter.recordGame(namePane.getText());
+            App.navigate(App.View.MAIN);
+        });
 
         backgroundPanel.add(scoreDialog);
         this.getContentPane().add(backgroundPanel);
@@ -376,5 +380,20 @@ public class GameView extends JFrame {
             e.printStackTrace();
         }
         deletedRawPane.setStyledDocument(doc);
+    }
+
+    public final void drawScrollDialog(int score) {
+        recordScorePane.setText("");
+        Style style = recordScorePane.addStyle("textStyle", null);
+        StyledDocument doc = recordScorePane.getStyledDocument();
+        doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
+        StyleConstants.setForeground(style, Color.WHITE);
+        StyleConstants.setFontSize(style, 40);
+        try {
+            doc.insertString(doc.getLength(), Integer.toString((int) score), style);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+        recordScorePane.setStyledDocument(doc);
     }
 }
