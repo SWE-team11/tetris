@@ -57,7 +57,7 @@ public class GameModel {
         else rndNum = rnd.nextInt(7);
 
         BlockKind blockKind;
-        blockKind = BlockKind.values()[7];
+        blockKind = BlockKind.values()[rndNum];
         currentBlock = BlockKind.getBlockInstance(blockKind);
 
         posX = DEFAULT_POS_X;
@@ -75,8 +75,8 @@ public class GameModel {
 
     public void gameSpeedUp() {
         if(gameSpeed > ConfigModel.gameSpeed * 5) return;
-        gameSpeed *= 1.01;
-        gamePresenter.setMainTimeInterval((int)(1000 / gameSpeed));
+        gameSpeed *= 1.005;
+        gamePresenter.setTimeInterval((int)(1000 / gameSpeed));
     }
 
     private enum Result {

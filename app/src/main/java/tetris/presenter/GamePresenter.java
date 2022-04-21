@@ -63,8 +63,9 @@ public class GamePresenter implements Presenter {
         }
     }
 
-    public final void setMainTimeInterval(int interval) {
+    public final void setTimeInterval(int interval) {
         mainTimer.setDelay(interval);
+        deleteTimer.setDelay(Math.max(interval/3, 200));
     }
 
     public final void gameStart() {
