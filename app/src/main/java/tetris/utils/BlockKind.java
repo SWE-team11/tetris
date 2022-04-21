@@ -5,7 +5,7 @@ import tetris.items.LineClearItem;
 import tetris.items.SameDeleteItem;
 
 public enum BlockKind {
-    I_BLOCK, J_BLOCK, L_BLOCK, Z_BLOCK, S_BLOCK, T_BLOCK, O_BLOCK, LINE_CLEAR_ITEM, SAME_DELETE_ITEM;
+    J_BLOCK, L_BLOCK, Z_BLOCK, S_BLOCK, T_BLOCK, O_BLOCK, I_BLOCK, LINE_CLEAR_ITEM, SAME_DELETE_ITEM;
 
     public static final int getTetrominoSize() {
         return 7;
