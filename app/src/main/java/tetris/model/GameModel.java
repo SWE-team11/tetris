@@ -65,7 +65,7 @@ public class GameModel {
             currentBlock = nextBlock;
         }
 
-        if (itemCount >= ITEM_GENERATE_INTERVAL) {
+        if (ConfigModel.gameMode == ConfigModel.GameMode.ITEM && itemCount >= ITEM_GENERATE_INTERVAL) {
             itemCount = Math.max(0, itemCount - ITEM_GENERATE_INTERVAL);
             rndNum = rnd.nextInt(BlockKind.getItemSize()) + BlockKind.getTetrominoSize();
         } 

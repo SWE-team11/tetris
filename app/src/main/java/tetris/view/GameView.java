@@ -13,7 +13,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
 import javax.swing.text.*;
 
 public class GameView extends JFrame {
@@ -39,7 +38,7 @@ public class GameView extends JFrame {
     private PauseKeyListener pauseKeyListener;
 
     public GameView(final GamePresenter presenter) {
-        super("SeoulTech SE 11team Tetris");
+        super("TETRIS");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // boardPresenter inject
@@ -80,7 +79,7 @@ public class GameView extends JFrame {
         exitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                App.navigate(App.View.Main);
+                App.navigate(App.View.MAIN);
             }
         });
 
