@@ -16,15 +16,13 @@ public class GamePresenter implements Presenter {
     private final Timer mainTimer;
     private final Timer deleteTimer;
     private final Timer weightItemTimer;
-    private final int VIEW_WIDTH = 400;
-    private final int VIEW_HEIGHT = 600;
 
-    private static final int INIT_INTERVAL = 1000 / ConfigModel.gameSpeed;
+    private static final double INIT_INTERVAL = 1000 / ConfigModel.gameSpeed;
 
     public GamePresenter() {
-        mainTimer = new Timer(INIT_INTERVAL, new MainTimerActionListener());
-        deleteTimer = new Timer(INIT_INTERVAL / 3, new DeleteTimerActionListener());
-        weightItemTimer = new Timer(INIT_INTERVAL / 5, new WeightItemTimerActionListener());
+        mainTimer = new Timer((int)INIT_INTERVAL, new MainTimerActionListener());
+        deleteTimer = new Timer((int)INIT_INTERVAL / 3, new DeleteTimerActionListener());
+        weightItemTimer = new Timer((int)INIT_INTERVAL / 5, new WeightItemTimerActionListener());
 
         initPresent();
     }
@@ -62,8 +60,6 @@ public class GamePresenter implements Presenter {
     @Override
     public final void setVisible(final boolean visible) {
         if (visible) {
-            gameView.setSize(VIEW_WIDTH, VIEW_HEIGHT);
-            gameView.setLocationRelativeTo(null);
             gameView.setVisible(true);
             gameStart();
         } else {
@@ -91,6 +87,7 @@ public class GamePresenter implements Presenter {
         gameView.startPauseKeyListen();
         gameView.setVisiblePauseDialog(true);
         mainTimer.stop();
+        deleteTimer.stop();
     }
 
     public final void weightItemStart() {
