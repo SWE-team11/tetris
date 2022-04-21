@@ -83,7 +83,7 @@ public class RecordModel {
                 ));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("저장된 기록이 없습니다.");
         }
     }
 }

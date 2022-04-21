@@ -55,6 +55,32 @@ public class ConfigModel {
         return PlayerKey.UNDEFINED;
     }
 
+    public static void changeGameMode(GameMode g) {
+        gameMode = g;
+        saveConfig();
+    }
+
+    public static void changeBoardSize(int width, int height) {
+        boardWidth = width;
+        boardHeight = height;
+        saveConfig();
+    }
+
+    public static void changeGameSpeed(int g) {
+        gameSpeed = g;
+        saveConfig();
+    }
+
+    public static void changeColorBlindMode(boolean g) {
+        colorBlindMode = g;
+        saveConfig();
+    }
+
+    public static void changeKeyBinding(int[] k) {
+        keyBinding = k;
+        saveConfig();
+    }
+
     public static void saveConfig() {
         BufferedWriter out = null;
         List<String> strList = new ArrayList<>();
@@ -102,7 +128,7 @@ public class ConfigModel {
             }
             bufReader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("저장된 환경설정이 없습니다.");
         }
     }
     
