@@ -99,7 +99,7 @@ public class GameView extends JFrame {
             }
         };
         scorePanel.setLayout(null);
-        scorePanel.setBounds(279 + getWidth(ConfigModel.boardSize),260,70,120);
+        scorePanel.setBounds(280 + getWidth(ConfigModel.boardSize),260,70,120);
 
         JPanel levelPanel = new JPanel() {
             public void paintComponent(Graphics g) {
@@ -126,7 +126,7 @@ public class GameView extends JFrame {
         nextBlockPane = new JTextPane();
         nextBlockPane.setEditable(false);
         nextBlockPane.setOpaque(false);
-        nextBlockPane.setBounds(280, 80, 70, 85);
+        nextBlockPane.setBounds(280 + getWidth(ConfigModel.boardSize) , 80, 70, 85);
 
         scorePane = new JTextPane();
         scorePane.setEditable(false);
@@ -143,7 +143,7 @@ public class GameView extends JFrame {
         deletedRawPane.setOpaque(false);
         deletedRawPane.setBounds(285 + getWidth(ConfigModel.boardSize), 450, 70, 70);
 
-        pauseDialog.setBounds(100 + getWidth(ConfigModel.boardSize), 200, 200, 100);
+        pauseDialog.setBounds(100 + getWidth(ConfigModel.boardSize)/2, 200, 200, 100);
         pauseDialog.setLayout(null);
         pauseDialog.setVisible(false);
         pauseDialog.setOpaque(false);
@@ -162,7 +162,7 @@ public class GameView extends JFrame {
         exitBtn.addActionListener(e -> App.navigate(App.View.MAIN));
 
         // Score Dialog
-        scoreDialog.setBounds(60, 50, 280, 360);
+        scoreDialog.setBounds(60 + getWidth(ConfigModel.boardSize)/2, 50, 280, 360);
         scoreDialog.setLayout(null);
         scoreDialog.setVisible(false);
         scoreDialog.setOpaque(false);
