@@ -3,6 +3,7 @@ package tetris.view;
 import tetris.App;
 import tetris.model.ConfigModel;
 import tetris.presenter.GamePresenter;
+import tetris.utils.Block;
 import tetris.utils.BoardElement;
 
 import java.awt.*;
@@ -13,7 +14,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
 import javax.swing.text.*;
 
 public class GameView extends JFrame {
@@ -30,7 +30,11 @@ public class GameView extends JFrame {
     static final float LINE_SPACING = -0.45f;
     private static final long serialVersionUID = 2434035659171694595L;
 
-    private JTextPane pane;
+    private JTextPane boardPane;
+    private JTextPane nextBlockPane;
+    private JTextPane scorePane;
+    private JTextPane levelPane;
+    private JTextPane deletedRawPane;
     private SimpleAttributeSet styleSet;
     private JPanel pauseDialog = new JPanel();
 
@@ -42,10 +46,8 @@ public class GameView extends JFrame {
         super("SeoulTech SE 11team Tetris");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // boardPresenter inject
         this.gamePresenter = presenter;
 
-        // Board display setting.
         JPanel backgroundPanel = new JPanel() {
             public void paintComponent(Graphics g) {
                 g.drawImage(background, 0, 0, this.getWidth(),this.getHeight(),null);
@@ -54,44 +56,54 @@ public class GameView extends JFrame {
         backgroundPanel.setLayout(null);
         backgroundPanel.setBorder(BorderFactory.createEmptyBorder(200 , 0 , 0 , 25));
 
-        // pane display setting
-        pane = new JTextPane();
-        pane.setEditable(false);
-        pane.setOpaque(false);
-        pane.setBounds(40,55, 220,440);
+        boardPane = new JTextPane();
+        boardPane.setEditable(false);
+        boardPane.setOpaque(false);
+        boardPane.setBounds(40,55, 220,440);
 
-        // pause display setting
+        nextBlockPane = new JTextPane();
+        nextBlockPane.setEditable(false);
+        nextBlockPane.setOpaque(false);
+        nextBlockPane.setBounds(290, 90, 70, 80);
+
+        scorePane = new JTextPane();
+        scorePane.setEditable(false);
+        scorePane.setOpaque(false);
+        scorePane.setBounds(290, 317, 70, 70);
+
+        levelPane = new JTextPane();
+        levelPane.setEditable(false);
+        levelPane.setOpaque(false);
+        levelPane.setBounds(290, 385, 70, 70);
+
+        deletedRawPane = new JTextPane();
+        deletedRawPane.setEditable(false);
+        deletedRawPane.setOpaque(false);
+        deletedRawPane.setBounds(290, 462, 70, 70);
+
         pauseDialog.setBounds(100, 200, 200, 100);
         pauseDialog.setLayout(null);
         pauseDialog.setVisible(false);
         pauseDialog.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 50));
+
         JButton continueBtn = new JButton("Continue");
         JButton exitBtn = new JButton("Exit");
         continueBtn.setPreferredSize(new Dimension(60,30));
         exitBtn.setPreferredSize(new Dimension(60,30));
 
-        // Button key listener
-        continueBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                gamePresenter.gameStart();
-            }
-        });
-        exitBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                App.navigate(App.View.Main);
-            }
-        });
+        continueBtn.addActionListener(e -> gamePresenter.gameStart());
+        exitBtn.addActionListener(e -> App.navigate(App.View.Main));
 
-        // panel add
         this.getContentPane().add(backgroundPanel);
         pauseDialog.add(continueBtn);
         pauseDialog.add(exitBtn);
         backgroundPanel.add(pauseDialog);
-        backgroundPanel.add(pane, BorderLayout.CENTER);
+        backgroundPanel.add(boardPane);
+        backgroundPanel.add(nextBlockPane);
+        backgroundPanel.add(scorePane);
+        backgroundPanel.add(levelPane);
+        backgroundPanel.add(deletedRawPane);
 
-        // Document default style.
         styleSet = new SimpleAttributeSet();
         StyleConstants.setFontSize(styleSet, FONT_SIZE);
         StyleConstants.setLineSpacing(styleSet, LINE_SPACING);
@@ -100,10 +112,9 @@ public class GameView extends JFrame {
         StyleConstants.setBold(styleSet, true);
         StyleConstants.setAlignment(styleSet, StyleConstants.ALIGN_CENTER);
 
-        // Initialize board for the game.
-        pane.setFocusable(true);
-        pane.requestFocus();
-        pane.requestFocusInWindow();
+        boardPane.setFocusable(true);
+        boardPane.requestFocus();
+        boardPane.requestFocusInWindow();
 
         this.playerKeyListener = new PlayerKeyListener();
         this.pauseKeyListener = new PauseKeyListener();
@@ -153,19 +164,19 @@ public class GameView extends JFrame {
     }
 
     public void startPlayerKeyListen() {
-        pane.addKeyListener(this.playerKeyListener);
+        boardPane.addKeyListener(this.playerKeyListener);
     }
 
     public void stopPlayerKeyListen() {
-        pane.removeKeyListener(this.playerKeyListener);
+        boardPane.removeKeyListener(this.playerKeyListener);
     }
 
     public void startPauseKeyListen() {
-        pane.addKeyListener(this.pauseKeyListener);
+        boardPane.addKeyListener(this.pauseKeyListener);
     }
 
     public void stopPauseKeyListen() {
-        pane.removeKeyListener(this.pauseKeyListener);
+        boardPane.removeKeyListener(this.pauseKeyListener);
     }
 
     public void setVisiblePauseDialog(boolean ifVisible) {
@@ -173,12 +184,10 @@ public class GameView extends JFrame {
     }
 
     public final void drawBoard(final ArrayList<BoardElement[]> board) {
-        // Set Config
-        pane.setText("");
-        Style style = pane.addStyle("textStyle", null);
-        StyledDocument doc = pane.getStyledDocument();
+        boardPane.setText("");
+        Style style = boardPane.addStyle("textStyle", null);
+        StyledDocument doc = boardPane.getStyledDocument();
 
-        // Build Styled Document
         try {
             for (int i = 0; i < board.size() + 2; i++) {
                 for (int j = 0; j < board.get(0).length + 2; j++) {
@@ -197,7 +206,73 @@ public class GameView extends JFrame {
         }
 
         doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
-        pane.setStyledDocument(doc);
+        boardPane.setStyledDocument(doc);
     }
 
+    public final void drawNextBlock(Block nextBlock) {
+        nextBlockPane.setText("");
+        Style style = nextBlockPane.addStyle("textStyle", null);
+        StyledDocument doc = nextBlockPane.getStyledDocument();
+
+        try {
+            for (int i = 0; i < nextBlock.width(); i++) {
+                for (int j = 0; j < nextBlock.height(); j++) {
+                        BoardElement currentElement = nextBlock.getShape(i, j);
+                        StyleConstants.setForeground(style, BoardElement.getElementColor(currentElement));
+                        doc.insertString(doc.getLength(), BoardElement.getElementText(currentElement), style);
+                    }
+                doc.insertString(doc.getLength(), "\n", style);
+            }
+        } catch (BadLocationException e) {
+
+        }
+
+        doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
+        nextBlockPane.setStyledDocument(doc);
+    }
+
+    public final void drawScore(double score) {
+        scorePane.setText("");
+        Style style = scorePane.addStyle("textStyle", null);
+        StyledDocument doc = scorePane.getStyledDocument();
+        doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
+        StyleConstants.setForeground(style, Color.WHITE);
+        StyleConstants.setFontSize(style, 24);
+        try {
+            doc.insertString(doc.getLength(), Integer.toString((int) score), style);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+        scorePane.setStyledDocument(doc);
+    }
+
+    public final void drawLevel() {
+        levelPane.setText("");
+        Style style = levelPane.addStyle("textStyle", null);
+        StyledDocument doc = levelPane.getStyledDocument();
+        doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
+        StyleConstants.setForeground(style, Color.WHITE);
+        StyleConstants.setFontSize(style, 24);
+        try {
+            doc.insertString(doc.getLength(), ConfigModel.gameDifficulty.name(), style);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+        levelPane.setStyledDocument(doc);
+    }
+
+    public final void drawDeletedRaw(int deletedRaw) {
+        deletedRawPane.setText("");
+        Style style = deletedRawPane.addStyle("textStyle", null);
+        StyledDocument doc = deletedRawPane.getStyledDocument();
+        doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
+        StyleConstants.setForeground(style, Color.WHITE);
+        StyleConstants.setFontSize(style, 24);
+        try {
+            doc.insertString(doc.getLength(), Integer.toString(deletedRaw), style);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+        deletedRawPane.setStyledDocument(doc);
+    }
 }

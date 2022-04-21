@@ -37,7 +37,19 @@ public class GameModel {
     }
 
     public double getScore() {
-        return this.score;
+        return score;
+    }
+
+    public Block getCurrentBlock() {
+        return currentBlock;
+    }
+
+    public Block getNextBlock() {
+        return nextBlock;
+    }
+
+    public int getDeletedRaw() {
+        return deletedRowCount;
     }
 
     public final void initBoard(final int width, final int height) {
@@ -357,7 +369,7 @@ public class GameModel {
                 gameSpeedUp();
             }
         }
-        gamePresenter.drawBoard();
+        gamePresenter.drawView();
     }
 
     public final void runDelete() {
