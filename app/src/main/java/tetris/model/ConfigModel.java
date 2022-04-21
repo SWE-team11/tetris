@@ -3,7 +3,6 @@ package tetris.model;
 import java.awt.event.KeyEvent;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ConfigModel {
@@ -25,16 +24,28 @@ public class ConfigModel {
         }
     }
 
+    public enum BoardSize {
+        SMALL(8, 20), MEDIUM(10, 20), LARGE(12, 20);
+
+        int width;
+        int height;
+        BoardSize(int width, int height) {
+            this.width = width;
+            this.height = height;
+        }
+    }
+
     public enum PlayerKey {
         ROTATE, LEFT, RIGHT, DOWN, DROP, ESC, UNDEFINED
     }
 
     public static GameMode gameMode = GameMode.BASIC;
     public static GameDifficulty gameDifficulty = GameDifficulty.EASY;
+    public static BoardSize boardSize = BoardSize.MEDIUM;
     public static int boardWidth = 10;
     public static int boardHeight = 20;
-    public static int gameSpeed = 1;
-    public static boolean colorBlindMode = true;
+    public static double gameSpeed = 1;
+    public static boolean colorBlindMode = false;
     public static int[] keyBinding = {
             KeyEvent.VK_UP, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT,
             KeyEvent.VK_DOWN, KeyEvent.VK_SPACE, KeyEvent.VK_ESCAPE, 0
@@ -60,13 +71,13 @@ public class ConfigModel {
         saveConfig();
     }
 
-    public static void changeBoardSize(int width, int height) {
-        boardWidth = width;
-        boardHeight = height;
+    public static void changeBoardSize(BoardSize boardSize) {
+        boardWidth = boardSize.width;
+        boardHeight = boardSize.height;
         saveConfig();
     }
 
-    public static void changeGameSpeed(int g) {
+    public static void changeGameSpeed(double g) {
         gameSpeed = g;
         saveConfig();
     }
@@ -76,8 +87,23 @@ public class ConfigModel {
         saveConfig();
     }
 
-    public static void changeKeyBinding(int[] k) {
-        keyBinding = k;
+    public static void changeKeyBinding(PlayerKey playerKey, KeyEvent e) {
+        keyBinding[playerKey.ordinal()] = e.getKeyCode();
+        saveConfig();
+    }
+
+    public static void initConfig() {
+        gameMode = GameMode.BASIC;
+        gameDifficulty = GameDifficulty.EASY;
+        boardSize = BoardSize.MEDIUM;
+        boardWidth = 10;
+        boardHeight = 20;
+        gameSpeed = 1;
+        colorBlindMode = false;
+        keyBinding = new int[]{
+                KeyEvent.VK_UP, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT,
+                KeyEvent.VK_DOWN, KeyEvent.VK_SPACE, KeyEvent.VK_ESCAPE, 0
+        };
         saveConfig();
     }
 
@@ -96,9 +122,10 @@ public class ConfigModel {
             out = new BufferedWriter(fStream);
             out.write(gameMode.name() + ",");
             out.write(gameDifficulty.name() + ",");
+            out.write(boardSize.name() + ",");
             out.write(Integer.toString(boardWidth) + ",");
             out.write(Integer.toString(boardHeight) + ",");
-            out.write(Integer.toString(gameSpeed) + ",");
+            out.write(Double.toString(gameSpeed) + ",");
             out.write(Boolean.toString(colorBlindMode) + ",");
             out.write(Integer.toString(keyBinding.length) + ",");
             out.write(String.join(",", strList));
@@ -118,13 +145,14 @@ public class ConfigModel {
             String[] configs = line.split(",");
             gameMode = Enum.valueOf(GameMode.class, configs[0]);
             gameDifficulty = Enum.valueOf(GameDifficulty.class, configs[1]);
-            boardWidth = Integer.parseInt(configs[2]);
-            boardHeight = Integer.parseInt(configs[3]);
-            gameSpeed = Integer.parseInt(configs[4]);
-            colorBlindMode = Boolean.parseBoolean(configs[5]);
-            int keyBingdingLength = Integer.parseInt(configs[6]);
+            boardSize = Enum.valueOf(BoardSize.class, configs[2]);
+            boardWidth = Integer.parseInt(configs[3]);
+            boardHeight = Integer.parseInt(configs[4]);
+            gameSpeed = Double.parseDouble(configs[5]);
+            colorBlindMode = Boolean.parseBoolean(configs[6]);
+            int keyBingdingLength = Integer.parseInt(configs[7]);
             for(int i=0; i<keyBingdingLength; i++) {
-                keyBinding[i] = Integer.parseInt(configs[7+i]);
+                keyBinding[i] = Integer.parseInt(configs[8+i]);
             }
             bufReader.close();
         } catch (IOException e) {

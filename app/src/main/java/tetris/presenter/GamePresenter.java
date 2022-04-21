@@ -18,11 +18,11 @@ public class GamePresenter implements Presenter {
     private final int VIEW_WIDTH = 400;
     private final int VIEW_HEIGHT = 600;
 
-    private static final int INIT_INTERVAL = 1000 / ConfigModel.gameSpeed;
+    private static final double INIT_INTERVAL = 1000 / ConfigModel.gameSpeed;
 
     public GamePresenter() {
-        mainTimer = new Timer(INIT_INTERVAL, new MainTimerActionListener());
-        deleteTimer = new Timer(INIT_INTERVAL/3, new DeleteTimerActionListener());
+        mainTimer = new Timer((int)INIT_INTERVAL, new MainTimerActionListener());
+        deleteTimer = new Timer((int)INIT_INTERVAL/3, new DeleteTimerActionListener());
 
         initPresent();
     }

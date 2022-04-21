@@ -43,6 +43,11 @@ public class RecordModel {
         saveRecord();
     }
 
+    public static void initRecord() {
+        rankedRecords = new ArrayList<Record>();
+        saveRecord();
+    }
+
     public static void saveRecord() {
         BufferedWriter out = null;
         try {
