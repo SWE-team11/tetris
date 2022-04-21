@@ -4,7 +4,7 @@ import tetris.blocks.*;
 import tetris.items.LineClearItem;
 
 public enum BlockKind {
-    I_BLOCK, J_BLOCK, L_BLOCK, Z_BLOCK, S_BLOCK, T_BLOCK, O_BLOCK, LINE_CLEAR_ITEM;
+    J_BLOCK, L_BLOCK, Z_BLOCK, S_BLOCK, T_BLOCK, O_BLOCK, I_BLOCK, LINE_CLEAR_ITEM;
 
     public static Block getBlockInstance(final BlockKind blockKind) {
         return switch (blockKind) {
