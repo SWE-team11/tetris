@@ -12,13 +12,15 @@ public class RecordModel {
         private ConfigModel.GameMode gameMode;
         private ConfigModel.GameDifficulty gameDifficulty;
         private String createdAt;
+        private String name;
 
-        public Record(int score, int deletedLine, ConfigModel.GameMode gameMode, ConfigModel.GameDifficulty gameDifficulty, String createdAt) {
+        public Record(int score, int deletedLine, ConfigModel.GameMode gameMode, ConfigModel.GameDifficulty gameDifficulty, String createdAt, String name) {
             this.score = score;
             this.deletedLine = deletedLine;
             this.gameMode = gameMode;
             this.gameDifficulty = gameDifficulty;
             this.createdAt = createdAt;
+            this.name = name;
         }
 
         @Override
@@ -35,8 +37,8 @@ public class RecordModel {
     public static ArrayList<Record> rankedRecords = new ArrayList<Record>();
     private final static String path = "data/record.txt";
 
-    public static void addRecord(int score, int deletedLine, ConfigModel.GameMode gameMode, ConfigModel.GameDifficulty gameDifficulty, String createdAt) {
-        rankedRecords.add(new Record(score, deletedLine, gameMode, gameDifficulty, createdAt));
+    public static void addRecord(int score, int deletedLine, ConfigModel.GameMode gameMode, ConfigModel.GameDifficulty gameDifficulty, String createdAt, String name) {
+        rankedRecords.add(new Record(score, deletedLine, gameMode, gameDifficulty, createdAt, name));
         Collections.sort(rankedRecords);
         saveRecord();
     }
@@ -54,7 +56,8 @@ public class RecordModel {
                 out.write(Integer.toString(rankedRecords.get(i).deletedLine) + ",");
                 out.write(rankedRecords.get(i).gameMode.name() + ",");
                 out.write(rankedRecords.get(i).gameDifficulty.name() + ",");
-                out.write(rankedRecords.get(i).createdAt + "\n");
+                out.write(rankedRecords.get(i).createdAt + ",");
+                out.write(rankedRecords.get(i).name + "\n");
             }
             out.close();
         } catch (IOException e) {
@@ -75,7 +78,8 @@ public class RecordModel {
                         Integer.parseInt(record[1]),
                         Enum.valueOf(ConfigModel.GameMode.class, record[2]),
                         Enum.valueOf(ConfigModel.GameDifficulty.class, record[3]),
-                        record[4]
+                        record[4],
+                        record[5]
                 ));
             }
         } catch (IOException e) {
