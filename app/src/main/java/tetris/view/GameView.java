@@ -30,6 +30,7 @@ public class GameView extends JFrame {
     private Image levelImg = getResource("image/level.png").getImage();
     private Image linesImg = getResource("image/lines.png").getImage();
     private Image pausePanelImg = getResource("image/pausePanel.png").getImage();
+    private Image scorePanelImg = getResource("image/scoreDialog.png").getImage();
 
     static final int LINE_BORDER_OUTER_WEIGHT = 10;
     static final int LINE_BORDER_INNER_WEIGHT = 5;
@@ -42,10 +43,17 @@ public class GameView extends JFrame {
     private JTextPane scorePane;
     private JTextPane levelPane;
     private JTextPane deletedRawPane;
+    private JTextPane recordScorePane;
+    private JTextPane namePane;
     private SimpleAttributeSet styleSet;
     private JPanel pauseDialog = new JPanel(){
         public void paintComponent(Graphics g) {
             g.drawImage(pausePanelImg, 0, 0, 200, 100,null);
+        }
+    };
+    private JPanel scoreDialog = new JPanel(){
+        public void paintComponent(Graphics g) {
+            g.drawImage(scorePanelImg, 0, 0, 280, 360,null);
         }
     };
 
@@ -108,7 +116,7 @@ public class GameView extends JFrame {
         nextBlockPane = new JTextPane();
         nextBlockPane.setEditable(false);
         nextBlockPane.setOpaque(false);
-        nextBlockPane.setBounds(0, 28, 70, 85);
+        nextBlockPane.setBounds(280, 80, 70, 85);
 
         scorePane = new JTextPane();
         scorePane.setEditable(false);
@@ -143,6 +151,31 @@ public class GameView extends JFrame {
         continueBtn.addActionListener(e -> gamePresenter.gameStart());
         exitBtn.addActionListener(e -> App.navigate(App.View.MAIN));
 
+        // Score Dialog
+        scoreDialog.setBounds(60, 50, 280, 360);
+        scoreDialog.setLayout(null);
+        scoreDialog.setVisible(false);
+        scoreDialog.setOpaque(false);
+
+        recordScorePane = new JTextPane();
+        recordScorePane.setEditable(false);
+        recordScorePane.setOpaque(false);
+        recordScorePane.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
+        recordScorePane.setBounds(25,100, 230,85);
+
+        namePane = new JTextPane();
+        namePane.setEditable(false);
+        namePane.setOpaque(false);
+        namePane.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
+        namePane.setBounds(115,205, 140  ,50);
+
+        JButton enterBtn = new JButton(getResource("image/enter.png"));
+        enterBtn.setBorderPainted(false);
+        enterBtn.setContentAreaFilled(false);
+        enterBtn.setBounds(70, 275, 140, 50);
+        enterBtn.addActionListener(e -> App.navigate(App.View.MAIN));
+
+        backgroundPanel.add(scoreDialog);
         this.getContentPane().add(backgroundPanel);
         backgroundPanel.add(pauseDialog);
         pauseDialog.add(continueBtn);
@@ -151,11 +184,14 @@ public class GameView extends JFrame {
         backgroundPanel.add(scorePane);
         backgroundPanel.add(levelPane);
         backgroundPanel.add(deletedRawPane);
+        backgroundPanel.add(nextBlockPane);
         backgroundPanel.add(nextPanel);
         backgroundPanel.add(scorePanel);
         backgroundPanel.add(levelPanel);
         backgroundPanel.add(linesPanel);
-        nextPanel.add(nextBlockPane);
+        scoreDialog.add(recordScorePane);
+        scoreDialog.add(namePane);
+        scoreDialog.add(enterBtn);
 
 
         styleSet = new SimpleAttributeSet();
@@ -234,6 +270,10 @@ public class GameView extends JFrame {
 
     public void setVisiblePauseDialog(boolean ifVisible) {
         pauseDialog.setVisible(ifVisible);
+    }
+
+    public void setVisibleScoreDialog(boolean ifVisible) {
+        scoreDialog.setVisible(ifVisible);
     }
 
     public final void drawBoard(final ArrayList<BoardElement[]> board) {
