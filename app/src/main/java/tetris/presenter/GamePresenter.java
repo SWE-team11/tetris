@@ -38,7 +38,7 @@ public class GamePresenter implements Presenter {
         @Override
         public final void actionPerformed(final ActionEvent e) {
             gameModel.runDelete();
-            drawBoard();
+            drawView();
         }
     }
 
@@ -83,8 +83,12 @@ public class GamePresenter implements Presenter {
         mainTimer.stop();
     }
 
-    public void drawBoard() {
+    public void drawView() {
         gameView.drawBoard(gameModel.getBoard());
+        gameView.drawNextBlock(gameModel.getNextBlock());
+        gameView.drawScore(gameModel.getScore());
+        gameView.drawLevel();
+        gameView.drawDeletedRaw(gameModel.getDeletedRaw());
     }
 
     public final void gameOver() {
@@ -96,27 +100,27 @@ public class GamePresenter implements Presenter {
 
     public final void moveRotate() {
         gameModel.moveRotate();
-        drawBoard();
+        drawView();
     }
 
     public final void moveDown() {
         gameModel.moveDownAndCheck();
-        drawBoard();
+        drawView();
     }
 
     public final void moveLeft() {
         gameModel.moveLeft();
-        drawBoard();
+        drawView();
     }
 
     public final void moveRight() {
         gameModel.moveRight();
-        drawBoard();
+        drawView();
     }
 
     public final void moveStraightDown() {
         gameModel.moveStraightDown();
-        drawBoard();
+        drawView();
     }
 
 }
