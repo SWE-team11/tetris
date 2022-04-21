@@ -9,7 +9,7 @@ public class BombItem extends Block{
 
     public BombItem() {
         shape = new BoardElement[][] {
-            {BoardElement.BOMB}
+            {BoardElement.BOMB_ITEM}
         };
         kind = BlockKind.BOMB_ITEM;
         itemPosY = 0;

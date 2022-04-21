@@ -1,18 +1,11 @@
 package tetris.utils;
 
-import tetris.utils.BlockKind;
-import tetris.utils.BoardElement;
-
 public abstract class Block {
     protected BlockKind kind;
+    protected BoardElement boardElement;
     protected BoardElement[][] shape;
 
-    public Block() {
-        shape = new BoardElement[][]{
-                {BoardElement.O_BLOCK, BoardElement.O_BLOCK},
-                {BoardElement.O_BLOCK, BoardElement.O_BLOCK}
-        };
-    }
+    public Block() {}
 
     public final BoardElement getShape(final int x, final int y) {
         return shape[y][x];
@@ -49,6 +42,10 @@ public abstract class Block {
 
     public int getItemPosX() {
         throw new UnsupportedOperationException();
+    }
+
+    public BoardElement getBoardElement() {
+        return this.boardElement;
     }
 
     public boolean isItemBlock() {

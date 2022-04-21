@@ -1,19 +1,21 @@
 package tetris.items;
 
-import java.util.Random;
-
 import tetris.utils.Block;
 import tetris.utils.BlockKind;
 import tetris.utils.BoardElement;
 
-public class LineClearItem extends Block {
+import java.util.Random;
+
+public class SameDeleteItem extends Block {
     private int itemPosY;
 
-    public LineClearItem() {
+    public SameDeleteItem() {
         Random rnd = new Random(System.currentTimeMillis());
         int rndNum = rnd.nextInt(7);
         BlockKind blockKind = BlockKind.values()[rndNum];
-        shape = BlockKind.getBlockInstance(blockKind).getFullShape();
+        Block originalBlock = BlockKind.getBlockInstance(blockKind);
+        shape = originalBlock.getFullShape();
+        boardElement = originalBlock.getBoardElement();
 
         int cnt = 0;
         rndNum = rnd.nextInt(4);
@@ -21,7 +23,7 @@ public class LineClearItem extends Block {
             for (int j = 0; j < shape[0].length; j++) {
                 if (shape[i][j] != BoardElement.EMPTY) {
                     if (cnt == rndNum) {
-                        shape[i][j] = BoardElement.LINE_CLEAR_ITEM;
+                        shape[i][j] = BoardElement.SAME_DELETE_ITEM;
                         itemPosY = i;
                     }
                     cnt++;
@@ -29,7 +31,7 @@ public class LineClearItem extends Block {
             }
         }
 
-        kind = BlockKind.LINE_CLEAR_ITEM;
+        kind = BlockKind.SAME_DELETE_ITEM;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class LineClearItem extends Block {
         for (int i = 0; i < width(); i++) {
             for (int j = 0; j < height(); j++) {
                 temp[i][j] = shape[height() - 1 - j][i];
-                if (temp[i][j] == BoardElement.LINE_CLEAR_ITEM) {
+                if (temp[i][j] == BoardElement.SAME_DELETE_ITEM) {
                     itemPosY = i;
                 }
             }

@@ -58,7 +58,7 @@ public class GameModel {
         int rndNum = 0;
 
         if(nextBlock == null) {
-            rndNum = rnd.nextInt(7);
+            rndNum = rnd.nextInt(BlockKind.getTetrominoSize());
             blockKind = BlockKind.values()[rndNum];
             currentBlock = BlockKind.getBlockInstance(blockKind);
         } else {
@@ -67,8 +67,8 @@ public class GameModel {
 
         if (itemCount >= ITEM_GENERATE_INTERVAL) {
             itemCount = Math.max(0, itemCount - ITEM_GENERATE_INTERVAL);
-            rndNum = rnd.nextInt(3) + 7;
-        }
+            rndNum = rnd.nextInt(BlockKind.getItemSize()) + BlockKind.getTetrominoSize();
+        } 
         else {
             switch (ConfigModel.gameDifficulty) {
                 case EASY -> {
@@ -353,10 +353,22 @@ public class GameModel {
                     gameSpeedUp();
                 }
                 else {
-                    // TODO
-                    // to change original block element
-                    board.get(posY + currentBlock.getItemPosY())[posX + currentBlock.getItemPosX()] = BoardElement.O_BLOCK;
+                    board.get(posY + currentBlock.getItemPosY())[posX + currentBlock.getItemPosX()] = currentBlock.getBoardElement();
                 }
+            }
+            case SAME_DELETE_ITEM -> {
+                int cnt = 0;
+                for (int i = 0; i < ConfigModel.boardHeight; i++) {
+                    for (int j = 0; j < ConfigModel.boardWidth; j++) {
+                        if(board.get(i)[j] == currentBlock.getBoardElement()
+                                || board.get(i)[j] == BoardElement.SAME_DELETE_ITEM) {
+                            board.get(i)[j] = BoardElement.DELETE;
+                            cnt++;
+                        }
+                    }
+                }
+                score += 10 * cnt * ConfigModel.getScoreRate();
+                gameSpeedUp();
             }
         }
     }
