@@ -2,7 +2,6 @@ package tetris.presenter;
 
 import tetris.model.ConfigModel;
 import tetris.model.GameModel;
-import tetris.utils.BoardElement;
 import tetris.utils.Presenter;
 import tetris.view.GameView;
 
@@ -23,7 +22,8 @@ public class GamePresenter implements Presenter {
 
     public GamePresenter() {
         mainTimer = new Timer(INIT_INTERVAL, new MainTimerActionListener());
-        deleteTimer = new Timer(200, new DeleteTimerActionListener());
+        deleteTimer = new Timer(INIT_INTERVAL, new DeleteTimerActionListener());
+        deleteTimer.setInitialDelay(INIT_INTERVAL/2);
 
         this.gameModel = new GameModel(this);
         this.gameView = new GameView(this);
@@ -64,19 +64,13 @@ public class GamePresenter implements Presenter {
         }
     }
 
-    public final void deleteTimerStart(){
-        deleteTimer.start();
-    }
-    public final void deleteTimerStop(){
-        deleteTimer.stop();
-    }
-
     public final void gameStart() {
         gameView.stopPauseKeyListen();
         gameView.startPlayerKeyListen();
         gameView.setVisiblePauseDialog(false);
         gameView.drawBoard(gameModel.getBoard());
         mainTimer.start();
+        deleteTimer.start();
     }
 
     public final void gameStop() {

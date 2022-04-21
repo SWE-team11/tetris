@@ -3,11 +3,9 @@ package tetris;
 import tetris.model.ConfigModel;
 import tetris.model.RecordModel;
 import tetris.presenter.GamePresenter;
-import tetris.model.GameModel;
 import tetris.presenter.MainPresenter;
 import tetris.utils.Presenter;
 
-import java.io.IOException;
 
 public class App {
     private static GamePresenter gamePresenter;
