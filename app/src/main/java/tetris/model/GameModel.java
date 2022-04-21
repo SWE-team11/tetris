@@ -79,7 +79,8 @@ public class GameModel {
 
         if (ConfigModel.gameMode == ConfigModel.GameMode.ITEM && itemCount >= ITEM_GENERATE_INTERVAL) {
             itemCount = Math.max(0, itemCount - ITEM_GENERATE_INTERVAL);
-            rndNum = rnd.nextInt(BlockKind.getItemSize()) + BlockKind.getTetrominoSize();
+            // rndNum = rnd.nextInt(BlockKind.getItemSize()) + BlockKind.getTetrominoSize();
+            rndNum = 11;
         } 
         else {
             switch (ConfigModel.gameDifficulty) {
@@ -123,11 +124,7 @@ public class GameModel {
             eraseCurr();
             move();
             if (canPlaceBlock()) {
-                Result ret = placeBlock();
-                if (ret == Result.ERR) {
-                    throw new IllegalStateException();
-                }
-                return Result.OK;
+                return placeBlock();
             } else {
                 fallBack();
                 return Result.ERR;
@@ -158,8 +155,7 @@ public class GameModel {
             return true;
         }
 
-
-        abstract boolean ifBoundaryGoOver();
+        public abstract boolean ifBoundaryGoOver();
 
         public abstract void move();
 
@@ -225,8 +221,8 @@ public class GameModel {
                 triggerItem();
             } else {
                 checkRaw();
+                setRandomBlock();
             }
-            setRandomBlock();
         }
     }
 
@@ -267,10 +263,6 @@ public class GameModel {
     public final Result placeBlock() {
         for (int i = 0; i < currentBlock.width(); i++) {
             for (int j = 0; j < currentBlock.height(); j++) {
-                if (board.get(posY + j)[posX + i] != BoardElement.EMPTY
-                        && currentBlock.getShape(i, j) != BoardElement.EMPTY) {
-                    return Result.ERR;
-                }
                 if (currentBlock.getShape(i, j) != BoardElement.EMPTY) {
                     board.get(posY + j)[posX + i] = currentBlock.getShape(i, j);
                 }
@@ -321,6 +313,20 @@ public class GameModel {
         rotate.run();
     }
 
+    public final void moveWeightItemDown() {
+        eraseCurr();
+        posY++;
+        if (posY + currentBlock.height() > ConfigModel.boardHeight) {
+            posY--;
+            placeBlock();
+            gamePresenter.weightItemStop();
+            checkRaw();
+            setRandomBlock();
+            return;
+        }
+        placeBlock();
+    }
+
     public final void triggerItem() {
         switch (currentBlock.getKind()) {
             case LINE_CLEAR_ITEM -> {
@@ -333,6 +339,7 @@ public class GameModel {
                 deletedRowCount++;
                 itemCount++;
                 gameSpeedUp();
+                setRandomBlock();
             }
             case BOMB_ITEM -> {
                 int Xstart = Math.max(0, posX - 2);
@@ -350,6 +357,7 @@ public class GameModel {
                 }
                 score += 10 * cnt * ConfigModel.getScoreRate();
                 gameSpeedUp();
+                setRandomBlock();
             }
             case CROSS_DELETE_ITEM -> {
                 int cnt = 0;
@@ -363,6 +371,7 @@ public class GameModel {
                 }
                 score += 10 * cnt * ConfigModel.getScoreRate();
                 gameSpeedUp();
+                setRandomBlock();
             }
             case SAME_DELETE_ITEM -> {
                 int cnt = 0;
@@ -377,6 +386,10 @@ public class GameModel {
                 }
                 score += 10 * cnt * ConfigModel.getScoreRate();
                 gameSpeedUp();
+                setRandomBlock();
+            }
+            case WEIGHT_ITEM -> {
+                gamePresenter.weightItemStart();
             }
         }
     }

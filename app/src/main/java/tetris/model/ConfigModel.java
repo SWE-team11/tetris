@@ -3,7 +3,6 @@ package tetris.model;
 import java.awt.event.KeyEvent;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ConfigModel {
@@ -122,8 +121,8 @@ public class ConfigModel {
             boardHeight = Integer.parseInt(configs[3]);
             gameSpeed = Integer.parseInt(configs[4]);
             colorBlindMode = Boolean.parseBoolean(configs[5]);
-            int keyBingdingLength = Integer.parseInt(configs[6]);
-            for(int i=0; i<keyBingdingLength; i++) {
+            int keyBindingLength = Integer.parseInt(configs[6]);
+            for(int i=0; i<keyBindingLength; i++) {
                 keyBinding[i] = Integer.parseInt(configs[7+i]);
             }
             bufReader.close();
