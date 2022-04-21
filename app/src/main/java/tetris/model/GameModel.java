@@ -208,11 +208,8 @@ public class GameModel {
         }
 
         public void hook() {
-            if(currentBlock.isItemBlock()) {
-                triggerItem();
-            } else {
-                checkRaw();
-            }
+            triggerItem();
+            checkRaw();
             setRandomBlock();
         }
     }
