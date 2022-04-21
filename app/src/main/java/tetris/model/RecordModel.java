@@ -3,7 +3,6 @@ package tetris.model;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 
 public class RecordModel {
     public static class Record implements Comparable<Record>{
@@ -76,7 +75,7 @@ public class RecordModel {
             FileReader fStream = new FileReader(f);
             BufferedReader bufReader = new BufferedReader(fStream);
             String line = "";
-            while((line = bufReader.readLine()) != null){
+            while ((line = bufReader.readLine()) != null) {
                 String[] record = line.split(",");
                 rankedRecords.add(new Record(
                         Integer.parseInt(record[0]),
@@ -84,9 +83,9 @@ public class RecordModel {
                         Enum.valueOf(ConfigModel.GameMode.class, record[2]),
                         Enum.valueOf(ConfigModel.GameDifficulty.class, record[3]),
                         record[4],
-                        record[5]
-                ));
+                        record[5]));
             }
+            bufReader.close();
         } catch (IOException e) {
             System.out.println("저장된 기록이 없습니다.");
         }

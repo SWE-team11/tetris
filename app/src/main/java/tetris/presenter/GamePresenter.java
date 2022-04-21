@@ -15,14 +15,16 @@ public class GamePresenter implements Presenter {
     private GameView gameView;
     private final Timer mainTimer;
     private final Timer deleteTimer;
+    private final Timer weightItemTimer;
     private final int VIEW_WIDTH = 400;
     private final int VIEW_HEIGHT = 600;
 
     private static final double INIT_INTERVAL = 1000 / ConfigModel.gameSpeed;
 
     public GamePresenter() {
-        mainTimer = new Timer((int)INIT_INTERVAL, new MainTimerActionListener());
-        deleteTimer = new Timer((int)INIT_INTERVAL/3, new DeleteTimerActionListener());
+        mainTimer = new Timer(INIT_INTERVAL, new MainTimerActionListener());
+        deleteTimer = new Timer(INIT_INTERVAL / 3, new DeleteTimerActionListener());
+        weightItemTimer = new Timer(INIT_INTERVAL / 5, new WeightItemTimerActionListener());
 
         initPresent();
     }
@@ -38,6 +40,14 @@ public class GamePresenter implements Presenter {
         @Override
         public final void actionPerformed(final ActionEvent e) {
             gameModel.runDelete();
+            drawView();
+        }
+    }
+
+    public class WeightItemTimerActionListener implements ActionListener {
+        @Override
+        public final void actionPerformed(final ActionEvent e) {
+            gameModel.moveWeightItemDown();
             drawView();
         }
     }
@@ -81,6 +91,18 @@ public class GamePresenter implements Presenter {
         gameView.startPauseKeyListen();
         gameView.setVisiblePauseDialog(true);
         mainTimer.stop();
+    }
+
+    public final void weightItemStart() {
+        gameView.stopPlayerKeyListen();
+        mainTimer.stop();
+        weightItemTimer.start();
+    }
+
+    public final void weightItemStop() {
+        gameView.startPlayerKeyListen();
+        mainTimer.start();
+        weightItemTimer.stop();
     }
 
     public void drawView() {
