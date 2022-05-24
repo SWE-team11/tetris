@@ -17,7 +17,7 @@ public class App {
     private static Presenter currentPresenter;
 
     public enum View {
-        MAIN, GAME, CONFIG, RECORD
+        MAIN, GAME, CONFIG, RECORD, MULTI
     }
 
     protected App() {
