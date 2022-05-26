@@ -72,7 +72,10 @@ public class MainView extends JFrame {
         });
         duoBtn.setBounds(50, 340, 290, 80);
 
-        JButton playBtn = new JButton(getResource("image/play.png"));
+
+        // JButton playBtn = new JButton(getResource("image/play.png"));
+        // solo
+        JButton playBtn1 = new JButton();
         JButton normalBtn = new JButton(getResource("image/normal.png"));
         JButton normalClickedBtn = new JButton(getResource("image/normal_clicked.png"));
         JButton itemBtn = new JButton(getResource("image/item.png"));
@@ -84,18 +87,43 @@ public class MainView extends JFrame {
         JButton hardLevelBtn = new JButton(getResource("image/hardLevel.png"));
         JButton hardLevelClickedBtn = new JButton(getResource("image/hardLevelClicked.png"));
 
-        JButton settingBtn = new JButton(getResource("image/setting.png"));
-        JButton exitBtn = new JButton(getResource("image/exit.png"));
-        JButton toRecordBtn = new JButton(getResource("image/toRecord.png"));
+        JButton settingBtn = new JButton();
+        JButton exitBtn1 = new JButton();
+        JButton toRecordBtn = new JButton();
 
-        playBtn.setBorderPainted(false);
-        playBtn.setContentAreaFilled(false);
-        playBtn.addActionListener(e -> App.navigate(App.View.BATTLE));
-        playBtn.setBounds(30, 285, 320, 90);
+
+        // duo
+        JButton playBtn2 = new JButton();
+        JButton itemBtn2 = new JButton(getResource("image/battleItemOption.png"));
+        JButton itemClickedBtn2 = new JButton(getResource("image/battleItemOptionClicked.png"));
+        JButton timeBtn2 = new JButton(getResource("image/battleTimeOption.png"));
+        JButton timeClickedBtn2 = new JButton(getResource("image/battleTimeOptionClicked.png"));
+        JButton normalBtn2 = new JButton(getResource("image/battleNormalOption.png"));
+        JButton normalClickedBtn2 = new JButton(getResource("image/battleNormalOptionClicked.png"));
+        JButton exitBtn2 = new JButton();
+
+
+
+        JButton xBtn = new JButton();
+        xBtn.setBorderPainted(false);
+        xBtn.setContentAreaFilled(false);
+        xBtn.addActionListener(e -> {
+            if (dialogOpen)
+                return;
+            dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        });
+        xBtn.setBounds(302, 480, 45, 45);
+
+
+        // solo
+        playBtn1.setBorderPainted(false);
+        playBtn1.setContentAreaFilled(false);
+        playBtn1.addActionListener(e -> App.navigate(App.View.BATTLE));
+        playBtn1.setBounds(38, 190, 310, 90);
 
         normalBtn.setBorderPainted(false);
         normalBtn.setContentAreaFilled(false);
-        normalBtn.setBounds(30, 205, 150, 60);
+        normalBtn.setBounds(205, 118, 150, 60);
         normalBtn.setVisible(ConfigModel.gameMode == ConfigModel.GameMode.BASIC ? false : true);
         normalBtn.addActionListener(e -> {
             ConfigModel.changeGameMode(ConfigModel.GameMode.BASIC);
@@ -108,12 +136,12 @@ public class MainView extends JFrame {
 
         normalClickedBtn.setBorderPainted(false);
         normalClickedBtn.setContentAreaFilled(false);
-        normalClickedBtn.setBounds(30, 205, 150, 60);
+        normalClickedBtn.setBounds(205, 118, 150, 60);
         normalClickedBtn.setVisible(ConfigModel.gameMode == ConfigModel.GameMode.BASIC ? true : false);
 
         itemBtn.setBorderPainted(false);
         itemBtn.setContentAreaFilled(false);
-        itemBtn.setBounds(200, 205, 150, 60);
+        itemBtn.setBounds(38, 118, 150, 60);
         itemBtn.setVisible(ConfigModel.gameMode == ConfigModel.GameMode.BASIC ? true : false);
 
         itemBtn.addActionListener(e -> {
@@ -127,12 +155,12 @@ public class MainView extends JFrame {
 
         itemClickedBtn.setBorderPainted(false);
         itemClickedBtn.setContentAreaFilled(false);
-        itemClickedBtn.setBounds(200, 205, 150, 60);
+        itemClickedBtn.setBounds(38, 118, 150, 60);
         itemClickedBtn.setVisible(ConfigModel.gameMode == ConfigModel.GameMode.BASIC ? false : true);
 
         easyLevelBtn.setBorderPainted(false);
         easyLevelBtn.setContentAreaFilled(false);
-        easyLevelBtn.setBounds(30, 395, 98, 48);
+        easyLevelBtn.setBounds(38, 310, 98, 48);
         easyLevelBtn.setVisible(ConfigModel.gameDifficulty != ConfigModel.GameDifficulty.EASY);
 
         easyLevelBtn.addActionListener(e -> {
@@ -148,13 +176,13 @@ public class MainView extends JFrame {
 
         easyLevelClickedBtn.setBorderPainted(false);
         easyLevelClickedBtn.setContentAreaFilled(false);
-        easyLevelClickedBtn.setBounds(30, 395, 98, 48);
+        easyLevelClickedBtn.setBounds(38, 310, 98, 48);
         easyLevelClickedBtn.setVisible(ConfigModel.gameDifficulty == ConfigModel.GameDifficulty.EASY);
 
 
         normalLevelBtn.setBorderPainted(false);
         normalLevelBtn.setContentAreaFilled(false);
-        normalLevelBtn.setBounds(140, 395, 98, 48);
+        normalLevelBtn.setBounds(148, 310, 98, 48);
         normalLevelBtn.setVisible(ConfigModel.gameDifficulty != ConfigModel.GameDifficulty.NORMAL);
 
         normalLevelBtn.addActionListener(e -> {
@@ -170,12 +198,12 @@ public class MainView extends JFrame {
 
         normalLevelClickedBtn.setBorderPainted(false);
         normalLevelClickedBtn.setContentAreaFilled(false);
-        normalLevelClickedBtn.setBounds(140, 395, 98, 48);
+        normalLevelClickedBtn.setBounds(148, 310, 98, 48);
         normalLevelClickedBtn.setVisible(ConfigModel.gameDifficulty == ConfigModel.GameDifficulty.NORMAL);
 
         hardLevelBtn.setBorderPainted(false);
         hardLevelBtn.setContentAreaFilled(false);
-        hardLevelBtn.setBounds(252, 395, 98, 48);
+        hardLevelBtn.setBounds(258, 310, 98, 48);
         hardLevelBtn.setVisible(ConfigModel.gameDifficulty != ConfigModel.GameDifficulty.HARD);
 
         hardLevelBtn.addActionListener(e -> {
@@ -191,29 +219,20 @@ public class MainView extends JFrame {
 
         hardLevelClickedBtn.setBorderPainted(false);
         hardLevelClickedBtn.setContentAreaFilled(false);
-        hardLevelClickedBtn.setBounds(252, 395, 98, 48);
+        hardLevelClickedBtn.setBounds(258, 310, 98, 48);
         hardLevelClickedBtn.setVisible(ConfigModel.gameDifficulty == ConfigModel.GameDifficulty.HARD ? true : false);
 
         settingBtn.setBorderPainted(false);
         settingBtn.setContentAreaFilled(false);
-        settingBtn.setBounds(250, 485, 46, 46);
+        settingBtn.setBounds(263, 430, 45, 45);
         settingBtn.addActionListener(e -> {
             App.navigate(App.View.CONFIG);
         });
 
-        JButton xBtn = new JButton();
-        xBtn.setBorderPainted(false);
-        xBtn.setContentAreaFilled(false);
-        xBtn.addActionListener(e -> {
-            if(dialogOpen) return;
-            dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-        });
-        xBtn.setBounds(302, 480, 45, 45);
-
-        exitBtn.setBorderPainted(false);
-        exitBtn.setContentAreaFilled(false);
-        exitBtn.setBounds(305, 485, 46, 46);
-        exitBtn.addActionListener(e -> {
+        exitBtn1.setBorderPainted(false);
+        exitBtn1.setContentAreaFilled(false);
+        exitBtn1.setBounds(315, 430, 46, 46);
+        exitBtn1.addActionListener(e -> {
             normalGameDialog.setVisible(false);
             battleGameDialog.setVisible(false);
             dialogOpen = false;
@@ -221,10 +240,91 @@ public class MainView extends JFrame {
 
         toRecordBtn.setBorderPainted(false);
         toRecordBtn.setContentAreaFilled(false);
-        toRecordBtn.setBounds(30, 485, 85, 45);
+        toRecordBtn.setBounds(40, 430, 85, 45);
         toRecordBtn.addActionListener(e -> {
             App.navigate(App.View.RECORD);
         });
+
+
+        // duo
+        playBtn2.setBorderPainted(false);
+        playBtn2.addActionListener(e -> App.navigate(App.View.GAME));
+        playBtn2.setBounds(38, 245, 310, 90);
+
+
+        itemBtn2.setBorderPainted(false);
+        itemBtn2.setContentAreaFilled(false);
+        itemBtn2.setBounds(38, 170, 98, 48);
+        itemBtn2.setVisible(ConfigModel.gameBattleMode != ConfigModel.GameBattleMode.ITEM);
+
+        itemBtn2.addActionListener(e -> {
+            ConfigModel.changeBattleMode(ConfigModel.GameBattleMode.ITEM);
+            normalBtn.setVisible(true);
+            normalClickedBtn.setVisible(false);
+            itemBtn.setVisible(false);
+            itemClickedBtn.setVisible(true);
+            repaint();
+        });
+
+        itemClickedBtn2.setBorderPainted(false);
+        itemClickedBtn2.setContentAreaFilled(false);
+        itemClickedBtn2.setBounds(38, 170, 98, 48);
+        itemClickedBtn2.setVisible(ConfigModel.gameBattleMode == ConfigModel.GameBattleMode.ITEM);
+
+
+        normalBtn2.setBorderPainted(false);
+        normalBtn2.setContentAreaFilled(false);
+        normalBtn2.setBounds(145, 170, 98, 48);
+        normalBtn2.setVisible(ConfigModel.gameBattleMode != ConfigModel.GameBattleMode.NORMAL);
+
+        normalBtn2.addActionListener(e -> {
+            ConfigModel.changeBattleMode(ConfigModel.GameBattleMode.NORMAL);
+            easyLevelBtn.setVisible(true);
+            easyLevelClickedBtn.setVisible(false);
+            normalLevelBtn.setVisible(false);
+            normalLevelClickedBtn.setVisible(true);
+            hardLevelBtn.setVisible(true);
+            hardLevelClickedBtn.setVisible(false);
+            repaint();
+        });
+
+        normalClickedBtn2.setBorderPainted(false);
+        normalClickedBtn2.setContentAreaFilled(false);
+        normalClickedBtn2.setBounds(145, 170, 98, 48);
+        normalClickedBtn2.setVisible(ConfigModel.gameBattleMode == ConfigModel.GameBattleMode.NORMAL);
+
+
+        timeBtn2.setBorderPainted(false);
+        timeBtn2.setContentAreaFilled(false);
+        timeBtn2.setBounds(252, 170, 98, 48);
+        timeBtn2.setVisible(ConfigModel.gameBattleMode != ConfigModel.GameBattleMode.TIME);
+
+        timeBtn2.addActionListener(e -> {
+            ConfigModel.changeBattleMode(ConfigModel.GameBattleMode.TIME);
+            easyLevelBtn.setVisible(true);
+            easyLevelClickedBtn.setVisible(false);
+            normalLevelBtn.setVisible(false);
+            normalLevelClickedBtn.setVisible(true);
+            hardLevelBtn.setVisible(true);
+            hardLevelClickedBtn.setVisible(false);
+            repaint();
+        });
+
+        timeClickedBtn2.setBorderPainted(false);
+        timeClickedBtn2.setContentAreaFilled(false);
+        timeClickedBtn2.setBounds(252, 170, 98, 48);
+        timeClickedBtn2.setVisible(ConfigModel.gameBattleMode == ConfigModel.GameBattleMode.TIME);
+
+        exitBtn2.setBorderPainted(false);
+        exitBtn2.setContentAreaFilled(false);
+        exitBtn2.setBounds(302, 355, 45, 45);
+        exitBtn2.addActionListener(e -> {
+            normalGameDialog.setVisible(false);
+            battleGameDialog.setVisible(false);
+            dialogOpen = false;
+        });
+
+
 
         normalGameDialog.setOpaque(false);
         normalGameDialog.setVisible(false);
@@ -232,27 +332,35 @@ public class MainView extends JFrame {
         normalGameDialog.setBounds(0, 0, 400, 600);
 
         //버튼 추가하기
+        normalGameDialog.add(normalBtn);
+        normalGameDialog.add(normalClickedBtn);
+        normalGameDialog.add(itemBtn);
+        normalGameDialog.add(itemClickedBtn);
+        normalGameDialog.add(playBtn1);
+        normalGameDialog.add(easyLevelBtn);
+        normalGameDialog.add(easyLevelClickedBtn);
+        normalGameDialog.add(normalLevelBtn);
+        normalGameDialog.add(normalLevelClickedBtn);
+        normalGameDialog.add(hardLevelBtn);
+        normalGameDialog.add(hardLevelClickedBtn);
         normalGameDialog.add(settingBtn);
-        normalGameDialog.add(exitBtn);
+        normalGameDialog.add(exitBtn1);
         normalGameDialog.add(toRecordBtn);
+
 
         battleGameDialog.setOpaque(false);
         battleGameDialog.setVisible(false);
         battleGameDialog.setLayout(null);
         battleGameDialog.setBounds(0, 0, 400, 600);
 
-        battleGameDialog.add(normalBtn);
-        battleGameDialog.add(normalClickedBtn);
-        battleGameDialog.add(itemBtn);
-        battleGameDialog.add(itemClickedBtn);
-        battleGameDialog.add(playBtn);
-        battleGameDialog.add(easyLevelBtn);
-        battleGameDialog.add(easyLevelClickedBtn);
-        battleGameDialog.add(normalLevelBtn);
-        battleGameDialog.add(normalLevelClickedBtn);
-        battleGameDialog.add(hardLevelBtn);
-        battleGameDialog.add(hardLevelClickedBtn);
-        battleGameDialog.add(exitBtn);
+        battleGameDialog.add(playBtn2);
+        battleGameDialog.add(itemBtn2);
+        battleGameDialog.add(itemClickedBtn2);
+        battleGameDialog.add(normalBtn2);
+        battleGameDialog.add(normalClickedBtn2);
+        battleGameDialog.add(timeBtn2);
+        battleGameDialog.add(timeClickedBtn2);
+        battleGameDialog.add(exitBtn2);
 
         this.setContentPane(btnPanel);
         btnPanel.add(normalGameDialog);
@@ -262,3 +370,7 @@ public class MainView extends JFrame {
         btnPanel.add(xBtn);
     }
 }
+
+
+
+        

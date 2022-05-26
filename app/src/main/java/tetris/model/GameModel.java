@@ -19,7 +19,7 @@ public class GameModel {
 
     private final int DEFAULT_POS_X = 3;
     private final int DEFAULT_POS_Y = 0;
-    private final int ITEM_GENERATE_INTERVAL = 10;
+    private final int ITEM_GENERATE_INTERVAL = 0;
     private double gameSpeed = ConfigModel.gameSpeed;
 
     private int posX;
