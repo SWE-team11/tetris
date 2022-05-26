@@ -7,18 +7,23 @@ import tetris.presenter.MainPresenter;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 
 public class MainView extends JFrame {
 
     private MainPresenter mainPresenter;
+    private boolean dialogOpen = false;
 
     private ImageIcon getResource(String path) {
         return new ImageIcon(getClass().getClassLoader().getResource(path));
     }
 
     private Image background = getResource("image/background.png").getImage();
+    private Image normalGameDialogBG = getResource("image/normalGameDialog.png").getImage();
+    private Image battleGameDialogBG = getResource("image/battleGameDialog.png").getImage();
 
     public MainView(final MainPresenter presenter) {
         this.mainPresenter = presenter;
@@ -35,6 +40,37 @@ public class MainView extends JFrame {
         };
         btnPanel.setLayout(null);
         btnPanel.setBorder(BorderFactory.createEmptyBorder(200 , 0 , 0 , 25));
+
+        JPanel normalGameDialog = new JPanel() {
+            public void paintComponent(Graphics g) {
+                g.drawImage(normalGameDialogBG, 0, 0, 400, 600, null);
+            }
+        };
+        JPanel battleGameDialog = new JPanel() {
+            public void paintComponent(Graphics g) {
+                g.drawImage(battleGameDialogBG, 0, 0, 400, 600, null);
+            }
+        };
+
+        JButton soloBtn = new JButton();
+        soloBtn.setBorderPainted(false);
+        soloBtn.setContentAreaFilled(false);
+        soloBtn.addActionListener(e -> {
+            if(dialogOpen) return;
+            normalGameDialog.setVisible(true);
+            dialogOpen = true;
+        });
+        soloBtn.setBounds(50, 245, 290, 80);
+
+        JButton duoBtn = new JButton();
+        duoBtn.setBorderPainted(false);
+        duoBtn.setContentAreaFilled(false);
+        duoBtn.addActionListener(e -> {
+            if(dialogOpen) return;
+            battleGameDialog.setVisible(true);
+            dialogOpen = true;
+        });
+        duoBtn.setBounds(50, 340, 290, 80);
 
         JButton playBtn = new JButton(getResource("image/play.png"));
         JButton normalBtn = new JButton(getResource("image/normal.png"));
@@ -165,11 +201,22 @@ public class MainView extends JFrame {
             App.navigate(App.View.CONFIG);
         });
 
+        JButton xBtn = new JButton();
+        xBtn.setBorderPainted(false);
+        xBtn.setContentAreaFilled(false);
+        xBtn.addActionListener(e -> {
+            if(dialogOpen) return;
+            dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        });
+        xBtn.setBounds(302, 480, 45, 45);
+
         exitBtn.setBorderPainted(false);
         exitBtn.setContentAreaFilled(false);
         exitBtn.setBounds(305, 485, 46, 46);
         exitBtn.addActionListener(e -> {
-            dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            normalGameDialog.setVisible(false);
+            battleGameDialog.setVisible(false);
+            dialogOpen = false;
         });
 
         toRecordBtn.setBorderPainted(false);
@@ -179,20 +226,39 @@ public class MainView extends JFrame {
             App.navigate(App.View.RECORD);
         });
 
+        normalGameDialog.setOpaque(false);
+        normalGameDialog.setVisible(false);
+        normalGameDialog.setLayout(null);
+        normalGameDialog.setBounds(0, 0, 400, 600);
+
+        //버튼 추가하기
+        normalGameDialog.add(settingBtn);
+        normalGameDialog.add(exitBtn);
+        normalGameDialog.add(toRecordBtn);
+
+        battleGameDialog.setOpaque(false);
+        battleGameDialog.setVisible(false);
+        battleGameDialog.setLayout(null);
+        battleGameDialog.setBounds(0, 0, 400, 600);
+
+        battleGameDialog.add(normalBtn);
+        battleGameDialog.add(normalClickedBtn);
+        battleGameDialog.add(itemBtn);
+        battleGameDialog.add(itemClickedBtn);
+        battleGameDialog.add(playBtn);
+        battleGameDialog.add(easyLevelBtn);
+        battleGameDialog.add(easyLevelClickedBtn);
+        battleGameDialog.add(normalLevelBtn);
+        battleGameDialog.add(normalLevelClickedBtn);
+        battleGameDialog.add(hardLevelBtn);
+        battleGameDialog.add(hardLevelClickedBtn);
+        battleGameDialog.add(exitBtn);
+
         this.setContentPane(btnPanel);
-        btnPanel.add(normalBtn);
-        btnPanel.add(normalClickedBtn);
-        btnPanel.add(itemBtn);
-        btnPanel.add(itemClickedBtn);
-        btnPanel.add(playBtn);
-        btnPanel.add(easyLevelBtn);
-        btnPanel.add(easyLevelClickedBtn);
-        btnPanel.add(normalLevelBtn);
-        btnPanel.add(normalLevelClickedBtn);
-        btnPanel.add(hardLevelBtn);
-        btnPanel.add(hardLevelClickedBtn);
-        btnPanel.add(settingBtn);
-        btnPanel.add(exitBtn);
-        btnPanel.add(toRecordBtn);
+        btnPanel.add(normalGameDialog);
+        btnPanel.add(battleGameDialog);
+        btnPanel.add(soloBtn);
+        btnPanel.add(duoBtn);
+        btnPanel.add(xBtn);
     }
 }
