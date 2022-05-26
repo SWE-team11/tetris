@@ -118,7 +118,7 @@ public class MainView extends JFrame {
         // solo
         playBtn1.setBorderPainted(false);
         playBtn1.setContentAreaFilled(false);
-        playBtn1.addActionListener(e -> App.navigate(App.View.BATTLE));
+        playBtn1.addActionListener(e -> App.navigate(App.View.GAME));
         playBtn1.setBounds(38, 190, 310, 90);
 
         normalBtn.setBorderPainted(false);
@@ -248,8 +248,9 @@ public class MainView extends JFrame {
 
         // duo
         playBtn2.setBorderPainted(false);
-        playBtn2.addActionListener(e -> App.navigate(App.View.GAME));
-        playBtn2.setBounds(38, 245, 310, 90);
+        playBtn2.addActionListener(e -> App.navigate(App.View.BATTLE));
+        playBtn2.setBounds(45, 265, 310, 90);
+        playBtn2.setOpaque(false);
 
 
         itemBtn2.setBorderPainted(false);
@@ -259,10 +260,12 @@ public class MainView extends JFrame {
 
         itemBtn2.addActionListener(e -> {
             ConfigModel.changeBattleMode(ConfigModel.GameBattleMode.ITEM);
-            normalBtn.setVisible(true);
-            normalClickedBtn.setVisible(false);
-            itemBtn.setVisible(false);
-            itemClickedBtn.setVisible(true);
+            itemBtn2.setVisible(false);
+            itemClickedBtn2.setVisible(true);
+            normalBtn2.setVisible(true);
+            normalClickedBtn2.setVisible(false);
+            timeBtn2.setVisible(true);
+            timeClickedBtn2.setVisible(false);
             repaint();
         });
 
@@ -279,12 +282,12 @@ public class MainView extends JFrame {
 
         normalBtn2.addActionListener(e -> {
             ConfigModel.changeBattleMode(ConfigModel.GameBattleMode.NORMAL);
-            easyLevelBtn.setVisible(true);
-            easyLevelClickedBtn.setVisible(false);
-            normalLevelBtn.setVisible(false);
-            normalLevelClickedBtn.setVisible(true);
-            hardLevelBtn.setVisible(true);
-            hardLevelClickedBtn.setVisible(false);
+            itemBtn2.setVisible(true);
+            itemClickedBtn2.setVisible(false);
+            normalBtn2.setVisible(false);
+            normalClickedBtn2.setVisible(true);
+            timeBtn2.setVisible(true);
+            timeClickedBtn2.setVisible(false);
             repaint();
         });
 
@@ -301,12 +304,12 @@ public class MainView extends JFrame {
 
         timeBtn2.addActionListener(e -> {
             ConfigModel.changeBattleMode(ConfigModel.GameBattleMode.TIME);
-            easyLevelBtn.setVisible(true);
-            easyLevelClickedBtn.setVisible(false);
-            normalLevelBtn.setVisible(false);
-            normalLevelClickedBtn.setVisible(true);
-            hardLevelBtn.setVisible(true);
-            hardLevelClickedBtn.setVisible(false);
+            itemBtn2.setVisible(true);
+            itemClickedBtn2.setVisible(false);
+            normalBtn2.setVisible(true);
+            normalClickedBtn2.setVisible(false);
+            timeBtn2.setVisible(false);
+            timeClickedBtn2.setVisible(true);
             repaint();
         });
 
