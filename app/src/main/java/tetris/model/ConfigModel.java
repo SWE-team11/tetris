@@ -19,9 +19,14 @@ public class ConfigModel {
         EASY(0.5), NORMAL(1.0), HARD(1.5);
 
         double rate;
+
         GameDifficulty(double rate) {
             this.rate = rate;
         }
+    }
+    
+    public enum GameBattleMode {
+        TIME, NORMAL, ITEM
     }
 
     public enum BoardSize {
@@ -41,6 +46,7 @@ public class ConfigModel {
 
     public static GameMode gameMode = GameMode.BASIC;
     public static GameDifficulty gameDifficulty = GameDifficulty.NORMAL;
+    public static GameBattleMode gameBattleMode = GameBattleMode.NORMAL; 
     public static BoardSize boardSize = BoardSize.MEDIUM;
     public static int boardWidth = 10;
     public static int boardHeight = 20;
@@ -75,6 +81,10 @@ public class ConfigModel {
     public static void changeGameDifficulty(GameDifficulty d) {
         gameDifficulty = d;
         saveConfig();
+    }
+
+    public static void changeBattleMode(GameBattleMode b) {
+        gameBattleMode = b;
     }
 
     public static void changeBoardSize(BoardSize b) {

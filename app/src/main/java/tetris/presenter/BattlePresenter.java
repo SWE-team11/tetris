@@ -122,7 +122,7 @@ public class BattlePresenter implements Presenter {
         deleteTimerP1.start();
         mainTimerP2.start();
         deleteTimerP2.start();
-        if(ConfigModel.isTimeAttackMode) {
+        if(ConfigModel.gameBattleMode == ConfigModel.GameBattleMode.TIME) {
             timeAttackTimer.start();
         }
     }
@@ -136,13 +136,13 @@ public class BattlePresenter implements Presenter {
         deleteTimerP1.stop();
         mainTimerP2.stop();
         deleteTimerP2.stop();
-        if(ConfigModel.isTimeAttackMode) {
+        if(ConfigModel.gameBattleMode == ConfigModel.GameBattleMode.TIME) {
             timeAttackTimer.stop();
         }
     }
 
     public final void gameOver() {
-        battleView.drawScrollDialog((int) battleModelP1.getScore(), (int) battleModelP2.getScore());
+        battleView.drawBattleDialog((int) battleModelP1.getScore(), (int) battleModelP2.getScore());
         battleView.stopPlayerKeyListen(true);
         battleView.stopPlayerKeyListen(false);
         battleView.stopPauseKeyListen();

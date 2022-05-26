@@ -55,7 +55,6 @@ public class BattleView extends JFrame {
 
     //기록
     private JTextPane recordScorePane;
-    private JTextField namePane;
     private SimpleAttributeSet styleSet;
     private JPanel pauseDialog = new JPanel(){
         public void paintComponent(Graphics g) {
@@ -197,7 +196,7 @@ public class BattleView extends JFrame {
         deletedRawPaneP2.setOpaque(false);
         deletedRawPaneP2.setBounds(540 + getWidth(ConfigModel.boardSize), 450, 70, 70);
 
-        pauseDialog.setBounds(100 + getWidth(ConfigModel.boardSize)/2, 200, 200, 100);
+        pauseDialog.setBounds(330 + getWidth(ConfigModel.boardSize)/2, 220, 200, 100);
         pauseDialog.setLayout(null);
         pauseDialog.setVisible(false);
         pauseDialog.setOpaque(false);
@@ -216,22 +215,16 @@ public class BattleView extends JFrame {
         exitBtn.addActionListener(e -> App.navigate(App.View.MAIN));
 
         // Battle Dialog
+        recordScorePane = new JTextPane();
+        recordScorePane.setEditable(false);
+        recordScorePane.setOpaque(false);
+        recordScorePane.setBounds(335,283, 230,85);
+
         battleDialog.setBounds(0 + getWidth(ConfigModel.boardSize)/2, 0, 900, 600);
         battleDialog.setLayout(null);
         battleDialog.setVisible(false);
         battleDialog.setOpaque(false);
-
-        recordScorePane = new JTextPane();
-        recordScorePane.setEditable(false);
-        recordScorePane.setOpaque(false);
-        recordScorePane.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
-        recordScorePane.setBounds(25,100, 230,85);
-
-        namePane = new JTextField();
-        namePane.setOpaque(false);
-        namePane.setForeground(Color.white);
-        namePane.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
-        namePane.setBounds(115,205, 140  ,50);
+        battleDialog.add(recordScorePane);
 
         JButton dialogToMainBtn = new JButton();
         dialogToMainBtn.setBorderPainted(false);
@@ -556,13 +549,13 @@ public class BattleView extends JFrame {
 
     }
 
-    public final void drawScrollDialog(int player1Score, int player2Score) {
+    public final void drawBattleDialog(int player1Score, int player2Score) {
         recordScorePane.setText("");
         Style style = recordScorePane.addStyle("textStyle", null);
         StyledDocument doc = recordScorePane.getStyledDocument();
         doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
         StyleConstants.setForeground(style, Color.WHITE);
-        StyleConstants.setFontSize(style, 40);
+        StyleConstants.setFontSize(style, 28);
         try {
             if(player1Score > player2Score) doc.insertString(doc.getLength(), "Player1 Win!", style);
             else doc.insertString(doc.getLength(), "Player2 Win!", style);
@@ -573,7 +566,7 @@ public class BattleView extends JFrame {
     }
 
     public final void drawTimer(int second) {
-        if(!ConfigModel.isTimeAttackMode) return;
+        if(ConfigModel.gameBattleMode != ConfigModel.GameBattleMode.TIME) return;
         timerPane.setText("");
         Style style = timerPane.addStyle("textStyle", null);
         StyledDocument doc = timerPane.getStyledDocument();

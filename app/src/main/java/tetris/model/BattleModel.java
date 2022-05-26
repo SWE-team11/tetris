@@ -118,19 +118,12 @@ public class BattleModel {
             currentBlock = nextBlock;
         }
 
-        if (ConfigModel.gameMode == ConfigModel.GameMode.ITEM && itemCount >= ITEM_GENERATE_INTERVAL) {
+        if (ConfigModel.gameBattleMode == ConfigModel.GameBattleMode.ITEM && itemCount >= ITEM_GENERATE_INTERVAL) {
             itemCount = Math.max(0, itemCount - ITEM_GENERATE_INTERVAL);
             rndNum = rnd.nextInt(BlockKind.getItemSize()) + BlockKind.getTetrominoSize();
         }
         else {
-            switch (ConfigModel.gameDifficulty) {
-                case EASY -> {
-                    rndNum = rnd.nextInt(72) / 10; // I_BLOCK 60 ~ 71, weight 12
-                    if(rndNum > 6) rndNum = 6;
-                }
-                case NORMAL -> rndNum = rnd.nextInt(70) / 10; // I_BLOCK 60 ~ 69, weight 10
-                case HARD -> rndNum = rnd.nextInt(68) / 10; // I_BLOCK 60 ~ 67, weight 8
-            }
+            rndNum = rnd.nextInt(70) / 10;
         }
 
         blockKind = BlockKind.values()[rndNum];
