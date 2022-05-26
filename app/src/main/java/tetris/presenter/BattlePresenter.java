@@ -141,7 +141,7 @@ public class BattlePresenter implements Presenter {
         battleView.stopPlayerKeyListen(false);
         battleView.stopPauseKeyListen();
         battleView.setVisiblePauseDialog(false);
-        battleView.setVisibleScoreDialog(true);
+        battleView.setVisibleBattleDialog(true);
         mainTimerP1.stop();
         mainTimerP2.stop();
     }
