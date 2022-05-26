@@ -45,6 +45,10 @@ public class BattleModel {
         }
     }
 
+    public ArrayList<BoardElement[]> getAttack() {
+        return attack;
+    }
+
     private void attackToBoard() {
         if(attack.size() == 0) return;
         for(int k=0; k < ConfigModel.boardHeight - attack.size(); k++) {

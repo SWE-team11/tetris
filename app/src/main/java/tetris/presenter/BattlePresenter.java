@@ -20,6 +20,7 @@ public class BattlePresenter implements Presenter {
     private final Timer deleteTimerP2;
     private final Timer weightItemTimerP2;
     private final Timer timeAttackTimer;
+    private int seconds;
 
     private static final double INIT_INTERVAL = 1000 / ConfigModel.gameSpeed;
 
@@ -32,7 +33,7 @@ public class BattlePresenter implements Presenter {
         mainTimerP2 = new Timer((int)INIT_INTERVAL, new MainTimerActionListener(false));
         deleteTimerP2 = new Timer((int)INIT_INTERVAL / 3, new DeleteTimerActionListener(false));
         weightItemTimerP2 = new Timer((int)INIT_INTERVAL / 5, new WeightItemTimerActionListener(false));
-        timeAttackTimer = new Timer((int)30000, new TimeAttackActionListener());
+        timeAttackTimer = new Timer(1000, new TimeAttackActionListener());
     }
 
     public class MainTimerActionListener implements ActionListener {
@@ -78,12 +79,17 @@ public class BattlePresenter implements Presenter {
     public class TimeAttackActionListener implements ActionListener {
         @Override
         public final void actionPerformed(final ActionEvent e) {
-            gameOver();
+            seconds--;
+            battleView.drawTimer(seconds);
+            if(seconds == 0) {
+                gameOver();
+            }
         }
     }
 
     @Override
     public void initPresent() {
+        this.seconds = 180;
         this.battleModelP1 = new BattleModel(this, true);
         this.battleModelP2 = new BattleModel(this, false);
         this.battleModelP1.setOpposite(battleModelP2);
@@ -144,6 +150,7 @@ public class BattlePresenter implements Presenter {
         battleView.setVisibleScoreDialog(true);
         mainTimerP1.stop();
         mainTimerP2.stop();
+        timeAttackTimer.stop();
     }
 
     public final void weightItemStart(boolean isPlayer1) {
@@ -179,6 +186,8 @@ public class BattlePresenter implements Presenter {
         battleView.drawScore(battleModelP2.getScore(), false);
         battleView.drawDeletedRaw(battleModelP1.getDeletedRaw(), true);
         battleView.drawDeletedRaw(battleModelP2.getDeletedRaw(), false);
+        battleView.drawAttack(battleModelP1.getAttack(), true);
+        battleView.drawAttack(battleModelP2.getAttack(), false);
     }
 
     public final void moveRotate(boolean isPlayer1) {
