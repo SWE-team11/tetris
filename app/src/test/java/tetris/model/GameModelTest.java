@@ -1,6 +1,5 @@
 package tetris.model;
 
-import junit.framework.TestCase;
 import org.junit.jupiter.api.*;
 import org.junit.Test;
 import tetris.utils.BlockKind;
@@ -11,8 +10,8 @@ import static org.junit.Assert.assertEquals;
 
 public class GameModelTest {
     //normal 난이도에서의 I블럭 생성 개수.
-    @DisplayName("난이도별 I블럭 생성 개수 테스트")
     @Test
+    @DisplayName("Normal 난이도 블럭 생성 테스트")
     public void INormalPercent() {
         //given
         final int test_num = 10000;
@@ -30,12 +29,12 @@ public class GameModelTest {
         for(int i=0; i<TetrominoSize; i++) {
             int ratio = (int)((double) blockCnt[i] / test_num * 100);
             int expectRatio = 10 / 70;
-            System.out.print(ratio + ", ");
             assertEquals(expectRatio - 5 <= ratio && expectRatio + 5 >= ratio, false);
         }
     }
 
     @Test
+    @DisplayName("Easy 난이도 블럭 생성 테스트")
     public void IEasyPercent(){
         //given
         final int test_num = 10000;
@@ -60,12 +59,12 @@ public class GameModelTest {
             } else {
                 expectRatio = (int)(10/72);
             }
-            System.out.print(ratio + ", ");
             assertEquals(expectRatio - 5 <= ratio && expectRatio + 5 >= ratio, false);
         }
     }
 
     @Test
+    @DisplayName("Hard 난이도 블럭 생성 테스트")
     public void IHardPercent(){
         //given
         final int test_num = 10000;
@@ -88,7 +87,6 @@ public class GameModelTest {
             } else {
                 expectRatio = (int)(10/68);
             }
-            System.out.print(ratio + ", ");
             assertEquals(expectRatio - 5 <= ratio && expectRatio + 5 >= ratio, false);
         }
     }

@@ -15,9 +15,28 @@ plugins {
     id "edu.sc.seis.launch4j" version "2.5.3"
 }
 
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/java']
+        }
+    }
 }
 
 dependencies {
@@ -51,3 +70,4 @@ compileTestJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+

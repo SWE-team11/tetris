@@ -4,13 +4,12 @@ import tetris.model.ConfigModel;
 import tetris.model.GameModel;
 import tetris.model.RecordModel;
 import tetris.utils.Presenter;
-import tetris.view.BattleModeView;
+import tetris.view.BattleView;
 import tetris.view.GameView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -18,7 +17,7 @@ import javax.swing.Timer;
 
 public class GamePresenter implements Presenter {
     private GameModel gameModel;
-    private BattleModeView gameView;
+    private GameView gameView;
     private final Timer mainTimer;
     private final Timer deleteTimer;
     private final Timer weightItemTimer;
@@ -59,7 +58,7 @@ public class GamePresenter implements Presenter {
     @Override
     public void initPresent() {
         this.gameModel = new GameModel(this);
-        this.gameView = new BattleModeView(this);
+        this.gameView = new GameView(this);
         this.gameView.drawBoard(this.gameModel.getBoard());
     }
 
