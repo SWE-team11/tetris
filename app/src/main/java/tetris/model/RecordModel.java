@@ -3,16 +3,21 @@ package tetris.model;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 import tetris.utils.Record;
 
 public class RecordModel {
     public static ArrayList<Record> rankedRecords = new ArrayList<Record>();
     private final static String path = "data/record.txt";
+    public static int lastId = -1;
 
     public static void addRecord(int score, int deletedLine, ConfigModel.GameMode gameMode, ConfigModel.GameDifficulty gameDifficulty, String createdAt, String name) {
-        rankedRecords.add(new Record(score, deletedLine, gameMode, gameDifficulty, createdAt, name));
+        Random rnd = new Random(System.currentTimeMillis());
+        int id = rnd.nextInt(1000000);
+        rankedRecords.add(new Record(id, score, deletedLine, gameMode, gameDifficulty, createdAt, name));
         Collections.sort(rankedRecords);
+        lastId = id;
         saveRecord();
     }
 
@@ -44,6 +49,7 @@ public class RecordModel {
     }
 
     public static void loadRecord() {
+        Random rnd = new Random(System.currentTimeMillis());
         try {
             File f = new File(path);
             FileReader fStream = new FileReader(f);
@@ -52,6 +58,7 @@ public class RecordModel {
             while ((line = bufReader.readLine()) != null) {
                 String[] record = line.split(",");
                 rankedRecords.add(new Record(
+                        rnd.nextInt(1000000),
                         Integer.parseInt(record[0]),
                         Integer.parseInt(record[1]),
                         Enum.valueOf(ConfigModel.GameMode.class, record[2]),

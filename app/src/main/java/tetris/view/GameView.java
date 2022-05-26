@@ -186,7 +186,7 @@ public class GameView extends JFrame {
         enterBtn.setBounds(70, 275, 140, 50);
         enterBtn.addActionListener(e -> {
             presenter.recordGame(namePane.getText());
-            App.navigate(App.View.MAIN);
+            App.navigate(App.View.RECORD);
         });
 
         backgroundPanel.add(scoreDialog);
