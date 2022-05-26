@@ -9,6 +9,7 @@ import tetris.utils.BoardElement;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -26,6 +27,7 @@ public class BattleView extends JFrame {
     private Image nextImg = getResource("image/next.png").getImage();
     private Image pausePanelImg = getResource("image/pausePanel.png").getImage();
     private Image scorePanelImg = getResource("image/scoreDialog.png").getImage();
+    private Image battleDialogImg = getResource("image/battleDialog.png").getImage();
     private Image statusBarImg = getResource("image/statusBar.png").getImage();
     private Image timeImg = getResource("image/time.png").getImage();
 
@@ -60,9 +62,9 @@ public class BattleView extends JFrame {
             g.drawImage(pausePanelImg, 0, 0, 200, 100,null);
         }
     };
-    private JPanel scoreDialog = new JPanel(){
+    private JPanel battleDialog = new JPanel(){
         public void paintComponent(Graphics g) {
-            g.drawImage(scorePanelImg, 0, 0, 280, 360,null);
+            g.drawImage(battleDialogImg, 0, 0, 900, 600,null);
         }
     };
     private JTextPane timerPane;
@@ -145,13 +147,13 @@ public class BattleView extends JFrame {
 
         boardPaneP1 = new JTextPane();
         boardPaneP1.setEditable(false);
-        boardPaneP1.setOpaque(false);
+        boardPaneP1.setBackground(Color.black);
         boardPaneP1.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
         boardPaneP1.setBounds(40,55, 220 + getWidth(ConfigModel.boardSize),440);
 
         boardPaneP2 = new JTextPane();
         boardPaneP2.setEditable(false);
-        boardPaneP2.setOpaque(false);
+        boardPaneP2.setBackground(Color.black);
         boardPaneP2.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
         boardPaneP2.setBounds(640,55, 220 + getWidth(ConfigModel.boardSize),440);
 
@@ -213,11 +215,11 @@ public class BattleView extends JFrame {
         continueBtn.addActionListener(e -> battlePresenter.gameStart());
         exitBtn.addActionListener(e -> App.navigate(App.View.MAIN));
 
-        // Score Dialog
-        scoreDialog.setBounds(60 + getWidth(ConfigModel.boardSize)/2, 50, 280, 360);
-        scoreDialog.setLayout(null);
-        scoreDialog.setVisible(false);
-        scoreDialog.setOpaque(false);
+        // Battle Dialog
+        battleDialog.setBounds(0 + getWidth(ConfigModel.boardSize)/2, 0, 900, 600);
+        battleDialog.setLayout(null);
+        battleDialog.setVisible(false);
+        battleDialog.setOpaque(false);
 
         recordScorePane = new JTextPane();
         recordScorePane.setEditable(false);
@@ -231,15 +233,23 @@ public class BattleView extends JFrame {
         namePane.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
         namePane.setBounds(115,205, 140  ,50);
 
-        JButton enterBtn = new JButton(getResource("image/enter.png"));
-        enterBtn.setBorderPainted(false);
-        enterBtn.setContentAreaFilled(false);
-        enterBtn.setBounds(70, 275, 140, 50);
-        enterBtn.addActionListener(e -> {
+        JButton dialogToMainBtn = new JButton();
+        dialogToMainBtn.setBorderPainted(false);
+        dialogToMainBtn.setContentAreaFilled(false);
+        dialogToMainBtn.setBounds(354, 370, 80, 40);
+        dialogToMainBtn.addActionListener(e -> {
             App.navigate(App.View.MAIN);
         });
 
-        backgroundPanel.add(scoreDialog);
+        JButton dialogExitBtn = new JButton();
+        dialogExitBtn.setBorderPainted(false);
+        dialogExitBtn.setContentAreaFilled(false);
+        dialogExitBtn.setBounds(466, 370, 80, 40);
+        dialogExitBtn.addActionListener(e -> {
+            dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        });
+
+        backgroundPanel.add(battleDialog);
         this.getContentPane().add(backgroundPanel);
         backgroundPanel.add(pauseDialog);
         pauseDialog.add(continueBtn);
@@ -265,9 +275,9 @@ public class BattleView extends JFrame {
 
  
         backgroundPanel.add(timePanel);
-        scoreDialog.add(recordScorePane);
-        scoreDialog.add(namePane);
-        scoreDialog.add(enterBtn);
+
+        battleDialog.add(dialogToMainBtn);
+        battleDialog.add(dialogExitBtn);
 
         styleSet = new SimpleAttributeSet();
         StyleConstants.setFontSize(styleSet, FONT_SIZE);
@@ -384,8 +394,8 @@ public class BattleView extends JFrame {
         pauseDialog.setVisible(ifVisible);
     }
 
-    public void setVisibleScoreDialog(boolean ifVisible) {
-        scoreDialog.setVisible(ifVisible);
+    public void setVisibleBattleDialog(boolean ifVisible) {
+        battleDialog.setVisible(ifVisible);
     }
 
     public final void drawBoard(final ArrayList<BoardElement[]> board, boolean isPlayer1) {
