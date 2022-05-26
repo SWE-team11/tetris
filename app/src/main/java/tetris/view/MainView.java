@@ -179,7 +179,16 @@ public class MainView extends JFrame {
             App.navigate(App.View.RECORD);
         });
 
+        JButton soloBtn = new JButton();
+        soloBtn.setBorderPainted(false);
+        //soloBtn.setContentAreaFilled(false);
+        soloBtn.addActionListener(e -> App.navigate(App.View.GAME));
+        soloBtn.setBounds(50, 245, 290, 80);
+
+
         this.setContentPane(btnPanel);
+        btnPanel.add(soloBtn);
+        /*
         btnPanel.add(normalBtn);
         btnPanel.add(normalClickedBtn);
         btnPanel.add(itemBtn);
@@ -194,5 +203,7 @@ public class MainView extends JFrame {
         btnPanel.add(settingBtn);
         btnPanel.add(exitBtn);
         btnPanel.add(toRecordBtn);
+
+         */
     }
 }
