@@ -54,7 +54,7 @@ public class MainView extends JFrame {
 
         playBtn.setBorderPainted(false);
         playBtn.setContentAreaFilled(false);
-        playBtn.addActionListener(e -> App.navigate(App.View.GAME));
+        playBtn.addActionListener(e -> App.navigate(App.View.BATTLE));
         playBtn.setBounds(30, 285, 320, 90);
 
         normalBtn.setBorderPainted(false);

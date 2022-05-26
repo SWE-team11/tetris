@@ -4,12 +4,12 @@ import tetris.model.ConfigModel;
 import tetris.model.GameModel;
 import tetris.model.RecordModel;
 import tetris.utils.Presenter;
+import tetris.view.BattleView;
 import tetris.view.GameView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 

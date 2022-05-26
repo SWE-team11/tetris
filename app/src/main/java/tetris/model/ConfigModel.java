@@ -46,6 +46,7 @@ public class ConfigModel {
     public static int boardHeight = 20;
     public static double gameSpeed = 1;
     public static boolean colorBlindMode = false;
+    public static boolean isTimeAttackMode = true;
     public static int[] keyBinding = {
             KeyEvent.VK_UP, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT,
             KeyEvent.VK_DOWN, KeyEvent.VK_SPACE, KeyEvent.VK_ESCAPE, 0

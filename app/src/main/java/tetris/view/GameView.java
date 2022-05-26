@@ -137,7 +137,7 @@ public class GameView extends JFrame {
         levelPane = new JTextPane();
         levelPane.setEditable(false);
         levelPane.setOpaque(false);
-        levelPane.setBounds(280 + getWidth(ConfigModel.boardSize), 370, 70, 70);
+        levelPane.setBounds(280 + getWidth(ConfigModel.boardSize), 365, 70, 70);
 
         deletedRawPane = new JTextPane();
         deletedRawPane.setEditable(false);
@@ -358,7 +358,7 @@ public class GameView extends JFrame {
         StyledDocument doc = levelPane.getStyledDocument();
         doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
         StyleConstants.setForeground(style, Color.WHITE);
-        StyleConstants.setFontSize(style, 24);
+        StyleConstants.setFontSize(style, 15);
         try {
             doc.insertString(doc.getLength(), ConfigModel.gameDifficulty.name(), style);
         } catch (BadLocationException e) {

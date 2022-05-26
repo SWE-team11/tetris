@@ -2,10 +2,7 @@ package tetris;
 
 import tetris.model.ConfigModel;
 import tetris.model.RecordModel;
-import tetris.presenter.ConfigPresenter;
-import tetris.presenter.GamePresenter;
-import tetris.presenter.RecordPresenter;
-import tetris.presenter.MainPresenter;
+import tetris.presenter.*;
 import tetris.utils.Presenter;
 
 
@@ -15,9 +12,10 @@ public class App {
     private static ConfigPresenter configPresenter;
     private static RecordPresenter recordPresenter;
     private static Presenter currentPresenter;
+    private static BattlePresenter battlePresenter;
 
     public enum View {
-        MAIN, GAME, CONFIG, RECORD
+        MAIN, GAME, CONFIG, RECORD, BATTLE
     }
 
     protected App() {
@@ -31,6 +29,7 @@ public class App {
         mainPresenter = new MainPresenter();
         configPresenter = new ConfigPresenter();
         recordPresenter = new RecordPresenter();
+        battlePresenter = new BattlePresenter();
         currentPresenter = mainPresenter;
         currentPresenter.setVisible(true);
     }
@@ -42,6 +41,7 @@ public class App {
             case GAME -> currentPresenter = gamePresenter;
             case CONFIG -> currentPresenter = configPresenter;
             case RECORD -> currentPresenter = recordPresenter;
+            case BATTLE -> currentPresenter = battlePresenter;
         }
         currentPresenter.initPresent();
         currentPresenter.setVisible(true);
