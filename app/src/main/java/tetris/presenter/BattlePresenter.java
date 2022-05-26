@@ -2,15 +2,11 @@ package tetris.presenter;
 
 import tetris.model.BattleModel;
 import tetris.model.ConfigModel;
-import tetris.model.RecordModel;
 import tetris.utils.Presenter;
 import tetris.view.BattleView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import javax.swing.Timer;
 
@@ -23,6 +19,7 @@ public class BattlePresenter implements Presenter {
     private final Timer mainTimerP2;
     private final Timer deleteTimerP2;
     private final Timer weightItemTimerP2;
+    private final Timer timeAttackTimer;
 
     private static final double INIT_INTERVAL = 1000 / ConfigModel.gameSpeed;
 
@@ -35,6 +32,7 @@ public class BattlePresenter implements Presenter {
         mainTimerP2 = new Timer((int)INIT_INTERVAL, new MainTimerActionListener(false));
         deleteTimerP2 = new Timer((int)INIT_INTERVAL / 3, new DeleteTimerActionListener(false));
         weightItemTimerP2 = new Timer((int)INIT_INTERVAL / 5, new WeightItemTimerActionListener(false));
+        timeAttackTimer = new Timer((int)30000, new TimeAttackActionListener());
     }
 
     public class MainTimerActionListener implements ActionListener {
@@ -77,10 +75,20 @@ public class BattlePresenter implements Presenter {
         }
     }
 
+    public class TimeAttackActionListener implements ActionListener {
+        @Override
+        public final void actionPerformed(final ActionEvent e) {
+            gameOver();
+        }
+    }
+
     @Override
     public void initPresent() {
         this.battleModelP1 = new BattleModel(this, true);
         this.battleModelP2 = new BattleModel(this, false);
+        this.battleModelP1.setOpposite(battleModelP2);
+        this.battleModelP2.setOpposite(battleModelP1);
+
         this.battleView = new BattleView(this);
         this.battleView.drawBoard(this.battleModelP1.getBoard(), true);
         this.battleView.drawBoard(this.battleModelP2.getBoard(), false);
@@ -108,6 +116,9 @@ public class BattlePresenter implements Presenter {
         deleteTimerP1.start();
         mainTimerP2.start();
         deleteTimerP2.start();
+        if(ConfigModel.isTimeAttackMode) {
+            timeAttackTimer.start();
+        }
     }
 
     public final void gameStop() {
@@ -119,6 +130,9 @@ public class BattlePresenter implements Presenter {
         deleteTimerP1.stop();
         mainTimerP2.stop();
         deleteTimerP2.stop();
+        if(ConfigModel.isTimeAttackMode) {
+            timeAttackTimer.stop();
+        }
     }
 
     public final void gameOver() {

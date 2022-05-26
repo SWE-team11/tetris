@@ -4,9 +4,9 @@ import tetris.presenter.BattlePresenter;
 import tetris.utils.Block;
 import tetris.utils.BlockKind;
 import tetris.utils.BoardElement;
-import tetris.presenter.GamePresenter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class BattleModel {
@@ -17,15 +17,49 @@ public class BattleModel {
     private double score = 0;
     private int deletedRowCount = 0;
     private int itemCount = 0;
-
-    private boolean isPlayer1;
     private final int DEFAULT_POS_X = 3;
     private final int DEFAULT_POS_Y = 0;
     private final int ITEM_GENERATE_INTERVAL = 10;
     private double gameSpeed = ConfigModel.gameSpeed;
 
+    private ArrayList<BoardElement[]> attack = new ArrayList<>();
+    private BattleModel opposite;
+    private boolean isPlayer1;
+
     private int posX;
     private int posY;
+
+    public void setOpposite(BattleModel oppositeModel) {
+        this.opposite = oppositeModel;
+    }
+
+    public void sendAttack(ArrayList<BoardElement[]> myAttack) {
+        opposite.receiveAttack(myAttack);
+        System.out.println(myAttack);
+    }
+
+    public void receiveAttack(ArrayList<BoardElement[]> receiveAttack) {
+        for(int i=0; i<receiveAttack.size(); i++) {
+            if(this.attack.size() == 10) return;
+            this.attack.add(receiveAttack.get(i));
+        }
+    }
+
+    private void attackToBoard() {
+        if(attack.size() == 0) return;
+        for(int k=0; k < ConfigModel.boardHeight - attack.size(); k++) {
+            for (int i = 0; i < ConfigModel.boardWidth; i++) {
+                board.get(k)[i] = board.get(k + attack.size())[i];
+            }
+        }
+
+        for(int k = attack.size(); k > 0; k--) {
+            for (int i = 0; i < ConfigModel.boardWidth; i++) {
+                board.get(ConfigModel.boardHeight - k)[i] = attack.get(k - 1)[i];
+            }
+        }
+        attack = new ArrayList<>();
+    }
 
     public BattleModel(final BattlePresenter presenter, boolean isPlayer1) {
         this.battlePresenter = presenter;
@@ -222,6 +256,7 @@ public class BattleModel {
                 triggerItem();
             } else {
                 checkRaw();
+                attackToBoard();
                 setRandomBlock();
             }
         }
@@ -396,6 +431,9 @@ public class BattleModel {
     }
 
     public final void checkRaw() {
+        int temp = deletedRowCount;
+        ArrayList<BoardElement[]> attack = new ArrayList<>();
+
         for (int i = 0; i < ConfigModel.boardHeight; i++) {
             boolean isRaw = true;
             for (int j = 0; j < ConfigModel.boardWidth; j++) {
@@ -412,7 +450,23 @@ public class BattleModel {
                 deletedRowCount++;
                 itemCount++;
                 gameSpeedUp();
+                BoardElement[] tempRaw = new BoardElement[ConfigModel.boardWidth];
+
+                for(int k=0; k<ConfigModel.boardWidth; k++) {
+                    if(k - posX < 0 || i - posY < 0 || k - posX >= currentBlock.width() || i - posY >= currentBlock.height()) {
+                        tempRaw[k] = BoardElement.ATTACK;
+                    } else if(currentBlock.getShape(k - posX, i - posY) != BoardElement.EMPTY) {
+                        tempRaw[k] = BoardElement.EMPTY;
+                    } else {
+                        tempRaw[k] = BoardElement.ATTACK;
+                    }
+                }
+                attack.add(tempRaw);
             }
+        }
+        if(deletedRowCount - temp >= 2) {
+            Collections.reverse(attack);
+            sendAttack(attack);
         }
         battlePresenter.drawView();
     }

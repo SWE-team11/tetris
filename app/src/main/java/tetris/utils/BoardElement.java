@@ -6,7 +6,8 @@ import java.awt.*;
 
 public enum BoardElement {
     EMPTY, BORDER, I_BLOCK, J_BLOCK, L_BLOCK, O_BLOCK, S_BLOCK, T_BLOCK, Z_BLOCK, DELETE, 
-    LINE_CLEAR_ITEM, BOMB_ITEM, CROSS_DELETE_ITEM, SAME_DELETE_ITEM, WEIGHT_ITEM;
+    LINE_CLEAR_ITEM, BOMB_ITEM, CROSS_DELETE_ITEM, SAME_DELETE_ITEM, WEIGHT_ITEM,
+    ATTACK;
 
     public static Color getElementColor(final BoardElement element) {
         if (ConfigModel.colorBlindMode) {
@@ -22,6 +23,7 @@ public enum BoardElement {
                 case S_BLOCK -> Color.decode("#00A270"); //Bluish Green
                 case T_BLOCK -> Color.decode("#D974A9"); //Reddish Purple
                 case Z_BLOCK -> Color.decode("#E65400"); //Vermilion
+                case ATTACK -> Color.gray; //Attack
             };
         } else {
             return switch (element) {
@@ -34,6 +36,7 @@ public enum BoardElement {
                 case S_BLOCK -> Color.GREEN;
                 case T_BLOCK -> Color.MAGENTA;
                 case Z_BLOCK -> Color.RED;
+                case ATTACK -> Color.gray;
             };
         }
 
@@ -43,7 +46,7 @@ public enum BoardElement {
         return switch (element) {
             case EMPTY -> " ";
             case BORDER -> "X";
-            case I_BLOCK, J_BLOCK, L_BLOCK, O_BLOCK, S_BLOCK, T_BLOCK, Z_BLOCK, DELETE -> "O";
+            case I_BLOCK, J_BLOCK, L_BLOCK, O_BLOCK, S_BLOCK, T_BLOCK, Z_BLOCK, DELETE, ATTACK -> "O";
             case LINE_CLEAR_ITEM -> "L";
             case BOMB_ITEM -> "B";
             case CROSS_DELETE_ITEM -> "C";
