@@ -39,17 +39,19 @@ public class BattleView extends JFrame {
     static final float LINE_SPACING = -0.45f;
     private static final long serialVersionUID = 2434035659171694595L;
 
-    //P2
-    private JTextPane boardPaneP2;
-    private JTextPane nextBlockPaneP2;
-    private JTextPane scorePaneP2;
-    private JTextPane deletedRawPaneP2;
-
     //P1
     private JTextPane boardPaneP1;
+    private JTextPane attackPaneP1;
     private JTextPane nextBlockPaneP1;
     private JTextPane scorePaneP1;
     private JTextPane deletedRawPaneP1;
+
+    //P2
+    private JTextPane boardPaneP2;
+    private JTextPane attackPaneP2;
+    private JTextPane nextBlockPaneP2;
+    private JTextPane scorePaneP2;
+    private JTextPane deletedRawPaneP2;
 
     //기록
     private JTextPane recordScorePane;
@@ -137,7 +139,12 @@ public class BattleView extends JFrame {
         };
         timePanel.setLayout(null);
         timePanel.setBounds(403 + getWidth(ConfigModel.boardSize),54,95,74);
-        
+
+        timerPane = new JTextPane();
+        timerPane.setEditable(false);
+        timerPane.setOpaque(false);
+        timerPane.setBounds(403,87,95,74);
+
         boardPaneP1 = new JTextPane();
         boardPaneP1.setEditable(false);
         boardPaneP1.setBackground(Color.black);
@@ -149,6 +156,16 @@ public class BattleView extends JFrame {
         boardPaneP2.setBackground(Color.black);
         boardPaneP2.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
         boardPaneP2.setBounds(640,55, 220 + getWidth(ConfigModel.boardSize),440);
+
+        attackPaneP1 = new JTextPane();
+        attackPaneP1.setEditable(false);
+        attackPaneP1.setOpaque(false);
+        attackPaneP1.setBounds(293,310, 90, 200);
+
+        attackPaneP2 = new JTextPane();
+        attackPaneP2.setEditable(false);
+        attackPaneP2.setOpaque(false);
+        attackPaneP2.setBounds(518,310, 90,200);
 
         nextBlockPaneP1 = new JTextPane();
         nextBlockPaneP1.setEditable(false);
@@ -245,12 +262,17 @@ public class BattleView extends JFrame {
         backgroundPanel.add(deletedRawPaneP2);
         backgroundPanel.add(nextBlockPaneP1);
         backgroundPanel.add(nextBlockPaneP2);
+        backgroundPanel.add(attackPaneP1);
+        backgroundPanel.add(attackPaneP2);
 
         backgroundPanel.add(nextPanelP1);
         backgroundPanel.add(nextPanelP2);
         backgroundPanel.add(statusBarPanel);
         backgroundPanel.add(statusBarPanel);
         backgroundPanel.add(statusBarPanelP2);
+        backgroundPanel.add(timerPane);
+
+
  
         backgroundPanel.add(timePanel);
 
@@ -534,7 +556,7 @@ public class BattleView extends JFrame {
 
     }
 
-    public final void drawScrollDialog(int scoreLeft, int scoreRight) {
+    public final void drawScrollDialog(int player1Score, int player2Score) {
         recordScorePane.setText("");
         Style style = recordScorePane.addStyle("textStyle", null);
         StyledDocument doc = recordScorePane.getStyledDocument();
@@ -542,10 +564,70 @@ public class BattleView extends JFrame {
         StyleConstants.setForeground(style, Color.WHITE);
         StyleConstants.setFontSize(style, 40);
         try {
-            doc.insertString(doc.getLength(), Integer.toString((int) scoreLeft), style);
+            if(player1Score > player2Score) doc.insertString(doc.getLength(), "Player1 Win!", style);
+            else doc.insertString(doc.getLength(), "Player2 Win!", style);
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
         recordScorePane.setStyledDocument(doc);
+    }
+
+    public final void drawTimer(int second) {
+        if(!ConfigModel.isTimeAttackMode) return;
+        timerPane.setText("");
+        Style style = timerPane.addStyle("textStyle", null);
+        StyledDocument doc = timerPane.getStyledDocument();
+        doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
+        StyleConstants.setForeground(style, Color.WHITE);
+        StyleConstants.setFontSize(style, 25);
+        try {
+            doc.insertString(doc.getLength(), Integer.toString(second/60) + ":" + Integer.toString(second%60), style);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+        timerPane.setStyledDocument(doc);
+    }
+
+    public final void drawAttack(ArrayList<BoardElement[]> attack, boolean isPlayer1) {
+        if(attack.size() != 0) System.out.println(attack);
+        if(isPlayer1) {
+            attackPaneP1.setText("");
+            Style style = attackPaneP1.addStyle("textStyle", null);
+            StyledDocument doc = attackPaneP1.getStyledDocument();
+            StyleConstants.setFontSize(style, 12);
+
+            try {
+                for (int i = 0; i < attack.size(); i++) {
+                    for (int j = 0; j < attack.get(0).length; j++) {
+                        StyleConstants.setForeground(style, BoardElement.getElementColor(attack.get(i)[j]));
+                        doc.insertString(doc.getLength(), BoardElement.getElementText(attack.get(i)[j]), style);
+                    }
+                    doc.insertString(doc.getLength(), "\n", style);
+                }
+            } catch (BadLocationException e) {
+            }
+
+            doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
+            attackPaneP1.setStyledDocument(doc);
+        } else {
+            attackPaneP2.setText("");
+            Style style = attackPaneP2.addStyle("textStyle", null);
+            StyledDocument doc = attackPaneP2.getStyledDocument();
+            StyleConstants.setFontSize(style, 12);
+
+            try {
+                for (int i = 0; i < attack.size(); i++) {
+                    for (int j = 0; j < attack.get(0).length; j++) {
+                        StyleConstants.setForeground(style, BoardElement.getElementColor(attack.get(i)[j]));
+                        doc.insertString(doc.getLength(), BoardElement.getElementText(attack.get(i)[j]), style);
+                    }
+                    doc.insertString(doc.getLength(), "\n", style);
+                }
+            } catch (BadLocationException e) {
+            }
+
+            doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
+            attackPaneP2.setStyledDocument(doc);
+        }
     }
 }
