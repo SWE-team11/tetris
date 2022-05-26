@@ -248,6 +248,7 @@ public class MainView extends JFrame {
 
         // duo
         playBtn2.setBorderPainted(false);
+        playBtn2.setContentAreaFilled(false);
         playBtn2.addActionListener(e -> App.navigate(App.View.BATTLE));
         playBtn2.setBounds(45, 265, 310, 90);
         playBtn2.setOpaque(false);
@@ -320,7 +321,7 @@ public class MainView extends JFrame {
 
         exitBtn2.setBorderPainted(false);
         exitBtn2.setContentAreaFilled(false);
-        exitBtn2.setBounds(302, 355, 45, 45);
+        exitBtn2.setBounds(315, 384, 45, 45);
         exitBtn2.addActionListener(e -> {
             normalGameDialog.setVisible(false);
             battleGameDialog.setVisible(false);
