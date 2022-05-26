@@ -2,7 +2,6 @@ package tetris.view;
 
 import tetris.App;
 import tetris.model.ConfigModel;
-import tetris.model.RecordModel;
 import tetris.presenter.GamePresenter;
 import tetris.utils.Block;
 import tetris.utils.BoardElement;
@@ -17,13 +16,13 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.*;
 
-public class GameView extends JFrame {
+public class BattleModeView extends JFrame {
 
     private ImageIcon getResource(String path) {
         return new ImageIcon(getClass().getClassLoader().getResource(path));
     }
 
-    private Image background = getResource("image/GameViewBackground.png").getImage();
+    private Image background = getResource("image/battleModeBackground.png").getImage();
     private Image nextImg = getResource("image/next.png").getImage();
     private Image scoreImg = getResource("image/score.png").getImage();
     private Image levelImg = getResource("image/level.png").getImage();
@@ -33,7 +32,7 @@ public class GameView extends JFrame {
 
     static final int LINE_BORDER_OUTER_WEIGHT = 10;
     static final int LINE_BORDER_INNER_WEIGHT = 5;
-    private final int VIEW_WIDTH = 400;
+    private final int VIEW_WIDTH = 800;
     private final int VIEW_HEIGHT = 600;
     static final int FONT_SIZE = 28;
     static final float LINE_SPACING = -0.45f;
@@ -45,6 +44,12 @@ public class GameView extends JFrame {
     private JTextPane levelPane;
     private JTextPane deletedRawPane;
     private JTextPane recordScorePane;
+    private JTextPane boardPane01;
+    private JTextPane nextBlockPane01;
+    private JTextPane scorePane01;
+    private JTextPane levelPane01;
+    private JTextPane deletedRawPane01;
+    private JTextPane recordScorePane01;
     private JTextField namePane;
     private SimpleAttributeSet styleSet;
     private JPanel pauseDialog = new JPanel(){
@@ -70,7 +75,7 @@ public class GameView extends JFrame {
     private PlayerKeyListener playerKeyListener;
     private PauseKeyListener pauseKeyListener;
 
-    public GameView(final GamePresenter presenter) {
+    public BattleModeView(final GamePresenter presenter) {
         super("TETRIS");
         setSize(VIEW_WIDTH + getWidth(ConfigModel.boardSize), VIEW_HEIGHT);
         setLocationRelativeTo(null);
@@ -94,6 +99,14 @@ public class GameView extends JFrame {
         nextPanel.setLayout(null);
         nextPanel.setBounds(280 + getWidth(ConfigModel.boardSize),54,70,120);
 
+        JPanel nextPanel01 = new JPanel() {
+            public void paintComponent(Graphics g) {
+                g.drawImage(nextImg, 0, 0, 70,120,null);
+            }
+        };
+        nextPanel01.setLayout(null);
+        nextPanel01.setBounds(450 + getWidth(ConfigModel.boardSize),54,70,120);
+
         JPanel scorePanel = new JPanel() {
             public void paintComponent(Graphics g) {
                 g.drawImage(scoreImg, 0, 0, 70,76,null);
@@ -101,6 +114,14 @@ public class GameView extends JFrame {
         };
         scorePanel.setLayout(null);
         scorePanel.setBounds(280 + getWidth(ConfigModel.boardSize),260,70,120);
+
+        JPanel scorePanel01 = new JPanel() {
+            public void paintComponent(Graphics g) {
+                g.drawImage(scoreImg, 0, 0, 70,76,null);
+            }
+        };
+        scorePanel01.setLayout(null);
+        scorePanel01.setBounds(450 + getWidth(ConfigModel.boardSize),260,70,120);
 
         JPanel levelPanel = new JPanel() {
             public void paintComponent(Graphics g) {
@@ -110,6 +131,14 @@ public class GameView extends JFrame {
         levelPanel.setLayout(null);
         levelPanel.setBounds(280 + getWidth(ConfigModel.boardSize),340,70,120);
 
+        JPanel levelPanel01 = new JPanel() {
+            public void paintComponent(Graphics g) {
+                g.drawImage(levelImg, 0, 0, 70,76,null);
+            }
+        };
+        levelPanel01.setLayout(null);
+        levelPanel01.setBounds(450 + getWidth(ConfigModel.boardSize),340,70,120);
+
         JPanel linesPanel = new JPanel() {
             public void paintComponent(Graphics g) {
                 g.drawImage(linesImg, 0, 0, 70,76,null);
@@ -118,31 +147,65 @@ public class GameView extends JFrame {
         linesPanel.setLayout(null);
         linesPanel.setBounds(280 + getWidth(ConfigModel.boardSize),420,70,120);
 
+        JPanel linesPanel01 = new JPanel() {
+            public void paintComponent(Graphics g) {
+                g.drawImage(linesImg, 0, 0, 70,76,null);
+            }
+        };
+        linesPanel01.setLayout(null);
+        linesPanel01.setBounds(450 + getWidth(ConfigModel.boardSize),420,70,120);
+
         boardPane = new JTextPane();
         boardPane.setEditable(false);
         boardPane.setOpaque(false);
         boardPane.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
         boardPane.setBounds(40,55, 220 + getWidth(ConfigModel.boardSize),440);
 
+        boardPane01 = new JTextPane();
+        boardPane01.setEditable(false);
+        boardPane01.setOpaque(false);
+        boardPane01.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
+        boardPane01.setBounds(540,55, 220 + getWidth(ConfigModel.boardSize),440);
+
         nextBlockPane = new JTextPane();
         nextBlockPane.setEditable(false);
         nextBlockPane.setOpaque(false);
         nextBlockPane.setBounds(280 + getWidth(ConfigModel.boardSize) , 80, 70, 85);
+
+        nextBlockPane01 = new JTextPane();
+        nextBlockPane01.setEditable(false);
+        nextBlockPane01.setOpaque(false);
+        nextBlockPane01.setBounds(450 + getWidth(ConfigModel.boardSize) , 80, 70, 85);
 
         scorePane = new JTextPane();
         scorePane.setEditable(false);
         scorePane.setOpaque(false);
         scorePane.setBounds(285 + getWidth(ConfigModel.boardSize), 290, 70, 70);
 
+        scorePane01 = new JTextPane();
+        scorePane01.setEditable(false);
+        scorePane01.setOpaque(false);
+        scorePane01.setBounds(455 + getWidth(ConfigModel.boardSize), 290, 70, 70);
+
         levelPane = new JTextPane();
         levelPane.setEditable(false);
         levelPane.setOpaque(false);
         levelPane.setBounds(280 + getWidth(ConfigModel.boardSize), 365, 70, 70);
 
+        levelPane01 = new JTextPane();
+        levelPane01.setEditable(false);
+        levelPane01.setOpaque(false);
+        levelPane01.setBounds(450 + getWidth(ConfigModel.boardSize), 365, 70, 70);
+
         deletedRawPane = new JTextPane();
         deletedRawPane.setEditable(false);
         deletedRawPane.setOpaque(false);
         deletedRawPane.setBounds(285 + getWidth(ConfigModel.boardSize), 450, 70, 70);
+
+        deletedRawPane01 = new JTextPane();
+        deletedRawPane01.setEditable(false);
+        deletedRawPane01.setOpaque(false);
+        deletedRawPane01.setBounds(455 + getWidth(ConfigModel.boardSize), 450, 70, 70);
 
         pauseDialog.setBounds(100 + getWidth(ConfigModel.boardSize)/2, 200, 200, 100);
         pauseDialog.setLayout(null);
@@ -186,7 +249,7 @@ public class GameView extends JFrame {
         enterBtn.setBounds(70, 275, 140, 50);
         enterBtn.addActionListener(e -> {
             presenter.recordGame(namePane.getText());
-            App.navigate(App.View.RECORD);
+            App.navigate(App.View.MAIN);
         });
 
         backgroundPanel.add(scoreDialog);
@@ -195,14 +258,23 @@ public class GameView extends JFrame {
         pauseDialog.add(continueBtn);
         pauseDialog.add(exitBtn);
         backgroundPanel.add(boardPane);
+        backgroundPanel.add(boardPane01);
         backgroundPanel.add(scorePane);
+        backgroundPanel.add(scorePane01);
         backgroundPanel.add(levelPane);
+        backgroundPanel.add(levelPane01);
         backgroundPanel.add(deletedRawPane);
+        backgroundPanel.add(deletedRawPane01);
         backgroundPanel.add(nextBlockPane);
+        backgroundPanel.add(nextBlockPane01);
         backgroundPanel.add(nextPanel);
+        backgroundPanel.add(nextPanel01);
         backgroundPanel.add(scorePanel);
+        backgroundPanel.add(scorePanel01);
         backgroundPanel.add(levelPanel);
+        backgroundPanel.add(levelPanel01);
         backgroundPanel.add(linesPanel);
+        backgroundPanel.add(linesPanel01);
         scoreDialog.add(recordScorePane);
         scoreDialog.add(namePane);
         scoreDialog.add(enterBtn);
@@ -323,10 +395,10 @@ public class GameView extends JFrame {
         try {
             for (int i = 0; i < nextBlock.width(); i++) {
                 for (int j = 0; j < nextBlock.height(); j++) {
-                        BoardElement currentElement = nextBlock.getShape(i, j);
-                        StyleConstants.setForeground(style, BoardElement.getElementColor(currentElement));
-                        doc.insertString(doc.getLength(), BoardElement.getElementText(currentElement), style);
-                    }
+                    BoardElement currentElement = nextBlock.getShape(i, j);
+                    StyleConstants.setForeground(style, BoardElement.getElementColor(currentElement));
+                    doc.insertString(doc.getLength(), BoardElement.getElementText(currentElement), style);
+                }
                 doc.insertString(doc.getLength(), "\n", style);
             }
         } catch (BadLocationException e) {
