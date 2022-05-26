@@ -24,15 +24,14 @@ public class BattleModeView extends JFrame {
 
     private Image background = getResource("image/battleModeBackground.png").getImage();
     private Image nextImg = getResource("image/next.png").getImage();
-    private Image scoreImg = getResource("image/score.png").getImage();
-    private Image levelImg = getResource("image/level.png").getImage();
-    private Image linesImg = getResource("image/lines.png").getImage();
     private Image pausePanelImg = getResource("image/pausePanel.png").getImage();
     private Image scorePanelImg = getResource("image/scoreDialog.png").getImage();
+    private Image statusBarImg = getResource("image/statusBar.png").getImage();
+    private Image timeImg = getResource("image/time.png").getImage();
 
     static final int LINE_BORDER_OUTER_WEIGHT = 10;
     static final int LINE_BORDER_INNER_WEIGHT = 5;
-    private final int VIEW_WIDTH = 800;
+    private final int VIEW_WIDTH = 900;
     private final int VIEW_HEIGHT = 600;
     static final int FONT_SIZE = 28;
     static final float LINE_SPACING = -0.45f;
@@ -41,15 +40,14 @@ public class BattleModeView extends JFrame {
     private JTextPane boardPane;
     private JTextPane nextBlockPane;
     private JTextPane scorePane;
-    private JTextPane levelPane;
     private JTextPane deletedRawPane;
     private JTextPane recordScorePane;
     private JTextPane boardPane01;
     private JTextPane nextBlockPane01;
     private JTextPane scorePane01;
-    private JTextPane levelPane01;
     private JTextPane deletedRawPane01;
     private JTextPane recordScorePane01;
+    private JTextPane timerPane;
     private JTextField namePane;
     private SimpleAttributeSet styleSet;
     private JPanel pauseDialog = new JPanel(){
@@ -91,13 +89,30 @@ public class BattleModeView extends JFrame {
         backgroundPanel.setLayout(null);
         backgroundPanel.setBorder(BorderFactory.createEmptyBorder(200 , 0 , 0 , 25));
 
+        JPanel statusBarPanel = new JPanel() {
+            public void paintComponent(Graphics g) {
+                g.drawImage(statusBarImg, 0, 0, 95,302,null);
+            }
+        };
+        statusBarPanel.setLayout(null);
+        statusBarPanel.setBounds(290 + getWidth(ConfigModel.boardSize),192,95,302);
+
+        JPanel statusBarPanelP2 = new JPanel() {
+            public void paintComponent(Graphics g) {
+                g.drawImage(statusBarImg, 0, 0, 95,302,null);
+            }
+        };
+        statusBarPanelP2.setLayout(null);
+        statusBarPanelP2.setBounds(515 + getWidth(ConfigModel.boardSize),192,95,302);
+
+
         JPanel nextPanel = new JPanel() {
             public void paintComponent(Graphics g) {
                 g.drawImage(nextImg, 0, 0, 70,120,null);
             }
         };
         nextPanel.setLayout(null);
-        nextPanel.setBounds(280 + getWidth(ConfigModel.boardSize),54,70,120);
+        nextPanel.setBounds(290 + getWidth(ConfigModel.boardSize),54,70,120);
 
         JPanel nextPanel01 = new JPanel() {
             public void paintComponent(Graphics g) {
@@ -105,72 +120,32 @@ public class BattleModeView extends JFrame {
             }
         };
         nextPanel01.setLayout(null);
-        nextPanel01.setBounds(450 + getWidth(ConfigModel.boardSize),54,70,120);
+        nextPanel01.setBounds(540 + getWidth(ConfigModel.boardSize),54,70,120);
 
-        JPanel scorePanel = new JPanel() {
+        JPanel timePanel = new JPanel() {
             public void paintComponent(Graphics g) {
-                g.drawImage(scoreImg, 0, 0, 70,76,null);
+                g.drawImage(timeImg, 0, 0, 95,74,null);
             }
         };
-        scorePanel.setLayout(null);
-        scorePanel.setBounds(280 + getWidth(ConfigModel.boardSize),260,70,120);
-
-        JPanel scorePanel01 = new JPanel() {
-            public void paintComponent(Graphics g) {
-                g.drawImage(scoreImg, 0, 0, 70,76,null);
-            }
-        };
-        scorePanel01.setLayout(null);
-        scorePanel01.setBounds(450 + getWidth(ConfigModel.boardSize),260,70,120);
-
-        JPanel levelPanel = new JPanel() {
-            public void paintComponent(Graphics g) {
-                g.drawImage(levelImg, 0, 0, 70,76,null);
-            }
-        };
-        levelPanel.setLayout(null);
-        levelPanel.setBounds(280 + getWidth(ConfigModel.boardSize),340,70,120);
-
-        JPanel levelPanel01 = new JPanel() {
-            public void paintComponent(Graphics g) {
-                g.drawImage(levelImg, 0, 0, 70,76,null);
-            }
-        };
-        levelPanel01.setLayout(null);
-        levelPanel01.setBounds(450 + getWidth(ConfigModel.boardSize),340,70,120);
-
-        JPanel linesPanel = new JPanel() {
-            public void paintComponent(Graphics g) {
-                g.drawImage(linesImg, 0, 0, 70,76,null);
-            }
-        };
-        linesPanel.setLayout(null);
-        linesPanel.setBounds(280 + getWidth(ConfigModel.boardSize),420,70,120);
-
-        JPanel linesPanel01 = new JPanel() {
-            public void paintComponent(Graphics g) {
-                g.drawImage(linesImg, 0, 0, 70,76,null);
-            }
-        };
-        linesPanel01.setLayout(null);
-        linesPanel01.setBounds(450 + getWidth(ConfigModel.boardSize),420,70,120);
+        timePanel.setLayout(null);
+        timePanel.setBounds(403 + getWidth(ConfigModel.boardSize),54,95,74);
 
         boardPane = new JTextPane();
         boardPane.setEditable(false);
-        boardPane.setOpaque(false);
+        boardPane.setBackground(Color.black);
         boardPane.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
         boardPane.setBounds(40,55, 220 + getWidth(ConfigModel.boardSize),440);
 
         boardPane01 = new JTextPane();
         boardPane01.setEditable(false);
-        boardPane01.setOpaque(false);
+        boardPane01.setBackground(Color.black);
         boardPane01.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
-        boardPane01.setBounds(540,55, 220 + getWidth(ConfigModel.boardSize),440);
+        boardPane01.setBounds(640,55, 220 + getWidth(ConfigModel.boardSize),440);
 
         nextBlockPane = new JTextPane();
         nextBlockPane.setEditable(false);
         nextBlockPane.setOpaque(false);
-        nextBlockPane.setBounds(280 + getWidth(ConfigModel.boardSize) , 80, 70, 85);
+        nextBlockPane.setBounds(290 + getWidth(ConfigModel.boardSize) , 80, 70, 85);
 
         nextBlockPane01 = new JTextPane();
         nextBlockPane01.setEditable(false);
@@ -180,32 +155,27 @@ public class BattleModeView extends JFrame {
         scorePane = new JTextPane();
         scorePane.setEditable(false);
         scorePane.setOpaque(false);
-        scorePane.setBounds(285 + getWidth(ConfigModel.boardSize), 290, 70, 70);
+        scorePane.setBounds(310 + getWidth(ConfigModel.boardSize), 222, 70, 70);
 
         scorePane01 = new JTextPane();
         scorePane01.setEditable(false);
         scorePane01.setOpaque(false);
         scorePane01.setBounds(455 + getWidth(ConfigModel.boardSize), 290, 70, 70);
 
-        levelPane = new JTextPane();
-        levelPane.setEditable(false);
-        levelPane.setOpaque(false);
-        levelPane.setBounds(280 + getWidth(ConfigModel.boardSize), 365, 70, 70);
-
-        levelPane01 = new JTextPane();
-        levelPane01.setEditable(false);
-        levelPane01.setOpaque(false);
-        levelPane01.setBounds(450 + getWidth(ConfigModel.boardSize), 365, 70, 70);
-
         deletedRawPane = new JTextPane();
         deletedRawPane.setEditable(false);
         deletedRawPane.setOpaque(false);
-        deletedRawPane.setBounds(285 + getWidth(ConfigModel.boardSize), 450, 70, 70);
+        deletedRawPane.setBounds(310 + getWidth(ConfigModel.boardSize), 450, 70, 70);
 
         deletedRawPane01 = new JTextPane();
         deletedRawPane01.setEditable(false);
         deletedRawPane01.setOpaque(false);
         deletedRawPane01.setBounds(455 + getWidth(ConfigModel.boardSize), 450, 70, 70);
+
+        timerPane = new JTextPane();
+        timerPane.setEditable(false);
+        timerPane.setOpaque(false);
+        timerPane.setBounds(403 + getWidth(ConfigModel.boardSize) , 80, 95, 74);
 
         pauseDialog.setBounds(100 + getWidth(ConfigModel.boardSize)/2, 200, 200, 100);
         pauseDialog.setLayout(null);
@@ -261,20 +231,19 @@ public class BattleModeView extends JFrame {
         backgroundPanel.add(boardPane01);
         backgroundPanel.add(scorePane);
         backgroundPanel.add(scorePane01);
-        backgroundPanel.add(levelPane);
-        backgroundPanel.add(levelPane01);
         backgroundPanel.add(deletedRawPane);
         backgroundPanel.add(deletedRawPane01);
         backgroundPanel.add(nextBlockPane);
         backgroundPanel.add(nextBlockPane01);
+        backgroundPanel.add(timerPane);
+
+        backgroundPanel.add(statusBarPanel);
+        backgroundPanel.add(statusBarPanelP2);
         backgroundPanel.add(nextPanel);
         backgroundPanel.add(nextPanel01);
-        backgroundPanel.add(scorePanel);
-        backgroundPanel.add(scorePanel01);
-        backgroundPanel.add(levelPanel);
-        backgroundPanel.add(levelPanel01);
-        backgroundPanel.add(linesPanel);
-        backgroundPanel.add(linesPanel01);
+        backgroundPanel.add(timePanel);
+
+
         scoreDialog.add(recordScorePane);
         scoreDialog.add(namePane);
         scoreDialog.add(enterBtn);
@@ -425,18 +394,6 @@ public class BattleModeView extends JFrame {
     }
 
     public final void drawLevel() {
-        levelPane.setText("");
-        Style style = levelPane.addStyle("textStyle", null);
-        StyledDocument doc = levelPane.getStyledDocument();
-        doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
-        StyleConstants.setForeground(style, Color.WHITE);
-        StyleConstants.setFontSize(style, 15);
-        try {
-            doc.insertString(doc.getLength(), ConfigModel.gameDifficulty.name(), style);
-        } catch (BadLocationException e) {
-            e.printStackTrace();
-        }
-        levelPane.setStyledDocument(doc);
     }
 
     public final void drawDeletedRaw(int deletedRaw) {
