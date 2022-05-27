@@ -36,7 +36,7 @@ public class GameView extends JFrame {
     private final int VIEW_WIDTH = 400;
     private final int VIEW_HEIGHT = 600;
     static final int FONT_SIZE = 28;
-    static final float LINE_SPACING = -0.45f;
+    static final float LINE_SPACING = -0.5f;
     private static final long serialVersionUID = 2434035659171694595L;
 
     private JTextPane boardPane;
@@ -121,7 +121,6 @@ public class GameView extends JFrame {
         boardPane = new JTextPane();
         boardPane.setEditable(false);
         boardPane.setOpaque(false);
-        boardPane.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
         boardPane.setBounds(40,55, 220 + getWidth(ConfigModel.boardSize),440);
 
         nextBlockPane = new JTextPane();

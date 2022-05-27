@@ -13,6 +13,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.*;
@@ -36,7 +37,7 @@ public class BattleView extends JFrame {
     private final int VIEW_WIDTH = 900;
     private final int VIEW_HEIGHT = 600;
     static final int FONT_SIZE = 28;
-    static final float LINE_SPACING = -0.45f;
+    static final float LINE_SPACING = -0.5f;
     private static final long serialVersionUID = 2434035659171694595L;
 
     //P1
@@ -147,14 +148,12 @@ public class BattleView extends JFrame {
         boardPaneP1 = new JTextPane();
         boardPaneP1.setEditable(false);
         boardPaneP1.setBackground(Color.black);
-        boardPaneP1.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
-        boardPaneP1.setBounds(40,55, 220 + getWidth(ConfigModel.boardSize),440);
+        boardPaneP1.setBounds(40,85, 220 + getWidth(ConfigModel.boardSize),440);
 
         boardPaneP2 = new JTextPane();
         boardPaneP2.setEditable(false);
         boardPaneP2.setBackground(Color.black);
-        boardPaneP2.setBorder(new TitledBorder(new LineBorder(Color.white,3)));
-        boardPaneP2.setBounds(640,55, 220 + getWidth(ConfigModel.boardSize),440);
+        boardPaneP2.setBounds(640,85, 220 + getWidth(ConfigModel.boardSize),440);
 
         attackPaneP1 = new JTextPane();
         attackPaneP1.setEditable(false);

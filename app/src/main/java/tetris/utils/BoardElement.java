@@ -45,8 +45,8 @@ public enum BoardElement {
     public static String getElementText(final BoardElement element) {
         return switch (element) {
             case EMPTY -> " ";
-            case BORDER -> "X";
-            case I_BLOCK, J_BLOCK, L_BLOCK, O_BLOCK, S_BLOCK, T_BLOCK, Z_BLOCK, DELETE, ATTACK -> "O";
+            case BORDER -> "□";
+            case I_BLOCK, J_BLOCK, L_BLOCK, O_BLOCK, S_BLOCK, T_BLOCK, Z_BLOCK, DELETE, ATTACK -> "■";
             case LINE_CLEAR_ITEM -> "L";
             case BOMB_ITEM -> "B";
             case CROSS_DELETE_ITEM -> "C";
