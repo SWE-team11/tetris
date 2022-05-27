@@ -90,8 +90,8 @@ public class BattlePresenter implements Presenter {
     @Override
     public void initPresent() {
         this.seconds = 180;
-        this.battleModelP1 = new BattleModel(this, true);
-        this.battleModelP2 = new BattleModel(this, false);
+        this.battleModelP1 = new BattleModel(this, true, 1);
+        this.battleModelP2 = new BattleModel(this, false, 2);
         this.battleModelP1.setOpposite(battleModelP2);
         this.battleModelP2.setOpposite(battleModelP1);
 

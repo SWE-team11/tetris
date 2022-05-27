@@ -28,6 +28,7 @@ public class BattleModel {
 
     private int posX;
     private int posY;
+    private int seed;
 
     public void setOpposite(BattleModel oppositeModel) {
         this.opposite = oppositeModel;
@@ -65,7 +66,8 @@ public class BattleModel {
         attack = new ArrayList<>();
     }
 
-    public BattleModel(final BattlePresenter presenter, boolean isPlayer1) {
+    public BattleModel(final BattlePresenter presenter, boolean isPlayer1, int seed) {
+        this.seed = seed;
         this.battlePresenter = presenter;
         initBoard(ConfigModel.boardWidth, ConfigModel.boardHeight);
         this.setRandomBlock();
@@ -106,7 +108,8 @@ public class BattleModel {
     }
 
     public final void setRandomBlock() {
-        Random rnd = new Random(System.currentTimeMillis());
+        Random rnd = new Random(System.currentTimeMillis() + seed);
+
         BlockKind blockKind;
         int rndNum = 0;
 
